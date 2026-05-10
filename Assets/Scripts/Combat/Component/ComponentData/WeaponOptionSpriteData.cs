@@ -1,4 +1,5 @@
-﻿public class WeaponOptionSpriteData : ComponentData<AttackOptionalSprite>
+﻿[System.Serializable]
+public class WeaponOptionSpriteData : ComponentData<AttackOptionalSprite>
 {
     protected override void SetComponentDenpendency()
     {

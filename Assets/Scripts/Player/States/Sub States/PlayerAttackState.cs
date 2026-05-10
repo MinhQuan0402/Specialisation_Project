@@ -3,19 +3,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newPlayerState", menuName = "State/Player State/Attack")]
 public class PlayerAttackState : PlayerAbilityState
 {
-    private Weapon equppedWeapon;
+    private Weapon weapon;
+    private WeaponGenerator weaponGenerator;
+
     private int inputIndex;
+
+    private bool canInterrupt;
 
     private bool checkFlip;
     
     public void SetWeapon(Weapon weapon, CombatInputs input)
     {
-        equppedWeapon = weapon;
+        this.weapon = weapon;
         if(weapon == null ) return;
-        equppedWeapon.OnExit += ExitHandler;
-        equppedWeapon.SetCore(Core);
+
+        weaponGenerator = weapon.GetComponent<WeaponGenerator>();
         inputIndex = (int)input;
-        equppedWeapon.EventHandler.OnFlipSetActive += HandleFlipSetActive;
+
+        weapon.OnUseInput += HandleUseInput;
+
+        weapon.EventHandler.OnEnableInterrupt += HandleEnableInterrupt;
+        weapon.EventHandler.OnFinish += HandleFinish;
+        weapon.EventHandler.OnFlipSetActive += HandleFlipSetActive;
+
+        weapon.SetCore(Core);
     }
 
     private void HandleFlipSetActive(bool value)
@@ -26,26 +37,46 @@ public class PlayerAttackState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
-        if (equppedWeapon.Equals(null)) return;
-        equppedWeapon.Enter();
+        if (weapon.Equals(null)) return;
+        weaponGenerator.OnWeaponGenerating += HandleWeaponGenerating;
+
+        checkFlip = true;
+        canInterrupt = false;
+
+        weapon.Enter();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        weaponGenerator.OnWeaponGenerating -= HandleWeaponGenerating;
+        weapon.Exit();
+    }
+
+    private void HandleWeaponGenerating()
+    {
+        stateMachine.ChangeState(player.StateMachine.GetState<PlayerIdleState>());
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        equppedWeapon.CurrentInput = player.InputHandler.AttackInputs[inputIndex];
+        weapon.CurrentInput = player.InputHandler.AttackInputs[inputIndex];
         var xInput = player.InputHandler.NormInputX;
+        var attackInputs = player.InputHandler.AttackInputs;
 
         if (checkFlip)
         {
             Movement.CheckIfShouldFlip(xInput);
         }
-    }
 
-    private void ExitHandler()
-    {
-        AnimationFinishTrigger();
-        isAbilityDone = true;
+        if (!canInterrupt)
+            return;
+
+        if (xInput != 0 || attackInputs[0] || attackInputs[1])
+        {
+            isAbilityDone = true;
+        }
     }
 
     public override void Init()
@@ -53,5 +84,17 @@ public class PlayerAttackState : PlayerAbilityState
         base.Init();
 
         animBoolName = "attack";
+    }
+
+    public bool CanTransitionToAttackState() => weapon.CanEnterAttack;
+
+    private void HandleEnableInterrupt() => canInterrupt = true;
+
+    private void HandleUseInput() => player.InputHandler.UseAttackInput(inputIndex);
+
+    private void HandleFinish()
+    {
+        AnimationFinishTrigger();
+        isAbilityDone = true;
     }
 }

@@ -128,7 +128,7 @@ MonoBehaviour:
         attackData:
         - <Name>k__BackingField: Attack 1
           <ChargeTime>k__BackingField: 1
-          <InitialChargeAmount>k__BackingField: 0
+          <InitialChargeAmount>k__BackingField: 1
           <NumOfCharges>k__BackingField: 3
           <ChargeIncreaseIndicatorParticlePrefab>k__BackingField: {fileID: 6762676686280720063, guid: 19758c9f67bb0264e8437296ed15d9ee, type: 3}
           <FullyChargedIndicatorParticlePrefab>k__BackingField: {fileID: 6762676686280720063, guid: 41e15bb5fc050d8408d39c03e68755ab, type: 3}

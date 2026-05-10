@@ -55,6 +55,12 @@ public class Movement : CoreComponent
         SetFinalVelocity();
     }
 
+    public void AddVelocity(float velocity, Vector2 direction)
+    {
+        RB.AddForce(direction * velocity, ForceMode2D.Impulse);
+        CurrentVelocity = RB.linearVelocity;
+    }
+
     public void SetVelocityX(float velocity)
     {
         workspace.Set(velocity, CurrentVelocity.y);

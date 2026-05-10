@@ -1,4 +1,5 @@
-﻿public class WeaponDrawData : ComponentData<AttackDraw>
+﻿[System.Serializable]
+public class WeaponDrawData : ComponentData<AttackDraw>
 {
     protected override void SetComponentDenpendency()
     {

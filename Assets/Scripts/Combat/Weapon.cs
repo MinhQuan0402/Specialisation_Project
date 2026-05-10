@@ -30,6 +30,7 @@ public class Weapon : MonoBehaviour
 
     public event Action OnEnter;
     public event Action OnExit;
+    public event Action OnUseInput;
 
     public Animator Anim { get; private set; }
     public GameObject BaseSpriteGameObject { get; private set; }
@@ -62,7 +63,7 @@ public class Weapon : MonoBehaviour
     public void SetData(WeaponData data)
     {
         Data = data;
-        if(Data is null)
+        if(Data == null)
             return;
         ResetAttackCounter();
     }
@@ -76,6 +77,7 @@ public class Weapon : MonoBehaviour
     private AnimationEventHandler eventHandler;
     
     public float AttackStartTime { get; private set; }
+    public bool CanEnterAttack {  get; private set; }
 
     private void Awake()
     {
@@ -104,6 +106,8 @@ public class Weapon : MonoBehaviour
     }
 
     private void ResetAttackCounter() => CurrentAttackCounter = 0;
+
+    public void SetCanEnterAttack(bool value) => CanEnterAttack = value;
 
     public void Enter()
     {
@@ -136,4 +140,6 @@ public class Weapon : MonoBehaviour
         EventHandler.OnFinish -= Exit;
         attackCounterResetTimeNotifier.OnNotify -= ResetAttackCounter;
     }
+
+    private void HandleUseInput() => OnUseInput?.Invoke(); 
 }

@@ -1,4 +1,5 @@
-﻿public class WeaponChargeData : ComponentData<AttackCharge>
+﻿[System.Serializable]
+public class WeaponChargeData : ComponentData<AttackCharge>
 {
     protected override void SetComponentDenpendency()
     {

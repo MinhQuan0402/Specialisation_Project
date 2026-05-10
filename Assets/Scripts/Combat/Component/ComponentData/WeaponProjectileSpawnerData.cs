@@ -1,4 +1,5 @@
-﻿public class WeaponProjectileSpawnerData : ComponentData<AttackProjectileSpawner>
+﻿[System.Serializable]
+public class WeaponProjectileSpawnerData : ComponentData<AttackProjectileSpawner>
 {
     protected override void SetComponentDenpendency()
     {

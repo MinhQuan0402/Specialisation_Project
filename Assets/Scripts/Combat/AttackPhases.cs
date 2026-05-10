@@ -4,5 +4,8 @@ public enum AttackPhases
 {
     Anicipation,
     Idle,
-    Action
+    Action,
+    Cancel,
+    Break,
+    Parry
 }

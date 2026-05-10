@@ -1,4 +1,5 @@
-﻿public class WeaponTargeterToProjectileData : ComponentData
+﻿[System.Serializable]
+public class WeaponTargeterToProjectileData : ComponentData
 {
     protected override void SetComponentDenpendency()
     {

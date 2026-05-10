@@ -7,12 +7,12 @@ public class WeaponMovement : WeaponComponent<WeaponMovementData, AttackMovement
     private void HandleStartMovement()
     {
         Vector2 attackDirection = new Vector2(currentAttackData.Direction.x * movementCore.Comp.FacingDirection, currentAttackData.Direction.y);
-        movementCore.Comp.SetVelocity(currentAttackData.Velocity, attackDirection);
+        movementCore.Comp.AddVelocity(currentAttackData.Velocity, attackDirection);
     }
 
     private void HandleStopMovement()
     {
-        movementCore.Comp.SetVelocityZero();
+        movementCore.Comp.SetVelocityX(0f);
     }
 
     protected override void Start()

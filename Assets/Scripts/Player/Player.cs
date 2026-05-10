@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     #region State Variable
     [SerializeField] private SerializableDictionary<string, State> StatesDictionary = new();
 
+    [SerializeField] private Entity entityData;
     [SerializeField] private PlayerData playerData;
     public PlayerData PlayerData { get => playerData; private set => playerData = value; }
 
@@ -109,6 +110,14 @@ public class Player : MonoBehaviour
             secondaryAttackState.SetWeapon(secondaryWeapon, CombatInputs.secondary);
         
         stats.Comp.Poise.OnCurrentValueZero += HandlePoiseZero;
+
+        entityData.core = Core;
+        if (Core.TryGetComponent<Stats>(out Stats statsComp))
+        {
+            statsComp.Health.SetCurrentValue(entityData.maxHealth);
+            
+        }
+
     }
 
     private void HandlePoiseZero()

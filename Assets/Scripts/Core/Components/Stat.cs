@@ -21,7 +21,8 @@ public class Stat
     private float currentValue = 0;
     
     public void Init() => CurrentValue = MaxValue;
-    
+    public void SetCurrentValue(float value) => CurrentValue = value;
+
     public void Increase(float amount) => CurrentValue += amount;
     public void Decrease(float amount) => CurrentValue -= amount;
 }

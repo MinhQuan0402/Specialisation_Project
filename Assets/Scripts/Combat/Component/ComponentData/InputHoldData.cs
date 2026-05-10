@@ -1,4 +1,5 @@
-﻿public class InputHoldData : ComponentData
+﻿[System.Serializable]
+public class InputHoldData : ComponentData
 {
     protected override void SetComponentDenpendency()
     {
