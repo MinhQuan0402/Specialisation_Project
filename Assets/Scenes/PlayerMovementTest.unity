@@ -3167,7 +3167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1729262344}
-  data: {fileID: 11400000, guid: a3b9829d7e059564daea145c0b625e09, type: 2}
+  data: {fileID: 11400000, guid: a7f1997e0bf0c8041b1a7e322191969b, type: 2}
   combatInput: 1
 --- !u!1 &1751760252
 GameObject:
