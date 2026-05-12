@@ -49,4 +49,9 @@ public class Core : MonoBehaviour
         value = GetComponent<T>();
         return value;
     }
+
+    public T GetCoreComponent<T>() where T:CoreComponent
+    {
+        return GetComponent<T>();
+    }
 }

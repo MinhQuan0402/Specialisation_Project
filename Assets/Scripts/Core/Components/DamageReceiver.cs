@@ -5,12 +5,23 @@ public class DamageReceiver : CoreComponent, IDamageable
 {
     [SerializeField] private GameObject damageParticles;
 
+    // Modifiers to apply to incoming damage, such as damage reduction or damage over time effects
+    public Modifiers<Modifier<DamageData>, DamageData> Modifiers { get; } = new();
+
     private CoreComp<Stats> stats;
     private CoreComp<ParticleManager> particleManager;
     
     public void Damage(DamageData data)
     {
-        Debug.Log($"{core.transform.parent.gameObject.name} is hit with damage of {data.Amount}!");
+        print($"Damage Amount Before Modifiers: {data.Amount}");
+
+        data = Modifiers.ApplyAllModifiers(data);
+
+        print($"Damage Amount After Modifiers: {data.Amount}");
+
+        if(data.Amount <= 0)
+            return;
+
         stats.Comp?.Health.Decrease(data.Amount);
         if(damageParticles != null)
             particleManager.Comp?.StartParticleWithRandomRotation(damageParticles);    

@@ -22,6 +22,7 @@ MonoBehaviour:
   - rid: 739621917569056845
   - rid: 739621917569056846
   - rid: 739621917569056847
+  - rid: 8384293185507295346
   references:
     version: 2
     RefIds:
@@ -80,3 +81,24 @@ MonoBehaviour:
         - <Name>k__BackingField: Attack 1
           <Direction>k__BackingField: {x: 1, y: 0}
           <Velocity>k__BackingField: 5
+    - rid: 8384293185507295346
+      type: {class: WeaponBlockData, ns: , asm: Assembly-CSharp}
+      data:
+        <Name>k__BackingField: BlockData
+        repeatData: 0
+        attackData:
+        - <Name>k__BackingField: Attack 1
+          <BlockDirectionalInformation>k__BackingField:
+          - MinAngle: 0
+            MaxAngle: 0
+            DamageAbsorption: 0
+            KnockbackAbsorption: 0
+            PoiseAbsorption: 0
+          <BlockWindowStart>k__BackingField:
+            <Duration>k__BackingField: 0
+            <Phase>k__BackingField: 0
+          <BlockWindowEnd>k__BackingField:
+            <Duration>k__BackingField: 0
+            <Phase>k__BackingField: 3
+          <Particles>k__BackingField: {fileID: 0}
+          <ParticleOffset>k__BackingField: {x: 0, y: 0}

@@ -5,6 +5,8 @@ public class KnockbackReceiver : CoreComponent, IKnockBackable
 {
     [SerializeField] private float maxKnockbackTime = 0.2f;
     
+    public Modifiers<Modifier<KnockBackData>, KnockBackData> Modifiers { get; } = new();
+
     private CoreComp<Movement> movement;
     private CoreComp<CollisionSenses> collisionSenses;
     
@@ -18,6 +20,8 @@ public class KnockbackReceiver : CoreComponent, IKnockBackable
 
     public void KnockBack(KnockBackData data)
     {
+        data = Modifiers.ApplyAllModifiers(data);
+
         movement.Comp.SetVelocity(data.Strength, data.Angle, data.Direction);
         movement.Comp.CanSetVelocity = false;
         isKnockbackActive = true;

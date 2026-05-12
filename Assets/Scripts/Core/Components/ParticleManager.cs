@@ -38,7 +38,13 @@ public class ParticleManager : CoreComponent
         var randomRotation = Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f));
         return StartParticle(particlePrefab, transform.position, randomRotation);
     }
-    
+
+    public GameObject StartParticleWithRandomRotation(GameObject prefab, Vector2 offset)
+    {
+        var randomRotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+        return StartParticles(prefab, FindRelativePoint(offset), randomRotation);
+    }
+
     public GameObject StartParticlesRelative(GameObject particlePrefab, Vector2 offset, Quaternion rotation)
     {
         var pos = FindRelativePoint(offset);

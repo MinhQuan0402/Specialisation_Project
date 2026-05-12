@@ -2720,6 +2720,7 @@ GameObject:
   - component: {fileID: 1410929732}
   - component: {fileID: 1410929733}
   - component: {fileID: 1410929734}
+  - component: {fileID: 1410929736}
   - component: {fileID: 1410929735}
   m_Layer: 8
   m_Name: Combat
@@ -2815,6 +2816,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1.6234283}
   m_EdgeRadius: 0
+--- !u!114 &1410929736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410929731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e477b2d205734f9d9200de62fa2d23c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PoiseDamageReceiver
 --- !u!1 &1466290771
 GameObject:
   m_ObjectHideFlags: 0
@@ -3167,7 +3180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1729262344}
-  data: {fileID: 11400000, guid: a7f1997e0bf0c8041b1a7e322191969b, type: 2}
+  data: {fileID: 11400000, guid: a3b9829d7e059564daea145c0b625e09, type: 2}
   combatInput: 1
 --- !u!1 &1751760252
 GameObject:

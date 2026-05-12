@@ -9,13 +9,15 @@ public class Modifiers<TModifierType, TValueType> where TModifierType : Modifier
      * Runs through the modifierList and applies each modifier to the input value. Note that the output of the first modifier is used as the input of the next
      * modifier. 
      */
-    public TValueType AddAllModifiers(TValueType value)
+    public TValueType ApplyAllModifiers(TValueType initialValue)
     {
+        var modifiedValue = initialValue;
+
         foreach (var modifier in modifierList)
         {
-            value = modifier.ModifyValue(value);
+            modifiedValue = modifier.ModifyValue(modifiedValue);
         }
-        return value;
+        return modifiedValue;
     }
 
     public void AddModifier(TModifierType modifier) => modifierList.Add(modifier);
