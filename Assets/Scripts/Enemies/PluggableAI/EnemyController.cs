@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
     [Header("Config")]
     [SerializeField] private EntityData data;
     public EnemyState currentState;
-    public State remainState;   // no-op state — keeps enemy in current state
+    public EnemyState remainState;   // no-op state — keeps enemy in current state
 
     [Header("State Refs (for TakeDamage routing)")]
     public EnemyState hurtState;
@@ -23,6 +23,12 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Core Core { get; private set; }
     [HideInInspector] public Rigidbody2D RB;
     [HideInInspector] public Animator Anim;
+
+    private Movement movement = null;
+    [HideInInspector] public Movement Movement
+    {
+        get => movement != null ? movement : movement = Core.GetComponent<Movement>();
+    }
 
     void Awake()
     {
@@ -52,7 +58,9 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        if (!isDead) currentState.UpdateState(this);
+        Core.LogicUpdate();
+        if (!isDead || currentState != null) 
+            currentState.UpdateState(this);
     }
 
     public void TransitionToState(EnemyState next)

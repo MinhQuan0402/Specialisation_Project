@@ -8,6 +8,7 @@ public class Movement : CoreComponent
 
     public Rigidbody2D RB { get; private set; }
 
+    public int startingDirection = 1;
     public int FacingDirection { get; private set; }
 
     public bool CanSetVelocity { get; set; }
@@ -19,7 +20,7 @@ public class Movement : CoreComponent
         base.Awake();
 
         RB = GetComponentInParent<Rigidbody2D>(); //Get Rigidbody2D from the main entity
-        FacingDirection = 1;
+        FacingDirection = Mathf.Clamp(startingDirection, -1, 1);
         CanSetVelocity = true;
     }
 

@@ -8,7 +8,8 @@ public class EnemyData : EntityData
     public float animationTransitionTime = 0.1f;
 
     [Header("Idle State")]
-    public float maxIdleElapsedTime = 5.0f;
+    public float minIdleTime = 3.0f;
+    public float maxIdleTime = 5.0f;
 
     [Header("Move State")]
     public float maxMoveVelocity = 10.0f;

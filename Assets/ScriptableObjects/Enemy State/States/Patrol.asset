@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9a8bb3223b2564ebf5c64e2d847237, type: 3}
+  m_Name: Patrol
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyState
+  animHash: Patrol
+  isAttackState: 0
+  startActions: []
+  updateActions:
+  - {fileID: 11400000, guid: 84fe735be10f85d49b82b06900bf3e08, type: 2}
+  transitions:
+  - priority: 1
+    decisions:
+    - {fileID: 11400000, guid: 8ddd82130078fe547aca1a591123afb3, type: 2}
+    trueState: {fileID: 11400000, guid: 7c2e7b34f3dce2b418e231051e19cd0e, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  gizmoColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

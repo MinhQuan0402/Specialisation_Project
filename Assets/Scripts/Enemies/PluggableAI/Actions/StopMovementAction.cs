@@ -1,0 +1,13 @@
+using UnityEngine;
+
+/// <summary>
+/// Stops all movement. Used in IdleState and HurtState.
+/// </summary>
+[CreateAssetMenu(menuName = "PluggableAI2D/Actions/Stop Movement")]
+public class StopMovementAction : EnemyAction
+{
+    public override void Act(EnemyController controller)
+    {
+        controller.Movement.SetVelocityX(0.0f);
+    }
+}
