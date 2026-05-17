@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newPlayerData", menuName = "Data/Player Data/Base Data")]
-public class PlayerData : ScriptableObject
+public class PlayerData : EntityData
 {
     [Header("Move State")]
     public float movementVelocity = 10.0f;

@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c15b116e06bb14e9601ddff0fbbc26, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  stunResist: 0
+  knockbackResist: 0
+  onZeroHealth: 0
+  ExplosionPrefabs: []
   movementVelocity: 10
   jumpVelocity: 15
   maxNumberOfJumps: 1

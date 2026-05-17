@@ -1,8 +1,12 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newEnemyData", menuName = "Data/Enemy Data/Base Data")]
-public class EnemyData : ScriptableObject
+public class EnemyData : EntityData
 {
+    [Header("Configuration")]
+    public bool isFlying = false;
+    public float animationTransitionTime = 0.1f;
+
     [Header("Idle State")]
     public float maxIdleElapsedTime = 5.0f;
 

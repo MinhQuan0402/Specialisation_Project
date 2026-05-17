@@ -2,10 +2,10 @@
 using System.Collections;
 
 [System.Serializable]
-public class WeaponBlockData : ComponentData<AttackBlock>
+public class WeaponParryData : ComponentData<AttackParry>
 {
     protected override void SetComponentDenpendency()
     {
-        ComponentDependency = typeof(WeaponBlock);
+        ComponentDependency = typeof(WeaponParry);
     }
 }

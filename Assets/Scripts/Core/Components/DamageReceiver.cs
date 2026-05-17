@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using Combat.Damage;
+using System;
 
 public class DamageReceiver : CoreComponent, IDamageable
 {
     [SerializeField] private GameObject damageParticles;
+
+    public event Action<GameObject> OnTakingDamage;
 
     // Modifiers to apply to incoming damage, such as damage reduction or damage over time effects
     public Modifiers<Modifier<DamageData>, DamageData> Modifiers { get; } = new();
@@ -24,7 +27,9 @@ public class DamageReceiver : CoreComponent, IDamageable
 
         stats.Comp?.Health.Decrease(data.Amount);
         if(damageParticles != null)
-            particleManager.Comp?.StartParticleWithRandomRotation(damageParticles);    
+            particleManager.Comp?.StartParticleWithRandomRotation(damageParticles);
+
+        OnTakingDamage?.Invoke(data.Source);
     }
 
     protected override void Awake()

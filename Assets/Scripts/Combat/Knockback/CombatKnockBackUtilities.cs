@@ -1,61 +1,59 @@
-﻿using System.Collections.Generic;
-using Utilities;
+﻿using Combat.Knockback;
+using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
 
-namespace Combat.Knockback
+public static class CombatKnockBackUtilities
 {
-    public static class CombatKnockBackUtilities
+    public static bool TryKnockBack(GameObject gameObject, KnockBackData data, out IKnockBackable knockBackable)
     {
-        public static bool TryKnockBack(GameObject gameObject, KnockBackData data, out IKnockBackable knockBackable)
+        if (gameObject.TryGetComponentInChildren(out knockBackable))
         {
-            if (gameObject.TryGetComponentInChildren(out knockBackable))
+            knockBackable.KnockBack(data);
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool TryKnockBack(Component component, KnockBackData data, out IKnockBackable knockBackable)
+    {
+        return TryKnockBack(component.gameObject, data, out knockBackable);
+    }
+
+    public static bool TryKnockBack(IEnumerable<GameObject> gameObjects, KnockBackData data,
+        out List<IKnockBackable> knockBackables)
+    {
+        var hasKnockedBack = false;
+        knockBackables = new List<IKnockBackable>();
+
+        foreach (var gameObject in gameObjects)
+        {
+            if (TryKnockBack(gameObject, data, out var knockBackable))
             {
-                knockBackable.KnockBack(data);
-                return true;
+                knockBackables.Add(knockBackable);
+                hasKnockedBack = true;
             }
-
-            return false;
         }
 
-        public static bool TryKnockBack(Component component, KnockBackData data, out IKnockBackable knockBackable)
-        {
-            return TryKnockBack(component.gameObject, data, out knockBackable);
-        }
+        return hasKnockedBack;
+    }
 
-        public static bool TryKnockBack(IEnumerable<GameObject> gameObjects, KnockBackData data,
-            out List<IKnockBackable> knockBackables)
-        {
-            var hasKnockedBack = false;
-            knockBackables = new List<IKnockBackable>();
+    public static bool TryKnockBack(IEnumerable<Component> components, KnockBackData data,
+        out List<IKnockBackable> knockBackables)
+    {
+        var hasKnockedBack = false;
+        knockBackables = new List<IKnockBackable>();
 
-            foreach (var gameObject in gameObjects)
+        foreach (var comp in components)
+        {
+            if (TryKnockBack(comp, data, out var knockBackable))
             {
-                if (TryKnockBack(gameObject, data, out var knockBackable))
-                {
-                    knockBackables.Add(knockBackable);
-                    hasKnockedBack = true;
-                }
+                knockBackables.Add(knockBackable);
+                hasKnockedBack = true;
             }
-
-            return hasKnockedBack;
         }
-        
-        public static bool TryKnockBack(IEnumerable<Component> components, KnockBackData data,
-            out List<IKnockBackable> knockBackables)
-        {
-            var hasKnockedBack = false;
-            knockBackables = new List<IKnockBackable>();
 
-            foreach (var comp in components)
-            {
-                if (TryKnockBack(comp, data, out var knockBackable))
-                {
-                    knockBackables.Add(knockBackable);
-                    hasKnockedBack = true;
-                }
-            }
-
-            return hasKnockedBack;
-        }
+        return hasKnockedBack;
     }
 }

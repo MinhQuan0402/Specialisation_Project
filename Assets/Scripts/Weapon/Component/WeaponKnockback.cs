@@ -1,6 +1,5 @@
 ﻿using Combat.Knockback;
 using UnityEngine;
-using static Combat.Knockback.CombatKnockBackUtilities;
 
 public class WeaponKnockback : WeaponComponent<WeaponKnockbackData, AttackKnockback>
 {
@@ -10,7 +9,7 @@ public class WeaponKnockback : WeaponComponent<WeaponKnockbackData, AttackKnockb
 
     private void HandleDetectedColliders2D(Collider2D[] colliders)
     {
-        TryKnockBack(colliders, new KnockBackData(currentAttackData.Angle, currentAttackData.Strength, movement.Comp.FacingDirection, Core.Root), out _);
+        CombatKnockBackUtilities.TryKnockBack(colliders, new KnockBackData(currentAttackData.Angle, currentAttackData.Strength, movement.Comp.FacingDirection, Core.Root), out _);
     }
 
     protected override void HandleEnter()

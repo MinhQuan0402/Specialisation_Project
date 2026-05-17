@@ -2,6 +2,7 @@
 
 public class InputHold : WeaponComponent
 {
+    private static readonly int HoldHash = Animator.StringToHash("hold");
     private Animator anim;
     private bool input;
 
@@ -29,13 +30,13 @@ public class InputHold : WeaponComponent
     {
         if (input)
         {
-            anim.SetBool("hold", input);
+            anim.SetBool(HoldHash, input);
             return;
         }
 
         if (minHoldPassed)
         {
-            anim.SetBool("hold", false);
+            anim.SetBool(HoldHash, false);
         }
     }
     

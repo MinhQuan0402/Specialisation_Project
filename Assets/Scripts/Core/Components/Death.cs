@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class Death : CoreComponent
 {
+    public enum OnZeroHealth
+    {
+        None,
+        Destroy,
+        Disable
+    }
+
+    public OnZeroHealth onZeroHealth;
+
     [SerializeField] private GameObject[] deathParticles;
     private ParticleManager ParticleManager => particleManager ? particleManager : core.GetCoreComponent(ref particleManager);
     private Stats Stats => stats ? stats : core.GetCoreComponent(ref stats);
@@ -16,7 +25,15 @@ public class Death : CoreComponent
         {
             if(particle) ParticleManager.StartParticle(particle);
         }
-        core.transform.parent.gameObject.SetActive(false);
+
+        if (onZeroHealth == OnZeroHealth.Disable)
+        {
+            core.transform.parent.gameObject.SetActive(false);
+        }
+        else if (onZeroHealth == OnZeroHealth.Destroy)
+        {
+            Destroy(core.transform.parent.gameObject);
+        }
     }
     public void SetParticles(GameObject[] deathParticles)
     {
