@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "PluggableAI2D/Actions/Flip")]
+[CreateAssetMenu(menuName = "PluggableAI/Actions/Flip")]
 public class FlipAction : EnemyAction
 {
     public override void Act(EnemyController controller)

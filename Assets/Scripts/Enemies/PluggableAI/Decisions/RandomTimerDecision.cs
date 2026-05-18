@@ -6,7 +6,7 @@ using UnityEngine;
 /// Returns true after the enemy has been in the current state for [duration] seconds.
 /// Useful for IdleState → PatrolState after a wait.
 /// </summary>
-[CreateAssetMenu(menuName = "PluggableAI2D/Decisions/RandomTimer")]
+[CreateAssetMenu(menuName = "PluggableAI/Decisions/RandomTimer")]
 public class RandomTimerDecision : EnemyDecision
 {
 

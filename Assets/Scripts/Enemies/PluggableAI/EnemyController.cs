@@ -24,10 +24,28 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Rigidbody2D RB;
     [HideInInspector] public Animator Anim;
 
+    [ReadOnlyInspector] public bool isAnimationFinished = false;
+    public void AnimationFinishTrigger() => isAnimationFinished = true;
+
+    public void DeathAnimationDone()
+    {
+        if(Core.TryGetCoreComponent(out Death death))
+        {
+            death.isAnimationFinished = true;
+            death.Die();
+        }
+    }
+
     private Movement movement = null;
-    [HideInInspector] public Movement Movement
+    public Movement Movement
     {
         get => movement != null ? movement : movement = Core.GetComponent<Movement>();
+    }
+
+    private CollisionSenses collisionSenses = null;
+    public CollisionSenses CollisionSenses
+    {
+        get => collisionSenses != null ? collisionSenses : collisionSenses = Core.GetComponent<CollisionSenses>();
     }
 
     void Awake()
@@ -46,20 +64,26 @@ public class EnemyController : MonoBehaviour
         var p = GameObject.FindGameObjectWithTag("Player");
         if (p) player = p.transform;
 
-        Core.GetComponent<Stats>().Health.OnCurrentValueZero += HandleDeathState;
+
+        Stats stats = Core.GetComponent<Stats>();
+        stats.Health.SetCurrentValue(Data.maxHealth);
+        stats.Health.OnCurrentValueZero += HandleDeathState;
+
         Core.GetComponent<DamageReceiver>().OnTakingDamage += HandleHurtState;
     }
 
     private void OnDestroy()
     {
-        Core.GetComponent<Stats>().Health.OnCurrentValueZero -= HandleDeathState;
-        Core.GetComponent<DamageReceiver>().OnTakingDamage -= HandleHurtState;
+        Stats stats = Core.GetComponent<Stats>();
+        stats.Health.OnCurrentValueZero -= HandleDeathState;
+        if(Core.TryGetCoreComponent(out DamageReceiver damageReceiver))
+            damageReceiver.OnTakingDamage -= HandleHurtState;
     }
 
     void Update()
     {
         Core.LogicUpdate();
-        if (!isDead || currentState != null) 
+        if (!isDead && currentState != null) 
             currentState.UpdateState(this);
     }
 
@@ -69,18 +93,37 @@ public class EnemyController : MonoBehaviour
         currentState = next;
         stateEnterTime = Time.time;
         currentState.EnterState(this);
+        isAnimationFinished = false;
     }
 
     private void HandleDeathState()
     {
+        Debug.Log($"{gameObject.name} has died.");
         TransitionToState(deathState);
         isDead = true;
+
+        if(Core.TryGetCoreComponent(out DamageReceiver damageReceiver))
+        {
+            Destroy(damageReceiver);
+        }
+
+        if (Core.TryGetCoreComponent(out KnockbackReceiver knockbackReceiver    ))
+        {
+            Destroy(knockbackReceiver);
+        }
+
+        if(Core.TryGetCoreComponent(out PoiseDamageReceiver poiseDamageReceiver))
+        {
+            Destroy(poiseDamageReceiver);
+        }
     }
 
     private void HandleHurtState(GameObject source)
     {
-        if (currentState.isAttackState) return;
-
+        if (isDead) return;
+        if (currentState.isAttackState && 
+            !isAnimationFinished) return;
+        Debug.Log($"{gameObject.name} has been hurt by {source.name}.");
         TransitionToState(hurtState);
     }
 }

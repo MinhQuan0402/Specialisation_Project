@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Death : CoreComponent
@@ -10,6 +11,10 @@ public class Death : CoreComponent
     }
 
     public OnZeroHealth onZeroHealth;
+    public bool useAnimation = false;
+
+    [HideInInspector]
+    public bool isAnimationFinished = false;
 
     [SerializeField] private GameObject[] deathParticles;
     private ParticleManager ParticleManager => particleManager ? particleManager : core.GetCoreComponent(ref particleManager);
@@ -21,9 +26,14 @@ public class Death : CoreComponent
 
     public void Die()
     {
+        if(useAnimation && !isAnimationFinished)
+        {
+            return;
+        }
+
         foreach (var particle in deathParticles)
         {
-            if(particle) ParticleManager.StartParticle(particle);
+            if (particle) ParticleManager.StartParticle(particle);
         }
 
         if (onZeroHealth == OnZeroHealth.Disable)
@@ -35,6 +45,7 @@ public class Death : CoreComponent
             Destroy(core.transform.parent.gameObject);
         }
     }
+
     public void SetParticles(GameObject[] deathParticles)
     {
         this.deathParticles = deathParticles;

@@ -4,9 +4,9 @@ using System.Collections;
 /// <summary>
 /// Returns true after the enemy has been in the current state for [duration] seconds.
 /// Useful for IdleState → PatrolState after a wait.
-/// Right-click → Create → PluggableAI2D → Decisions → Timer
+/// Right-click → Create → PluggableAI → Decisions → Timer
 /// </summary>
-[CreateAssetMenu(menuName = "PluggableAI2D/Decisions/Timer")]
+[CreateAssetMenu(menuName = "PluggableAI/Decisions/Timer")]
 public class TimerDecision : EnemyDecision
 {
     public float duration = 1.5f;

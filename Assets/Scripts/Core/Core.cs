@@ -54,4 +54,10 @@ public class Core : MonoBehaviour
     {
         return GetComponent<T>();
     }
+
+    public bool TryGetCoreComponent<T>(out T value) where T:CoreComponent
+    {
+        value = GetComponent<T>();
+        return value != null;
+    }
 }

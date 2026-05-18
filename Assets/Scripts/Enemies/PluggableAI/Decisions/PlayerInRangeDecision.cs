@@ -2,9 +2,9 @@ using UnityEngine;
 
 /// <summary>
 /// Returns true when the player enters detectionRange.
-/// Right-click → Create → PluggableAI2D → Decisions → PlayerInRange
+/// Right-click → Create → PluggableAI → Decisions → PlayerInRange
 /// </summary>
-[CreateAssetMenu(menuName = "PluggableAI2D/Decisions/PlayerInRange")]
+[CreateAssetMenu(menuName = "PluggableAI/Decisions/PlayerInRange")]
 public class PlayerInRangeDecision : EnemyDecision
 {
     public override bool Decide(EnemyController controller) =>

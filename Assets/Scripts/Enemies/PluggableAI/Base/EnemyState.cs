@@ -3,9 +3,9 @@ using UnityEngine;
 
 /// <summary>
 /// A State asset holds composable Actions and Transitions.
-/// Right-click in Project → Create → PluggableAI2D → State
+/// Right-click in Project → Create → PluggableAI → State
 /// </summary>
-[CreateAssetMenu(menuName = "PluggableAI2D/State")]
+[CreateAssetMenu(menuName = "PluggableAI/State")]
 public class EnemyState : ScriptableObject
 {
     public string animHash;

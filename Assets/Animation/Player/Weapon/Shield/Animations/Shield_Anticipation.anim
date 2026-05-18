@@ -22,15 +22,15 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: -1921088954, guid: df2b582c43a81084084421dfc6eefb80, type: 3}
-    - time: 0.06666667
+    - time: 0.05
       value: {fileID: 171637624, guid: df2b582c43a81084084421dfc6eefb80, type: 3}
-    - time: 0.13333334
+    - time: 0.1
       value: {fileID: 2048754461, guid: df2b582c43a81084084421dfc6eefb80, type: 3}
-    - time: 0.2
+    - time: 0.15
       value: {fileID: -979929608, guid: df2b582c43a81084084421dfc6eefb80, type: 3}
-    - time: 0.26666668
+    - time: 0.2
       value: {fileID: 72478719, guid: df2b582c43a81084084421dfc6eefb80, type: 3}
-    - time: 0.33333334
+    - time: 0.25
       value: {fileID: 1623818726, guid: df2b582c43a81084084421dfc6eefb80, type: 3}
     attribute: m_Sprite
     path: 
@@ -65,7 +65,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.35000002
+    m_StopTime: 0.26666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -99,35 +99,35 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.1
+  - time: 0.06666667
     functionName: StartAnimationWindow
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
-  - time: 0.2
+  - time: 0.15
     functionName: StopAnimationWindow
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
-  - time: 0.2
+  - time: 0.15
     functionName: SetFlipInactive
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.26666668
+  - time: 0.2
     functionName: StartAnimationWindow
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.26666668
+  - time: 0.2
     functionName: MinHoldPassedTrigger
     data: 
     objectReferenceParameter: {fileID: 0}

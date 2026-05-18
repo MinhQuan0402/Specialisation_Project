@@ -36,7 +36,7 @@ MonoBehaviour:
     - rid: 1495228170935730353
       type: {class: WeaponSpriteData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponSpriteData
+        <Name>k__BackingField: SpriteData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1
@@ -57,7 +57,7 @@ MonoBehaviour:
     - rid: 1495228170935730391
       type: {class: WeaponMovementData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponMovementData
+        <Name>k__BackingField: MovementData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1
@@ -66,7 +66,7 @@ MonoBehaviour:
     - rid: 1495228194250555470
       type: {class: WeaponProjectileSpawnerData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponProjectileSpawnerData
+        <Name>k__BackingField: ProjectileSpawnerData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1
@@ -75,7 +75,7 @@ MonoBehaviour:
             <Direction>k__BackingField: {x: 1, y: 0}
             <ProjectilePrefab>k__BackingField: {fileID: 7448242632456397419, guid: acfc55dcc1260674d8e37901b4c99287, type: 3}
             <DamageData>k__BackingField:
-              <Amount>k__BackingField: 15
+              <Amount>k__BackingField: 20
             <KnockBackData>k__BackingField:
               <Angle>k__BackingField: {x: 1, y: 0.5}
               <Strength>k__BackingField: 5
@@ -86,7 +86,7 @@ MonoBehaviour:
     - rid: 1495228194250555490
       type: {class: WeaponDrawData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponDrawData
+        <Name>k__BackingField: DrawData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1
@@ -118,11 +118,11 @@ MonoBehaviour:
     - rid: 1495228194250555497
       type: {class: WeaponDrawToProjectileData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponDrawToProjectileData
+        <Name>k__BackingField: DrawToProjectileData
     - rid: 1495228207625928795
       type: {class: WeaponOptionSpriteData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponOptionSpriteData
+        <Name>k__BackingField: OptionSpriteData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1

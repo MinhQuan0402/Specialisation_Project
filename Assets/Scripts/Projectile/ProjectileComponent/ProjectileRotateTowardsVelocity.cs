@@ -2,11 +2,14 @@
 
 public class ProjectileRotateTowardsVelocity : ProjectileComponent
 {
+    [SerializeField, Range(0, 1)] 
+    private float rotationMultiplier = 1.0f;
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        var velocity = rb.linearVelocity;
+        var velocity = rb.linearVelocity * rotationMultiplier;
 
         if (velocity.Equals(Vector3.zero))
             return;
