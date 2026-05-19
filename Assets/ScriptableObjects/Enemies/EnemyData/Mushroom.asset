@@ -27,7 +27,7 @@ MonoBehaviour:
   playerDetectionRange: 9
   maxDetectionHeight: 3
   chaseSpeed: 5
-  attackRange: 1.5
+  attackRange: 2
   attackCooldown: 0.5
   default_attackCooldown: 0.5
   maxCombo_attackCooldown: 1

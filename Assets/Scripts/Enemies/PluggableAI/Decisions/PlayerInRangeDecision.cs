@@ -10,7 +10,7 @@ public class PlayerInRangeDecision : EnemyDecision
     private enum RangeType
     {
         DetectionRange,
-        CloseRange  
+        AttackRange 
     }
 
     [SerializeField] private RangeType rangeType;

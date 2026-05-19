@@ -20,6 +20,11 @@ MonoBehaviour:
   transitions:
   - priority: 1
     decisions:
+    - {fileID: 11400000, guid: b05fce8c1de2adc4b8bf0a088ef2fecd, type: 2}
+    trueState: {fileID: 11400000, guid: d9c7c7af92b8d8146abf37a2e19a8653, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  - priority: 0
+    decisions:
     - {fileID: 11400000, guid: 97107ed3cb5814c4681a2f023f2717ca, type: 2}
     - {fileID: 11400000, guid: 507d086d29c85144c9186298fd3a1e79, type: 2}
     trueState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
