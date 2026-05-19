@@ -11,6 +11,6 @@ public class TimerDecision : EnemyDecision
 {
     public float duration = 1.5f;
 
-    public override bool Decide(EnemyController controller) =>
+    public override bool MakeDecision(EnemyController controller) =>
         (Time.time - controller.stateEnterTime) >= duration;
 }

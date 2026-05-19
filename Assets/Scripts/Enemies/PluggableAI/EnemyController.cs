@@ -1,7 +1,7 @@
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator), typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class EnemyController : MonoBehaviour
 {
     [Header("Config")]
@@ -13,19 +13,32 @@ public class EnemyController : MonoBehaviour
     public EnemyState hurtState;
     public EnemyState deathState;
 
+    [Space(10)]
+    [SerializeField] private AnimationEventHandler animationEventHandler;
+
     public EnemyData Data { get; private set; }
 
+    [Space(10)]
     [ReadOnlyInspector] public Transform player;
     [ReadOnlyInspector] public Vector2 spawnPoint;
-    [ReadOnlyInspector] public bool isDead;
-    [ReadOnlyInspector] public float stateEnterTime;
+    [ReadOnlyInspector] public Vector2 lastSeenPlayerPoint;
+    [ReadOnlyInspector] public float stateEnterTime = 0;
+    [ReadOnlyInspector] public float lastCheckTime  = 0;
     [ReadOnlyInspector] public float lastAttackTime = -999f;
-    [HideInInspector] public Core Core { get; private set; }
-    [HideInInspector] public Rigidbody2D RB;
-    [HideInInspector] public Animator Anim;
-
+    [ReadOnlyInspector] public bool isDead = false;
     [ReadOnlyInspector] public bool isAnimationFinished = false;
-    public void AnimationFinishTrigger() => isAnimationFinished = true;
+    [ReadOnlyInspector] public bool isCheckingDone = false;
+
+    public Core Core { get; private set; }
+    public Rigidbody2D RB { get; private set; }
+    public Animator Anim { get; private set; }
+
+
+    public void AnimationFinishTrigger()
+    {
+        isAnimationFinished = true;
+        if (isDead) DeathAnimationDone();
+    }
 
     public void DeathAnimationDone()
     {
@@ -48,12 +61,18 @@ public class EnemyController : MonoBehaviour
         get => collisionSenses != null ? collisionSenses : collisionSenses = Core.GetComponent<CollisionSenses>();
     }
 
+    private Stats stats = null;
+    public Stats Stats
+    {
+        get => stats != null ? stats : stats = Core.GetComponent<Stats>();
+    }
+
     void Awake()
     {
         Data = (EnemyData)data;
 
-        Anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody2D>();
+        Anim = GetComponentInChildren<Animator>();
         Core = GetComponentInChildren<Core>();
 
         spawnPoint = transform.position;
@@ -61,15 +80,14 @@ public class EnemyController : MonoBehaviour
 
         if (Data.isFlying) RB.gravityScale = 0f;
 
-        var p = GameObject.FindGameObjectWithTag("Player");
-        if (p) player = p.transform;
-
+        player = Player.Instance.transform;
 
         Stats stats = Core.GetComponent<Stats>();
         stats.Health.SetCurrentValue(Data.maxHealth);
         stats.Health.OnCurrentValueZero += HandleDeathState;
 
         Core.GetComponent<DamageReceiver>().OnTakingDamage += HandleHurtState;
+        animationEventHandler.OnFinish += AnimationFinishTrigger;
     }
 
     private void OnDestroy()
@@ -78,6 +96,7 @@ public class EnemyController : MonoBehaviour
         stats.Health.OnCurrentValueZero -= HandleDeathState;
         if(Core.TryGetCoreComponent(out DamageReceiver damageReceiver))
             damageReceiver.OnTakingDamage -= HandleHurtState;
+        animationEventHandler.OnFinish -= AnimationFinishTrigger;
     }
 
     void Update()
@@ -98,7 +117,6 @@ public class EnemyController : MonoBehaviour
 
     private void HandleDeathState()
     {
-        Debug.Log($"{gameObject.name} has died.");
         TransitionToState(deathState);
         isDead = true;
 
@@ -123,7 +141,7 @@ public class EnemyController : MonoBehaviour
         if (isDead) return;
         if (currentState.isAttackState && 
             !isAnimationFinished) return;
-        Debug.Log($"{gameObject.name} has been hurt by {source.name}.");
+        lastSeenPlayerPoint = player.position;
         TransitionToState(hurtState);
     }
 }

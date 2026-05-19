@@ -9,17 +9,26 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "PluggableAI/Decisions/RandomTimer")]
 public class RandomTimerDecision : EnemyDecision
 {
+    private enum TimerType
+    {
+        IdleTime,
+        MoveTime 
+    }
+
+    [SerializeField] private TimerType timerType;
 
     // Keyed by (controller, stateEnterTime) so the roll resets on every state entry
     private readonly Dictionary<(EnemyController, float), float> _durations = new();
 
-    public override bool Decide(EnemyController controller)
+    public override bool MakeDecision(EnemyController controller)
     {
         var key = (controller, controller.stateEnterTime);
 
         if (!_durations.TryGetValue(key, out float duration))
         {
-            duration = Random.Range(controller.Data.minIdleTime, controller.Data.maxIdleTime);
+            float min = timerType == TimerType.IdleTime ? controller.Data.minIdleTime : controller.Data.minPatrolTime;
+            float max = timerType == TimerType.IdleTime ? controller.Data.maxIdleTime : controller.Data.maxPatrolTime;
+            duration = Random.Range(min, max);
             _durations[key] = duration;
             PruneOldKeys(controller); // keep dict from growing unbounded
         }

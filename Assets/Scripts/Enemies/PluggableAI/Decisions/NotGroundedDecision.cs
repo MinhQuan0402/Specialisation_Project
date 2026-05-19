@@ -3,6 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "PluggableAI/Decisions/NotGroundedDecision")]
 public class NotGroundedDecision : EnemyDecision
 {
-    public override bool Decide(EnemyController controller) =>
+    public override bool MakeDecision(EnemyController controller) =>
         !controller.CollisionSenses.Grounded;
 }

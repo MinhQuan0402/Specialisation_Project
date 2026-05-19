@@ -8,8 +8,8 @@ public class Movement : CoreComponent
 
     public Rigidbody2D RB { get; private set; }
 
-    public int startingDirection = 1;
-    public int FacingDirection { get; private set; }
+    [field: SerializeField, Range(-1, 1)] 
+    public int FacingDirection { get; private set; } = 1;
 
     public bool CanSetVelocity { get; set; }
     public Vector2 CurrentVelocity { get; private set; } //the velocity attracted from rigidbody
@@ -19,8 +19,8 @@ public class Movement : CoreComponent
     {
         base.Awake();
 
+        if(FacingDirection == 0 ) FacingDirection = 1;
         RB = GetComponentInParent<Rigidbody2D>(); //Get Rigidbody2D from the main entity
-        FacingDirection = Mathf.Clamp(startingDirection, -1, 1);
         CanSetVelocity = true;
     }
 

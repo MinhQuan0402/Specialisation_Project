@@ -5,5 +5,13 @@ using UnityEngine;
 /// </summary>
 public abstract class EnemyDecision : ScriptableObject
 {
-    public abstract bool Decide(EnemyController controller);
+    [SerializeField] private bool invertDecision = false;
+
+    public abstract bool MakeDecision(EnemyController controller);
+
+    public bool Decide(EnemyController controller)
+    {
+        bool decision = MakeDecision(controller);
+        return invertDecision ? !decision : decision;
+    }
 }

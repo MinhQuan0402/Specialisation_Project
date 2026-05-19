@@ -12,12 +12,14 @@ public class EnemyData : EntityData
     public float maxIdleTime = 5.0f;
 
     [Header("Move State")]
-    public float maxMoveVelocity = 10.0f;
-    public float maxMoveTime = 5.0f;
+    public float moveSpeed = 10.0f;
+    public float minPatrolTime = 3.0f;
+    public float maxPatrolTime = 5.0f;
 
     [Header("Player Detected State")]
     public float playerDetectionRange = 9.0f;
     public float maxDetectionHeight = 3.0f;
+    public float chaseSpeed = 5.0f;
 
     [Header("Attacking State")]
     public float attackRange = 1.5f;
@@ -29,4 +31,6 @@ public class EnemyData : EntityData
 
     [Header("Look For Player State")]
     public float maxLookingTime = 3.0f;
+
+    public LayerMask whatIsObstacles;
 }

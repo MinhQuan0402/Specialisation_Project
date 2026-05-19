@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9a8bb3223b2564ebf5c64e2d847237, type: 3}
+  m_Name: Checking
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyState
+  animHash: Idle
+  isAttackState: 0
+  startActions:
+  - {fileID: 11400000, guid: 0bf399e68f25fa54fb85fde59597cbdc, type: 2}
+  updateActions:
+  - {fileID: 11400000, guid: 1be3461353734dc439d91ed6132f91ac, type: 2}
+  transitions:
+  - priority: 1
+    decisions:
+    - {fileID: 11400000, guid: 97107ed3cb5814c4681a2f023f2717ca, type: 2}
+    trueState: {fileID: 11400000, guid: 200223a735cd85c4b848e1c593c9b1a8, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  - priority: 0
+    decisions:
+    - {fileID: 11400000, guid: 59dcfd926ebcf204990844a574b76a9a, type: 2}
+    trueState: {fileID: 11400000, guid: 7c2e7b34f3dce2b418e231051e19cd0e, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  isSorted: 1

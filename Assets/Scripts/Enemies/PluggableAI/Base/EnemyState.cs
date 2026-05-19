@@ -20,8 +20,7 @@ public class EnemyState : ScriptableObject
     [Tooltip("Checked top-to-bottom each frame. First decision that fires wins.")]
     public EnemyTransition[] transitions;
 
-    public Color gizmoColor = Color.grey;
-
+    [SerializeField]
     private bool isSorted = false;
 
     public void EnterState(EnemyController controller)
@@ -36,8 +35,8 @@ public class EnemyState : ScriptableObject
     private void SortTransition()
     {
         if (isSorted) return;
-
-        transitions = transitions.OrderBy(t => t.priority).ToArray();
+        static int getPriority(EnemyTransition t) => (int)t.priority;
+        transitions = transitions.OrderByDescending(getPriority).ToArray();
         isSorted = true;
     }
 

@@ -5,8 +5,8 @@ public class EnemyTransition
 {
     public enum Priority
     {
-        High,
-        Default
+        Default,
+        High
     }
 
     public Priority priority = Priority.Default;
