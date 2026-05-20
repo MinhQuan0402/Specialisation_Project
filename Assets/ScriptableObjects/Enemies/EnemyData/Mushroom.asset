@@ -27,12 +27,13 @@ MonoBehaviour:
   playerDetectionRange: 9
   maxDetectionHeight: 3
   chaseSpeed: 5
-  attackRange: 2
-  attackCooldown: 0.5
-  default_attackCooldown: 0.5
-  maxCombo_attackCooldown: 1
-  defaultDamage: 10
-  maxComboDamage: 25
+  attackDetails:
+  - attackName: Attack 1
+    damageAmount: 20
+    attackRange: 2
+    attackCooldown: 0.5
+    knockbackStrength: 10
+    knockbackAngle: {x: 1, y: 1}
   maxLookingTime: 3
   whatIsObstacles:
     serializedVersion: 2

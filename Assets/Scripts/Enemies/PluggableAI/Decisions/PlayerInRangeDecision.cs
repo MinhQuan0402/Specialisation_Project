@@ -19,5 +19,5 @@ public class PlayerInRangeDecision : EnemyDecision
         EnemyUtilities.PlayerInRange(controller, 
                                      rangeType == RangeType.DetectionRange ? 
                                      controller.Data.playerDetectionRange : 
-                                     controller.Data.attackRange);
+                                     controller.TryGetAttackRange());
 }

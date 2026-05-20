@@ -17,6 +17,14 @@ public class MoveAction : EnemyAction
 
     public override void Act(EnemyController controller)
     {
+        if (speedType == SpeedType.ChaseSpeed)
+        {
+            if (!EnemyUtilities.IsFacingAtPoint(controller, controller.lastSeenPlayerPoint))
+            {
+                controller.Movement.Flip();
+            }
+        }
+
         int direction = speedType == SpeedType.PatrolSpeed  ? controller.Movement.FacingDirection :
                         (controller.lastSeenPlayerPoint.x > controller.transform.position.x ? 1 : -1);
         controller.Movement.SetVelocityX(

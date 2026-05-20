@@ -17,14 +17,14 @@ public class EnemyDebug : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, data.playerDetectionRange);
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, data.attackRange);
+            Gizmos.DrawWireSphere(transform.position, m_EnemyController.TryGetAttackRange());
         }
         else
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position, transform.position + Vector3.right * movement.FacingDirection * data.playerDetectionRange);
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.right * movement.FacingDirection * data.attackRange);
+            Gizmos.DrawLine(transform.position, transform.position + Vector3.right * movement.FacingDirection * m_EnemyController.TryGetAttackRange());
         }
 
         Gizmos.color = Color.blue;

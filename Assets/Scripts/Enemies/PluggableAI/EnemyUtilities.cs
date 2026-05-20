@@ -12,6 +12,7 @@ public static class EnemyUtilities
         Vector2 dir = new(controller.Movement.FacingDirection, 0f);
         RaycastHit2D hitPlayer = Physics2D.Raycast(controller.transform.position, dir, range, LayerMask.GetMask("Player"));
         bool playerHit = hitPlayer.collider != null;
+        Debug.Log(playerHit);
         if (!playerHit) return false;
 
         RaycastHit2D hitObstacle = Physics2D.Raycast(controller.transform.position, dir, hitPlayer.distance, obstacleMask);
@@ -24,6 +25,19 @@ public static class EnemyUtilities
 
     public static float DistanceToPlayer(EnemyController controller) =>
         controller.player ? Vector2.Distance(controller.transform.position, controller.player.position) : float.MaxValue;
+
+    public static bool IsFacingPlayer(EnemyController controller)
+    {
+        if (!controller.player) return false;
+        Vector2 dir = new(controller.player.position.x - controller.transform.position.x, 0.0f);
+        return Mathf.Sign(dir.normalized.x) == controller.Movement.FacingDirection;
+    }
+
+    public static bool IsFacingAtPoint(EnemyController controller, Vector2 point)
+    {
+        Vector2 dir = new(point.x - controller.transform.position.x, 0.0f);
+        return Mathf.Sign(dir.normalized.x) == controller.Movement.FacingDirection;
+    }
 
     public static void FacePlayer(EnemyController controller)
     {

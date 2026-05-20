@@ -28,6 +28,10 @@ public class EnemyController : MonoBehaviour
     [ReadOnlyInspector] public bool isDead = false;
     [ReadOnlyInspector] public bool isAnimationFinished = false;
     [ReadOnlyInspector] public bool isCheckingDone = false;
+    [ReadOnlyInspector] public bool isAttacking = false;
+    [ReadOnlyInspector] public int  numChecks = 0;
+    [ReadOnlyInspector] public int  currentAttackIndex = 0;
+
 
     public Core Core { get; private set; }
     public Rigidbody2D RB { get; private set; }
@@ -88,6 +92,8 @@ public class EnemyController : MonoBehaviour
 
         Core.GetComponent<DamageReceiver>().OnTakingDamage += HandleHurtState;
         animationEventHandler.OnFinish += AnimationFinishTrigger;
+        animationEventHandler.OnStartAnimationWindow += StartAttackWindow;
+        animationEventHandler.OnStopAnimationWindow  += StopAttackWindow;
     }
 
     private void OnDestroy()
@@ -97,6 +103,8 @@ public class EnemyController : MonoBehaviour
         if(Core.TryGetCoreComponent(out DamageReceiver damageReceiver))
             damageReceiver.OnTakingDamage -= HandleHurtState;
         animationEventHandler.OnFinish -= AnimationFinishTrigger;
+        animationEventHandler.OnStartAnimationWindow -= StartAttackWindow;
+        animationEventHandler.OnStopAnimationWindow  -= StopAttackWindow;
     }
 
     void Update()
@@ -113,6 +121,7 @@ public class EnemyController : MonoBehaviour
         stateEnterTime = Time.time;
         currentState.EnterState(this);
         isAnimationFinished = false;
+        numChecks = 0;
     }
 
     private void HandleDeathState()
@@ -143,5 +152,42 @@ public class EnemyController : MonoBehaviour
             !isAnimationFinished) return;
         lastSeenPlayerPoint = player.position;
         TransitionToState(hurtState);
+    }
+
+    private void StartAttackWindow(AnimationWindows windows)
+    {
+        if (currentState.isAttackState)
+        {
+            if (windows == AnimationWindows.Attack)
+            {
+                lastAttackTime = Time.time;
+                isAttacking = true;
+            }
+        }
+    }
+
+    private void StopAttackWindow(AnimationWindows windows)
+    {
+        if (currentState.isAttackState)
+        {
+            if (windows == AnimationWindows.Attack)
+            {
+                isAttacking = false;
+            }
+        }
+    }
+
+    public float TryGetAttackRange()
+    {
+        float highestAttackRange = 0f;
+
+        foreach (AttackDetails attack in Data.attackDetails)
+        {
+            if (highestAttackRange < attack.attackRange)
+            {
+                highestAttackRange = attack.attackRange;
+            }
+        }
+        return highestAttackRange;
     }
 }

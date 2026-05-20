@@ -1,4 +1,17 @@
+using Combat.Knockback;
+using System;
 using UnityEngine;
+
+[Serializable]
+public class AttackDetails
+{
+    public string attackName;
+    public float  damageAmount = 10f;
+    public float  attackRange = 1.5f;
+    public float  attackCooldown = 0.5f;
+    public float  knockbackStrength = 5f;
+    public Vector2  knockbackAngle = Vector2.zero;
+}
 
 [CreateAssetMenu(fileName = "newEnemyData", menuName = "Data/Enemy Data/Base Data")]
 public class EnemyData : EntityData
@@ -22,12 +35,7 @@ public class EnemyData : EntityData
     public float chaseSpeed = 5.0f;
 
     [Header("Attacking State")]
-    public float attackRange = 1.5f;
-    public float attackCooldown = 0.5f;
-    public float default_attackCooldown = 0.5f;
-    public float maxCombo_attackCooldown = 1.0f;
-    public float defaultDamage = 10f;
-    public float maxComboDamage = 25f;
+    public AttackDetails[] attackDetails = new AttackDetails[1];
 
     [Header("Look For Player State")]
     public float maxLookingTime = 3.0f;

@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6c0f10bab959644ca985035691b3461, type: 3}
-  m_Name: Far Player Last Seen Position Decision
-  m_EditorClassIdentifier: Assembly-CSharp::NearPlayerLastSeenPositionDecision
-  invertDecision: 1
-  distanceToLastSeenPosition: 1
+  m_Script: {fileID: 11500000, guid: c19061ade6a0fa843849d4c9b2b5aeff, type: 3}
+  m_Name: MeleeAttackAction
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeAttackAction

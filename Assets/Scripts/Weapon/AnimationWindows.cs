@@ -3,5 +3,6 @@ using UnityEngine;
 public enum AnimationWindows
 {
     Block,
-    Parry
+    Parry,
+    Attack
 }

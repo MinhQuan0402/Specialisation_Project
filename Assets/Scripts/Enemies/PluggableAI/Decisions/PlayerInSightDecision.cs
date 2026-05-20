@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "PluggableAI/Decisions/PlayerInSight")]
@@ -13,10 +14,12 @@ public class PlayerInSightDecision : EnemyDecision
 
     public override bool MakeDecision(EnemyController controller)
     {
-        return  EnemyUtilities.PlayerInSight(controller,
+        bool result =  EnemyUtilities.PlayerInSight(controller,
                 rangeType == RangeType.DetectionRange ?
                 controller.Data.playerDetectionRange :
-                controller.Data.attackRange,
+                controller.TryGetAttackRange(),
                 controller.Data.whatIsObstacles);
+        
+        return result;
     }
 }

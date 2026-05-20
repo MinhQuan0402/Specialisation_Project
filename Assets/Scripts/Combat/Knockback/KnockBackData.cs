@@ -2,6 +2,7 @@
 
 namespace Combat.Knockback
 {
+    [System.Serializable]
     public class KnockBackData
     {
         public Vector2 Angle;
