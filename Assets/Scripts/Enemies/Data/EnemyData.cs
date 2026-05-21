@@ -25,7 +25,7 @@ public class EnemyData : EntityData
     public float maxIdleTime = 5.0f;
 
     [Header("Move State")]
-    public float moveSpeed = 10.0f;
+    public float patrolSpeed = 10.0f;
     public float minPatrolTime = 3.0f;
     public float maxPatrolTime = 5.0f;
 
@@ -35,6 +35,7 @@ public class EnemyData : EntityData
     public float chaseSpeed = 5.0f;
 
     [Header("Attacking State")]
+    public float closeRange = 1.0f;
     public AttackDetails[] attackDetails = new AttackDetails[1];
 
     [Header("Look For Player State")]

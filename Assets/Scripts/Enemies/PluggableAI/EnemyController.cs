@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [Header("Config")]
-    [SerializeField] private EntityData data;
+    [field: SerializeField] public EnemyData Data { get; private set; }
     public EnemyState currentState;
     public EnemyState remainState;   // no-op state — keeps enemy in current state
 
@@ -15,8 +15,6 @@ public class EnemyController : MonoBehaviour
 
     [Space(10)]
     [SerializeField] private AnimationEventHandler animationEventHandler;
-
-    public EnemyData Data { get; private set; }
 
     [Space(10)]
     [ReadOnlyInspector] public Transform player;
@@ -73,8 +71,6 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
-        Data = (EnemyData)data;
-
         RB = GetComponent<Rigidbody2D>();
         Anim = GetComponentInChildren<Animator>();
         Core = GetComponentInChildren<Core>();
@@ -180,6 +176,8 @@ public class EnemyController : MonoBehaviour
     public float TryGetAttackRange()
     {
         float highestAttackRange = 0f;
+
+        if (Data == null) return highestAttackRange;
 
         foreach (AttackDetails attack in Data.attackDetails)
         {

@@ -29,7 +29,7 @@ public class MoveAction : EnemyAction
                         (controller.lastSeenPlayerPoint.x > controller.transform.position.x ? 1 : -1);
         controller.Movement.SetVelocityX(
            (speedType == SpeedType.PatrolSpeed ? 
-           controller.Data.moveSpeed :
+           controller.Data.patrolSpeed :
            controller.Data.chaseSpeed) * direction
            );
     }

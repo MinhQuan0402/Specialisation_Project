@@ -16,9 +16,15 @@ MonoBehaviour:
   isAttackState: 1
   startActions:
   - {fileID: 11400000, guid: 0bf399e68f25fa54fb85fde59597cbdc, type: 2}
+  - {fileID: 11400000, guid: 47d22a5172969d644886470bc525ed5e, type: 2}
   updateActions:
   - {fileID: 11400000, guid: 27f9df20bd374ef478234f4768b0b5a4, type: 2}
   transitions:
+  - priority: 1
+    decisions:
+    - {fileID: 11400000, guid: fd5e56d1f6ab2e04db1225571fb635d1, type: 2}
+    trueState: {fileID: 11400000, guid: 746f5c5409fbfaa44b2184c3ff2d5a62, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
   - priority: 0
     decisions:
     - {fileID: 11400000, guid: 6273af1c9e25bd24a8ce66a6144fd381, type: 2}

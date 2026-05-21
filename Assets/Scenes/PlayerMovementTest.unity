@@ -3809,7 +3809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1729262344}
-  data: {fileID: 11400000, guid: b0597e9af00dac74aa7eb57bfb8b0f44, type: 2}
+  data: {fileID: 11400000, guid: 2abf0488e29c1a443b64babd6cee9098, type: 2}
   combatInput: 1
 --- !u!1 &1751760252
 GameObject:
@@ -3887,7 +3887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6d06b98713c8a46b34f7fe83a0f18d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  data: {fileID: 11400000, guid: 12805204d2d01a748927cab3066b3337, type: 2}
+  <Data>k__BackingField: {fileID: 11400000, guid: 12805204d2d01a748927cab3066b3337, type: 2}
   currentState: {fileID: 11400000, guid: 7c2e7b34f3dce2b418e231051e19cd0e, type: 2}
   remainState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
   hurtState: {fileID: 11400000, guid: 11edd53189950ce4c8c2ba9069472621, type: 2}
@@ -3902,6 +3902,9 @@ MonoBehaviour:
   isDead: 0
   isAnimationFinished: 0
   isCheckingDone: 0
+  isAttacking: 0
+  numChecks: 0
+  currentAttackIndex: 0
 --- !u!50 &1812731980
 Rigidbody2D:
   serializedVersion: 5

@@ -16,7 +16,6 @@ MonoBehaviour:
   isAttackState: 0
   startActions:
   - {fileID: 11400000, guid: 0bf399e68f25fa54fb85fde59597cbdc, type: 2}
-  - {fileID: 11400000, guid: 9c19eb3f6bb6af947b2504a57bf18b25, type: 2}
   updateActions: []
   transitions:
   - priority: 1

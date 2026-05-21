@@ -10,7 +10,8 @@ public class PlayerInRangeDecision : EnemyDecision
     private enum RangeType
     {
         DetectionRange,
-        AttackRange 
+        AttackRange,
+        CloseRange
     }
 
     [SerializeField] private RangeType rangeType;
@@ -19,5 +20,7 @@ public class PlayerInRangeDecision : EnemyDecision
         EnemyUtilities.PlayerInRange(controller, 
                                      rangeType == RangeType.DetectionRange ? 
                                      controller.Data.playerDetectionRange : 
-                                     controller.TryGetAttackRange());
+                                     rangeType == RangeType.AttackRange ? 
+                                     controller.TryGetAttackRange() : 
+                                     controller.Data.closeRange);
 }

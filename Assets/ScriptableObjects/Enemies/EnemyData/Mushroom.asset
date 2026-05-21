@@ -21,12 +21,13 @@ MonoBehaviour:
   animationTransitionTime: 0.1
   minIdleTime: 1
   maxIdleTime: 2
-  moveSpeed: 3
+  patrolSpeed: 3
   minPatrolTime: 2
   maxPatrolTime: 4
   playerDetectionRange: 9
   maxDetectionHeight: 3
   chaseSpeed: 5
+  closeRange: 1
   attackDetails:
   - attackName: Attack 1
     damageAmount: 20

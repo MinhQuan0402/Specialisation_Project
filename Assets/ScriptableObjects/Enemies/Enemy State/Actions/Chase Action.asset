@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 931983afb535b4e478d2bb2d4dde3907, type: 3}
-  m_Name: Chase Actiojn
+  m_Name: Chase Action
   m_EditorClassIdentifier: Assembly-CSharp::PatrolAction
   speedType: 1
