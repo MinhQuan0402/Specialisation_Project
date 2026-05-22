@@ -1292,7 +1292,7 @@ Transform:
   m_GameObject: {fileID: 579168720}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.74, y: -2.82, z: 0}
+  m_LocalPosition: {x: -10.4, y: -8.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1985,7 +1985,7 @@ Transform:
   m_GameObject: {fileID: 929747099}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.74, y: -2.82, z: -10}
+  m_LocalPosition: {x: -10.4, y: -8.22, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3809,7 +3809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1729262344}
-  data: {fileID: 11400000, guid: 2abf0488e29c1a443b64babd6cee9098, type: 2}
+  data: {fileID: 11400000, guid: a3b9829d7e059564daea145c0b625e09, type: 2}
   combatInput: 1
 --- !u!1 &1751760252
 GameObject:
@@ -3941,7 +3941,7 @@ Transform:
   m_GameObject: {fileID: 1812731977}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.06, y: -8.9, z: 0}
+  m_LocalPosition: {x: -1.22, y: -8.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4255,7 +4255,7 @@ Transform:
   m_GameObject: {fileID: 2057894100}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.74, y: -2.82, z: -10}
+  m_LocalPosition: {x: -10.4, y: -8.22, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

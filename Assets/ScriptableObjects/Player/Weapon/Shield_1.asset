@@ -91,8 +91,8 @@ MonoBehaviour:
           <BlockDirectionalInformation>k__BackingField:
           - MinAngle: 0
             MaxAngle: 0
-            DamageAbsorption: 0
-            KnockbackAbsorption: 0
+            DamageAbsorption: 0.5
+            KnockbackAbsorption: 1
             PoiseAbsorption: 0
           <BlockWindowStart>k__BackingField:
             <Duration>k__BackingField: 0
@@ -100,5 +100,5 @@ MonoBehaviour:
           <BlockWindowEnd>k__BackingField:
             <Duration>k__BackingField: 0
             <Phase>k__BackingField: 3
-          <Particles>k__BackingField: {fileID: 0}
+          <Particles>k__BackingField: {fileID: 6762676686280720063, guid: 46dcd4e95319ab045ac0034d25bb92fb, type: 3}
           <ParticleOffset>k__BackingField: {x: 0, y: 0}

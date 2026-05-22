@@ -22,6 +22,7 @@ public class DamageModifier : Modifier<DamageData>
         if (isBlocked(value.Source.transform, out var blockDirectionalInformation))
         {
             value.SetAmount(value.Amount * (1 - blockDirectionalInformation.DamageAbsorption));
+            Debug.Log(value.Source);
             OnModified?.Invoke(value.Source);
         }
 

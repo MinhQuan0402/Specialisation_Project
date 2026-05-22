@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e656c75c38b7bf34caefa28f25b5a2df, type: 3}
   m_Name: Tome_1
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Fire Spell
   itemDescription: 
   itemImage: {fileID: 0}
   objectType: 1

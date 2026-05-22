@@ -11,6 +11,7 @@ public class ItemData : ScriptableObject
 
     [Header("Item Properties")]
     public string itemName;
+    [TextArea(3, 5)]
     public string itemDescription;
     public Sprite itemImage;
     public ObjectType objectType;
