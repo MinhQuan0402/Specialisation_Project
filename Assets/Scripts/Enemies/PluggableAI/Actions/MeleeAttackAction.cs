@@ -13,7 +13,8 @@ public class MeleeAttackAction : EnemyAction
         if(controller.isAttacking)
         {
             // Check for player in attack range and apply damage
-            if (EnemyUtilities.PlayerInSight(controller, controller.TryGetAttackRange(), controller.Data.whatIsObstacles))
+            if (EnemyUtilities.PlayerInSight(controller, controller.TryGetAttackRange(), 
+                                             controller.Data.whatAreDetectibles))
             {
                 // Apply damage to player
                 // This is a placeholder for the actual damage application logic

@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: FastFly
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   maxHealth: 1000
-  isFlying: 0
+  isFlying: 1
   animationTransitionTime: 0.1
   minIdleTime: 3
   maxIdleTime: 5
   patrolSpeed: 2
   minPatrolTime: 3
   maxPatrolTime: 5
-  playerDetectionRange: 9
+  playerDetectionRange: 7
+  playerDetectionAngle: 90
   maxDetectionHeight: 3
   chaseSpeed: 5
   closeRange: 1

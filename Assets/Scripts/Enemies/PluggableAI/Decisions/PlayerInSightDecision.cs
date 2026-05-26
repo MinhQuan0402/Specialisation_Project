@@ -18,7 +18,7 @@ public class PlayerInSightDecision : EnemyDecision
                 rangeType == RangeType.DetectionRange ?
                 controller.Data.playerDetectionRange :
                 controller.TryGetAttackRange(),
-                controller.Data.whatIsObstacles);
+                controller.Data.whatAreDetectibles);
         
         return result;
     }

@@ -31,6 +31,8 @@ public class EnemyData : EntityData
 
     [Header("Player Detected State")]
     public float playerDetectionRange = 9.0f;
+    [Tooltip("This is only for Flying Enemy")]
+    public float playerDetectionAngle = 90.0f;
     public float maxDetectionHeight = 3.0f;
     public float chaseSpeed = 5.0f;
 
@@ -41,5 +43,7 @@ public class EnemyData : EntityData
     [Header("Look For Player State")]
     public float maxLookingTime = 3.0f;
 
+    [Header("Detection Masks")]
+    public LayerMask whatAreDetectibles;
     public LayerMask whatIsObstacles;
 }

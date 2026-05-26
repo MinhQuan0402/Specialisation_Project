@@ -32,7 +32,9 @@ public class KnockbackReceiver : CoreComponent, IKnockBackable
     private void CheckKnockback()
     {
         if(isKnockbackActive 
-           && ((movement.Comp.CurrentVelocity.y <= 0.01f && collisionSenses.Comp.Grounded) 
+           && ((movement.Comp.CurrentVelocity.y <= 0.01f 
+           && collisionSenses.Comp.GroundCheck != null 
+           && collisionSenses.Comp.Grounded)
                || (Time.time >= knockbackStartTime + maxKnockbackTime)))
         {
             isKnockbackActive = false;

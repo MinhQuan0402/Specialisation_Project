@@ -5,21 +5,33 @@ public static class EnemyUtilities
     public static bool PlayerInRange(EnemyController controller, float range) =>
         controller.player && Vector2.Distance(controller.transform.position, controller.player.position) <= range;
 
-    public static bool PlayerInSight(EnemyController controller, float range, LayerMask obstacleMask)
+    public static bool PlayerInSight(EnemyController controller, float range, LayerMask detectibleMasks)
     {
         if (!controller.player) return false;
 
-        Vector2 dir = new(controller.Movement.FacingDirection, 0f);
-        RaycastHit2D hitPlayer = Physics2D.Raycast(controller.transform.position, dir, range, LayerMask.GetMask("Player"));
-        bool playerHit = hitPlayer.collider != null;
-        if (!playerHit) return false;
+        Vector2 directionToPlayer = controller.player.position - controller.transform.position;
+        if (directionToPlayer.sqrMagnitude > range * range) return false;
 
-        RaycastHit2D hitObstacle = Physics2D.Raycast(controller.transform.position, dir, hitPlayer.distance, obstacleMask);
-        bool obstacleHit = hitObstacle.collider != null;
+        Vector2 normDirToPlayer = directionToPlayer.normalized;
+        Vector2 facingDirection = new(controller.Movement.FacingDirection, 0f);
+        if (controller.Data.isFlying)
+        {
+            float dot = Vector2.Dot(normDirToPlayer, facingDirection);
+            float halfAngle = controller.Data.playerDetectionAngle * 0.5f;
 
-        bool playerInSight = !obstacleHit && playerHit;
-        if (playerInSight) controller.lastSeenPlayerPoint = controller.player.position;  // update last seen player position
-        return playerInSight;  // no obstacles in the way
+            float cosLimit = Mathf.Cos(halfAngle * Mathf.PI / 180.0f);
+            if (dot < cosLimit) return false;
+
+            facingDirection = normDirToPlayer;
+        }
+
+
+        RaycastHit2D hit = Physics2D.Raycast(controller.transform.position, facingDirection, 
+                                                   range, detectibleMasks);
+        bool isPlayerHit = (hit.collider != null) && 
+                           (hit.collider.gameObject.layer == controller.player.gameObject.layer);
+        if (isPlayerHit) controller.lastSeenPlayerPoint = hit.point;
+        return isPlayerHit;
     }
 
     public static float DistanceToPlayer(EnemyController controller) =>

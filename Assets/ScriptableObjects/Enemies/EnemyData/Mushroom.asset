@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: Mushroom
   m_EditorClassIdentifier: 
   maxHealth: 1000
-  stunResist: 0
-  knockbackResist: 0
-  onZeroHealth: 0
-  ExplosionPrefabs: []
   isFlying: 0
   animationTransitionTime: 0.1
   minIdleTime: 1
@@ -25,6 +21,7 @@ MonoBehaviour:
   minPatrolTime: 2
   maxPatrolTime: 4
   playerDetectionRange: 9
+  playerDetectionAngle: 90
   maxDetectionHeight: 3
   chaseSpeed: 5
   closeRange: 1
@@ -36,6 +33,9 @@ MonoBehaviour:
     knockbackStrength: 10
     knockbackAngle: {x: 1, y: 1}
   maxLookingTime: 3
+  whatAreDetectibles:
+    serializedVersion: 2
+    m_Bits: 384
   whatIsObstacles:
     serializedVersion: 2
     m_Bits: 128

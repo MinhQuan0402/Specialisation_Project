@@ -3839,7 +3839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1345081090}
-  data: {fileID: 11400000, guid: a7f1997e0bf0c8041b1a7e322191969b, type: 2}
+  data: {fileID: 11400000, guid: 5b5065c71a18ae744b91b19f8ef98c4c, type: 2}
   combatInput: 0
 --- !u!1 &1378850433
 GameObject:
@@ -3851,8 +3851,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1378850434}
   - component: {fileID: 1378850437}
-  - component: {fileID: 1378850436}
   - component: {fileID: 1378850435}
+  - component: {fileID: 1378850436}
   m_Layer: 6
   m_Name: Combat
   m_TagString: Untagged
@@ -4646,7 +4646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1729262344}
-  data: {fileID: 11400000, guid: a3b9829d7e059564daea145c0b625e09, type: 2}
+  data: {fileID: 11400000, guid: 2abf0488e29c1a443b64babd6cee9098, type: 2}
   combatInput: 1
 --- !u!1 &1751760252
 GameObject:
