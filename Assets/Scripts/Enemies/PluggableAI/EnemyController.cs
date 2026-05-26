@@ -1,3 +1,4 @@
+using Pathfinding;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
@@ -13,8 +14,13 @@ public class EnemyController : MonoBehaviour
     public EnemyState hurtState;
     public EnemyState deathState;
 
-    [Space(10)]
+    [Header("Animation Event")]
     [SerializeField] private AnimationEventHandler animationEventHandler;
+
+    [Header("Pathfiding")]
+    [field: SerializeField] public Transform[] Waypoints {  get; private set; }
+    [field: SerializeField] public AIPath AIPath {  get; private set; }
+    [field: SerializeField] public AIDestinationSetter DestinationSetter {  get; private set; }
 
     [Space(10)]
     [ReadOnlyInspector] public Transform player;
@@ -29,7 +35,7 @@ public class EnemyController : MonoBehaviour
     [ReadOnlyInspector] public bool isAttacking = false;
     [ReadOnlyInspector] public int  numChecks = 0;
     [ReadOnlyInspector] public int  currentAttackIndex = 0;
-
+    [ReadOnlyInspector] public int currentWaypoint = 0;
 
     public Core Core { get; private set; }
     public Rigidbody2D RB { get; private set; }
@@ -74,6 +80,14 @@ public class EnemyController : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
         Anim = GetComponentInChildren<Animator>();
         Core = GetComponentInChildren<Core>();
+
+        AIPath = AIPath == null ? GetComponent<AIPath>() : AIPath;
+        DestinationSetter = DestinationSetter == null ? GetComponent<AIDestinationSetter>() : DestinationSetter;
+
+        if (AIPath != null)
+        {
+            AIPath.maxSpeed = Data.patrolSpeed;
+        }
 
         spawnPoint = transform.position;
         stateEnterTime = Time.time;
@@ -143,7 +157,7 @@ public class EnemyController : MonoBehaviour
 
     private void HandleHurtState(GameObject source)
     {
-        if (isDead) return;
+        if (currentState == null || isDead) return;
         if (currentState.isAttackState && 
             !isAnimationFinished) return;
         lastSeenPlayerPoint = player.position;

@@ -156,8 +156,8 @@ public class ProjectileStickToLayer : ProjectileComponent
         }
 
         var referenceRotation = referenceTransform.rotation;
-        _transform.position = referenceTransform.position + referenceRotation * offsetPosition;
-        _transform.rotation = referenceRotation * offsetRotation;
+        _transform.SetPositionAndRotation(referenceTransform.position + referenceRotation * offsetPosition, 
+                                          referenceRotation * offsetRotation);
     }
 
     protected override void OnDestroy()

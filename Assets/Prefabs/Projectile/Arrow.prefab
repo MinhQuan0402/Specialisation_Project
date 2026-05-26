@@ -322,7 +322,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   <InactiveSortingLayerName>k__BackingField: InactiveProjectile
-  <CheckDistance>k__BackingField: 2
+  <CheckDistance>k__BackingField: 1
 --- !u!114 &5520868625886226271
 MonoBehaviour:
   m_ObjectHideFlags: 0
