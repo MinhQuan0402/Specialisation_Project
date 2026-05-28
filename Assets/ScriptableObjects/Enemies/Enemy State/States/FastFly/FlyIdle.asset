@@ -10,23 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b9a8bb3223b2564ebf5c64e2d847237, type: 3}
-  m_Name: Chase
+  m_Name: FlyIdle
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
-  animHash: Chase
+  animHash: IdleFly
   isAttackState: 0
   startActions: []
-  updateActions:
-  - {fileID: 11400000, guid: 567299886f5caff4b8d2addedb4bd714, type: 2}
+  updateActions: []
   transitions:
   - priority: 1
     decisions:
-    - {fileID: 11400000, guid: b05fce8c1de2adc4b8bf0a088ef2fecd, type: 2}
-    trueState: {fileID: 11400000, guid: d9c7c7af92b8d8146abf37a2e19a8653, type: 2}
+    - {fileID: 11400000, guid: 97107ed3cb5814c4681a2f023f2717ca, type: 2}
+    trueState: {fileID: 11400000, guid: 8bb4fe2e4c389ff46a57ee792c1b3fc9, type: 2}
     falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
   - priority: 0
     decisions:
-    - {fileID: 11400000, guid: 97107ed3cb5814c4681a2f023f2717ca, type: 2}
-    - {fileID: 11400000, guid: 507d086d29c85144c9186298fd3a1e79, type: 2}
-    trueState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
-    falseState: {fileID: 11400000, guid: 4f205567a58e8ea4c87095756a8eb55c, type: 2}
+    - {fileID: 11400000, guid: 8ddd82130078fe547aca1a591123afb3, type: 2}
+    trueState: {fileID: 11400000, guid: aff313886b61c094085ef6c6f8a0b268, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
   isSorted: 1

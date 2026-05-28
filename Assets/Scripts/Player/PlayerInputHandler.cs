@@ -143,5 +143,6 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void UseAttackInput(int combatInputs) => AttackInputs[combatInputs] = false;
+
     public void UseAttackInput(CombatInputs combatInputs) => AttackInputs[(int)combatInputs] = false;
 }

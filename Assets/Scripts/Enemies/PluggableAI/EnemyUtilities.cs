@@ -17,12 +17,10 @@ public static class EnemyUtilities
         if (controller.Data.isFlying)
         {
             float dot = Vector2.Dot(normDirToPlayer, facingDirection);
-            float halfAngle = controller.Data.playerDetectionAngle * 0.5f;
+            float angle = Mathf.Acos(dot) * 180.0f / Mathf.PI;
 
-            float cosLimit = Mathf.Cos(halfAngle * Mathf.PI / 180.0f);
-            if (dot < cosLimit) return false;
-
-            facingDirection = normDirToPlayer;
+            if (angle > controller.Data.playerDetectionAngle) return false;
+            facingDirection = directionToPlayer.normalized;
         }
 
 
@@ -30,6 +28,7 @@ public static class EnemyUtilities
                                                    range, detectibleMasks);
         bool isPlayerHit = (hit.collider != null) && 
                            (hit.collider.gameObject.layer == controller.player.gameObject.layer);
+        Debug.DrawLine(controller.transform.position, controller.transform.position + new Vector3(facingDirection.x, facingDirection.y, 0) * range);
         if (isPlayerHit) controller.lastSeenPlayerPoint = hit.point;
         return isPlayerHit;
     }

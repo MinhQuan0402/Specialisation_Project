@@ -1,15 +1,17 @@
+using System;
 using System.Linq;
+using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 /// <summary>
 /// A State asset holds composable Actions and Transitions.
 /// Right-click in Project → Create → PluggableAI → State
 /// </summary>
-[CreateAssetMenu(menuName = "PluggableAI/State")]
+[CreateAssetMenu(menuName = "PluggableAI/State/Normal State")]
 public class EnemyState : ScriptableObject
 {
     public string animHash;
-    public bool isAttackState;
 
     [Tooltip("All run once. Stack multiple for composable behaviour.")]
     public EnemyAction[] startActions;
@@ -20,24 +22,15 @@ public class EnemyState : ScriptableObject
     [Tooltip("Checked top-to-bottom each frame. First decision that fires wins.")]
     public EnemyTransition[] transitions;
 
-    [SerializeField]
-    private bool isSorted = false;
+    [field: SerializeField, ReadOnlyInspector] public bool IsTransibleToAttack { get; private set; }
+    public EnemyTransition AttackTransition { get; private set; }
 
     public void EnterState(EnemyController controller)
     {
         // Play animation
-        controller.Anim.CrossFade(animHash, 
+        controller.Anim.CrossFade(animHash,
             controller.Data.animationTransitionTime);
-        foreach(EnemyAction action in startActions) action.Act(controller);
-        SortTransition();
-    }
-
-    private void SortTransition()
-    {
-        if (isSorted) return;
-        static int getPriority(EnemyTransition t) => (int)t.priority;
-        transitions = transitions.OrderByDescending(getPriority).ToArray();
-        isSorted = true;
+        foreach (EnemyAction action in startActions) action.Act(controller);
     }
 
     public void UpdateState(EnemyController controller)
@@ -61,4 +54,45 @@ public class EnemyState : ScriptableObject
             if (controller.currentState != this) break;
         }
     }
+
+    public void GenerateAttackTransition()
+    {
+#if UNITY_EDITOR
+        EnemyTransition enemyTransition = new()
+        {
+            priority = EnemyTransition.Priority.High,
+            decisions = new EnemyDecision[1],
+            falseState = AssetDatabase.LoadAssetAtPath<EnemyState>("Assets/ScriptableObjects/Enemies/Enemy State/States/Remain State.asset")
+        };
+
+        string[] searchFolders = new string[] { "Assets/ScriptableObjects/Enemies/Enemy State/Decisions" };
+        string[] guids = AssetDatabase.FindAssets("t:TryGetAttackDecision", searchFolders);
+
+        foreach (string guid in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            EnemyDecision asset = AssetDatabase.LoadAssetAtPath<EnemyDecision>(path);
+            enemyTransition.decisions[0] = asset;
+        }
+
+        transitions = transitions.Append(enemyTransition).ToArray();
+        IsTransibleToAttack = true;
+        AttackTransition = enemyTransition;
+#endif
+    }
+
+    public void RemoveAttackTransition()
+    {
+        IsTransibleToAttack = false;
+        transitions = transitions.Where(val  => val != AttackTransition).ToArray();
+        AttackTransition = null;
+    }
+
+    public void SortTransition()
+    {
+        static int getPriority(EnemyTransition t) => (int)t.priority;
+        transitions = transitions.OrderByDescending(getPriority).ToArray();
+    }
+
+    public bool IsAttackState => typeof(EnemyAttackState) == GetType();
 }

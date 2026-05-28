@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0e2d265fd2d24489aee40c7cb0b3aa, type: 3}
+  m_Name: Slash Attack
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackState
+  animHash: Slash
+  startActions:
+  - {fileID: 11400000, guid: 0bf399e68f25fa54fb85fde59597cbdc, type: 2}
+  updateActions:
+  - {fileID: 11400000, guid: 27f9df20bd374ef478234f4768b0b5a4, type: 2}
+  transitions:
+  - priority: 0
+    decisions:
+    - {fileID: 11400000, guid: 6273af1c9e25bd24a8ce66a6144fd381, type: 2}
+    trueState: {fileID: 11400000, guid: 8bb4fe2e4c389ff46a57ee792c1b3fc9, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  <IsTransibleToAttack>k__BackingField: 0

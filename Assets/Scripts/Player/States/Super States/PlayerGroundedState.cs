@@ -42,9 +42,9 @@ public class PlayerGroundedState : PlayerState
         primaryAttackInput = player.InputHandler.AttackInputs[(int)CombatInputs.primary];
         secondaryAttackInput = player.InputHandler.AttackInputs[(int)CombatInputs.secondary];
 
-        if (primaryAttackInput && player.IsPrimaryAttackExist)
+        if (primaryAttackInput && player.IsPrimaryAttackExist && !Player.Instance.IsInteruptible)
             stateMachine.ChangeState(player.primaryAttackState);
-        else if(secondaryAttackInput && player.IsSecondaryAttackExist)
+        else if(secondaryAttackInput && player.IsSecondaryAttackExist && !Player.Instance.IsInteruptible)
             stateMachine.ChangeState(player.secondaryAttackState);
         else if(jumpInput && player.IsJumpExist && player.jumpState.CanJump())
             stateMachine.ChangeState(player.jumpState);

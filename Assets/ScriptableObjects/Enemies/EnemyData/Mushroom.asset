@@ -24,12 +24,15 @@ MonoBehaviour:
   playerDetectionAngle: 90
   maxDetectionHeight: 3
   chaseSpeed: 5
+  attackRequestCD: 0.5
   closeRange: 1
   attackDetails:
-  - attackName: Attack 1
-    damageAmount: 20
+  - attackName: Smash Attack
+    attackState: {fileID: 11400000, guid: 2ebc44eb5b025204fa4e890312d8fc35, type: 2}
+    attackType: 0
     attackRange: 2
-    attackCooldown: 0.5
+    attackCooldown: 1
+    damageAmount: 20
     knockbackStrength: 10
     knockbackAngle: {x: 1, y: 1}
   maxLookingTime: 3

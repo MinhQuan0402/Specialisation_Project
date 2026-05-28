@@ -61,9 +61,9 @@ public class PlayerLedgeClimbState : PlayerState
         }
         else
         {
+            Movement.SetVelocityZero();
             yInput = player.InputHandler.NormInputY;
 
-            Movement.SetVelocityZero();
             player.transform.position = startPos;  
 
             if (yInput == 1 && isHanging && !isClimbing)
@@ -71,7 +71,8 @@ public class PlayerLedgeClimbState : PlayerState
                 isClimbing = true;
                 player.Anim.SetBool("climbLedge", true);
             }
-            else if (yInput == -1 && isHanging && !isClimbing)
+            else if ((yInput == -1 && isHanging && !isClimbing) || 
+                      player.IsInteruptible)
             {
                 stateMachine.ChangeState(player.inAirState);
             }

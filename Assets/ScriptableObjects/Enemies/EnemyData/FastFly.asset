@@ -21,18 +21,24 @@ MonoBehaviour:
   minPatrolTime: 3
   maxPatrolTime: 5
   playerDetectionRange: 7
-  playerDetectionAngle: 90
+  playerDetectionAngle: 100
   maxDetectionHeight: 3
   chaseSpeed: 5
-  closeRange: 1
+  attackRequestCD: 0.5
+  closeRange: 1.5
   attackDetails:
-  - attackName: 
-    damageAmount: 10
-    attackRange: 1.5
+  - attackName: Slash Attack
+    attackState: {fileID: 11400000, guid: 8dcf75b8947f76b478dee58173bbd5b9, type: 2}
+    attackType: 0
+    attackRange: 1.75
     attackCooldown: 0.5
-    knockbackStrength: 5
-    knockbackAngle: {x: 0, y: 0}
+    damageAmount: 10
+    knockbackStrength: 10
+    knockbackAngle: {x: 0.5, y: 1}
   maxLookingTime: 3
+  whatAreDetectibles:
+    serializedVersion: 2
+    m_Bits: 384
   whatIsObstacles:
     serializedVersion: 2
     m_Bits: 128

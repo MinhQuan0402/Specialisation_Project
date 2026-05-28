@@ -13,19 +13,17 @@ MonoBehaviour:
   m_Name: Idle
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
   animHash: Idle
-  isAttackState: 0
   startActions:
   - {fileID: 11400000, guid: 0bf399e68f25fa54fb85fde59597cbdc, type: 2}
   updateActions: []
   transitions:
   - priority: 1
     decisions:
-    - {fileID: 11400000, guid: 8ddd82130078fe547aca1a591123afb3, type: 2}
-    trueState: {fileID: 11400000, guid: d0a66760600dcdb4ba850d6b17df43ca, type: 2}
-    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
-  - priority: 0
-    decisions:
     - {fileID: 11400000, guid: 97107ed3cb5814c4681a2f023f2717ca, type: 2}
     trueState: {fileID: 11400000, guid: 200223a735cd85c4b848e1c593c9b1a8, type: 2}
     falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
-  isSorted: 1
+  - priority: 0
+    decisions:
+    - {fileID: 11400000, guid: 8ddd82130078fe547aca1a591123afb3, type: 2}
+    trueState: {fileID: 11400000, guid: d0a66760600dcdb4ba850d6b17df43ca, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}

@@ -17,8 +17,6 @@ public class MeleeAttackAction : EnemyAction
                                              controller.Data.whatAreDetectibles))
             {
                 // Apply damage to player
-                // This is a placeholder for the actual damage application logic
-                Debug.Log("Player hit by melee attack!");
                 if (Player.Instance.Core.TryGetCoreComponent(out DamageReceiver damageReceiver))
                 {
                     DamageData damageData = new(controller.Data.attackDetails[controller.currentAttackIndex].damageAmount, controller.gameObject);

@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Remain State
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
   animHash: 
-  isAttackState: 0
   startActions: []
   updateActions: []
   transitions: []
-  gizmoColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

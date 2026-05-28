@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -48,6 +49,9 @@ public class Player : MonoBehaviour
 
     public bool IsPrimaryWeaponExist => primaryWeapon ? true : false;
     public bool IsSecondaryWeaponExist => secondaryWeapon ? true : false;
+
+    [field: SerializeField, ReadOnlyInspector] public bool IsInteruptible { get; private set; } = false;
+    private Coroutine disableInteruption;
 
     #endregion
 
@@ -110,16 +114,44 @@ public class Player : MonoBehaviour
             secondaryAttackState.SetWeapon(secondaryWeapon, CombatInputs.secondary);
         
         stats.Comp.Poise.OnCurrentValueZero += HandlePoiseZero;
+
+        if (Core.TryGetCoreComponent(out DamageReceiver dmgReceiver))
+        {
+            dmgReceiver.OnTakingDamage += HandleInteruption;
+        }
     }
 
     private void HandlePoiseZero()
     {
         StateMachine.ChangeState("Stun");
     }
+
+    private void HandleInteruption(GameObject _)
+    {
+        IsInteruptible = true;
+        disableInteruption ??= StartCoroutine(OnDisableInteruption());
+    }
+
+    IEnumerator OnDisableInteruption()
+    {
+        float enterTime = Time.time;
+        while (Time.time - enterTime < 0.5f)
+        {
+
+            yield return null;
+        }
+
+        IsInteruptible = false;
+        disableInteruption = null;
+    }
     
     private void OnDestroy()
     {
         stats.Comp.Poise.OnCurrentValueZero -= HandlePoiseZero;
+        if (Core.TryGetCoreComponent(out DamageReceiver dmgReceiver))
+        {
+            dmgReceiver.OnTakingDamage -= HandleInteruption;
+        }
     }
 
     private void Update()

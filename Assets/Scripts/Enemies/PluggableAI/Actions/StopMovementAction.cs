@@ -1,3 +1,4 @@
+using Pathfinding;
 using UnityEngine;
 
 /// <summary>
@@ -9,5 +10,11 @@ public class StopMovementAction : EnemyAction
     public override void Act(EnemyController controller)
     {
         controller.Movement.SetVelocityX(0.0f);
+
+        if(controller.Data.isFlying)
+        {
+            controller.DestinationSetter.target = null;
+            controller.AIPath.SetPath(null);
+        }
     }
 }

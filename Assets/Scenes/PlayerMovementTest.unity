@@ -763,6 +763,37 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 128
+--- !u!1 &213675771
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 213675772}
+  m_Layer: 6
+  m_Name: LastPlayerPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &213675772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213675771}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1869724650}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &253267772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,6 +1966,7 @@ MonoBehaviour:
   secondaryAttackState: {fileID: 0}
   primaryWeapon: {fileID: 0}
   secondaryWeapon: {fileID: 0}
+  <IsInteruptible>k__BackingField: 0
 --- !u!1 &797962385
 GameObject:
   m_ObjectHideFlags: 0
@@ -3313,6 +3345,7 @@ MonoBehaviour:
   m_EnemyController: {fileID: 1169239028}
   data: {fileID: 11400000, guid: 43992ea0978a59b4eb288edecaab21ea, type: 2}
   movement: {fileID: 1469461313}
+  segments: 30
   showGizmos: 1
 --- !u!114 &1169239028
 MonoBehaviour:
@@ -3329,8 +3362,9 @@ MonoBehaviour:
   <Data>k__BackingField: {fileID: 11400000, guid: 43992ea0978a59b4eb288edecaab21ea, type: 2}
   currentState: {fileID: 11400000, guid: daf8b4f45f707f84e8f98710938b8328, type: 2}
   remainState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
-  hurtState: {fileID: 11400000, guid: 11edd53189950ce4c8c2ba9069472621, type: 2}
-  deathState: {fileID: 11400000, guid: 954a7eddb15b9524280b229eddbe82be, type: 2}
+  currentAttackState: {fileID: 0}
+  hurtState: {fileID: 11400000, guid: de08112982a66b141962d8d808a1a880, type: 2}
+  deathState: {fileID: 11400000, guid: 1f53dc6850a681947aaca212ac04dc21, type: 2}
   animationEventHandler: {fileID: 101312880}
   <Waypoints>k__BackingField:
   - {fileID: 496405222}
@@ -3352,6 +3386,7 @@ MonoBehaviour:
   numChecks: 0
   currentAttackIndex: 0
   currentWaypoint: 0
+  attackRequestTime: 0
 --- !u!50 &1169239030
 Rigidbody2D:
   serializedVersion: 5
@@ -3839,7 +3874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1345081090}
-  data: {fileID: 11400000, guid: 5b5065c71a18ae744b91b19f8ef98c4c, type: 2}
+  data: {fileID: 11400000, guid: b0597e9af00dac74aa7eb57bfb8b0f44, type: 2}
   combatInput: 0
 --- !u!1 &1378850433
 GameObject:
@@ -4275,7 +4310,7 @@ Animator:
   m_GameObject: {fileID: 1466290771}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 56a82fbcdf0471e4c8ccf1999740b2c9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6b2a75c0b3590e449a486a5255e38277, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4646,7 +4681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1729262344}
-  data: {fileID: 11400000, guid: 2abf0488e29c1a443b64babd6cee9098, type: 2}
+  data: {fileID: 11400000, guid: a7f1997e0bf0c8041b1a7e322191969b, type: 2}
   combatInput: 1
 --- !u!1 &1751760252
 GameObject:
@@ -4727,6 +4762,7 @@ MonoBehaviour:
   <Data>k__BackingField: {fileID: 11400000, guid: 12805204d2d01a748927cab3066b3337, type: 2}
   currentState: {fileID: 11400000, guid: 7c2e7b34f3dce2b418e231051e19cd0e, type: 2}
   remainState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  currentAttackState: {fileID: 0}
   hurtState: {fileID: 11400000, guid: 11edd53189950ce4c8c2ba9069472621, type: 2}
   deathState: {fileID: 11400000, guid: 954a7eddb15b9524280b229eddbe82be, type: 2}
   animationEventHandler: {fileID: 1066047342}
@@ -4746,6 +4782,7 @@ MonoBehaviour:
   numChecks: 0
   currentAttackIndex: 0
   currentWaypoint: 0
+  attackRequestTime: 0
 --- !u!50 &1812731980
 Rigidbody2D:
   serializedVersion: 5
@@ -4851,6 +4888,7 @@ MonoBehaviour:
   m_EnemyController: {fileID: 1812731979}
   data: {fileID: 11400000, guid: 12805204d2d01a748927cab3066b3337, type: 2}
   movement: {fileID: 1019984025}
+  segments: 30
   showGizmos: 1
 --- !u!1 &1852153914
 GameObject:
@@ -4976,6 +5014,7 @@ Transform:
   - {fileID: 1263630175}
   - {fileID: 43022895}
   - {fileID: 1939850733}
+  - {fileID: 213675772}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1920270985

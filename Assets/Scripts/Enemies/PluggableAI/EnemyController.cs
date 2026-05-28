@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Pathfinding;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
@@ -9,6 +12,7 @@ public class EnemyController : MonoBehaviour
     [field: SerializeField] public EnemyData Data { get; private set; }
     public EnemyState currentState;
     public EnemyState remainState;   // no-op state — keeps enemy in current state
+    [ReadOnlyInspector] public EnemyAttackState currentAttackState;
 
     [Header("State Refs (for TakeDamage routing)")]
     public EnemyState hurtState;
@@ -23,6 +27,7 @@ public class EnemyController : MonoBehaviour
     [field: SerializeField] public AIDestinationSetter DestinationSetter {  get; private set; }
 
     [Space(10)]
+    [Header("Debug Info")]
     [ReadOnlyInspector] public Transform player;
     [ReadOnlyInspector] public Vector2 spawnPoint;
     [ReadOnlyInspector] public Vector2 lastSeenPlayerPoint;
@@ -36,6 +41,9 @@ public class EnemyController : MonoBehaviour
     [ReadOnlyInspector] public int  numChecks = 0;
     [ReadOnlyInspector] public int  currentAttackIndex = 0;
     [ReadOnlyInspector] public int currentWaypoint = 0;
+    [ReadOnlyInspector] public float attackRequestTime = 0;
+
+    public Dictionary<EnemyAttackState, float> attacksCDList = new();
 
     public Core Core { get; private set; }
     public Rigidbody2D RB { get; private set; }
@@ -87,6 +95,7 @@ public class EnemyController : MonoBehaviour
         if (AIPath != null)
         {
             AIPath.maxSpeed = Data.patrolSpeed;
+            AIPath.endReachedDistance = Data.closeRange;
         }
 
         spawnPoint = transform.position;
@@ -104,6 +113,8 @@ public class EnemyController : MonoBehaviour
         animationEventHandler.OnFinish += AnimationFinishTrigger;
         animationEventHandler.OnStartAnimationWindow += StartAttackWindow;
         animationEventHandler.OnStopAnimationWindow  += StopAttackWindow;
+
+        isCheckingDone = true;
     }
 
     private void OnDestroy()
@@ -122,6 +133,22 @@ public class EnemyController : MonoBehaviour
         Core.LogicUpdate();
         if (!isDead && currentState != null) 
             currentState.UpdateState(this);
+
+        UpdateAttackCD();
+    }
+
+    void UpdateAttackCD()
+    {
+        var keys = new List<EnemyAttackState>(attacksCDList.Keys);
+
+        foreach (var key in keys)
+        {
+            attacksCDList[key] -= Time.deltaTime;
+            if (attacksCDList[key] <= 0)
+            {
+                attacksCDList.Remove(key);
+            }
+        }
     }
 
     public void TransitionToState(EnemyState next)
@@ -131,7 +158,6 @@ public class EnemyController : MonoBehaviour
         stateEnterTime = Time.time;
         currentState.EnterState(this);
         isAnimationFinished = false;
-        numChecks = 0;
     }
 
     private void HandleDeathState()
@@ -153,12 +179,17 @@ public class EnemyController : MonoBehaviour
         {
             Destroy(poiseDamageReceiver);
         }
+
+        if (Data.isFlying)
+        {
+            RB.gravityScale = 1;
+        }
     }
 
     private void HandleHurtState(GameObject source)
     {
         if (currentState == null || isDead) return;
-        if (currentState.isAttackState && 
+        if (currentState.IsAttackState && 
             !isAnimationFinished) return;
         lastSeenPlayerPoint = player.position;
         TransitionToState(hurtState);
@@ -166,7 +197,7 @@ public class EnemyController : MonoBehaviour
 
     private void StartAttackWindow(AnimationWindows windows)
     {
-        if (currentState.isAttackState)
+        if (currentState.IsAttackState)
         {
             if (windows == AnimationWindows.Attack)
             {
@@ -178,13 +209,50 @@ public class EnemyController : MonoBehaviour
 
     private void StopAttackWindow(AnimationWindows windows)
     {
-        if (currentState.isAttackState)
+        if (currentState.IsAttackState)
         {
             if (windows == AnimationWindows.Attack)
             {
                 isAttacking = false;
+
+                attacksCDList.Add(currentAttackState, 
+                                  Data.attackDetails[currentAttackIndex].attackCooldown);
+                currentAttackIndex = -1;
+                currentAttackState = null;
             }
         }
+    } 
+
+    public EnemyAttack TryGetAttack()
+    {
+        if (currentAttackState != null) return null;
+        if (Time.time - attackRequestTime < Data.attackRequestCD) return null;
+
+        EnemyAttack nextAttack = null;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        // Check for range
+        EnemyAttack[] availableAttacks = Data.attackDetails.Where(attack => distanceToPlayer <= attack.attackRange).ToArray();
+        if (availableAttacks.Length == 0) return null;
+
+        // Check for cool down
+        availableAttacks = availableAttacks.Where(attack => !attacksCDList.ContainsKey(attack.attackState)).ToArray();
+        if (availableAttacks.Length == 0) return null;
+
+        // Check for type
+        EnemyAttack[] specialAttacks = availableAttacks.Where(attack => attack.attackType > EnemyAttack.AttackType.Normal).ToArray();
+        if(specialAttacks.Length > 0)
+        {
+            nextAttack = specialAttacks[UnityEngine.Random.Range(0, specialAttacks.Length)];
+            return nextAttack;
+        }
+
+        nextAttack = availableAttacks[UnityEngine.Random.Range(0, availableAttacks.Length)];
+        currentAttackState = nextAttack.attackState;
+        currentAttackIndex = Array.IndexOf(Data.attackDetails, nextAttack);
+        attackRequestTime = Time.time;
+        TransitionToState(currentAttackState);
+        return nextAttack;
     }
 
     public float TryGetAttackRange()
@@ -193,7 +261,7 @@ public class EnemyController : MonoBehaviour
 
         if (Data == null) return highestAttackRange;
 
-        foreach (AttackDetails attack in Data.attackDetails)
+        foreach (EnemyAttack attack in Data.attackDetails)
         {
             if (highestAttackRange < attack.attackRange)
             {

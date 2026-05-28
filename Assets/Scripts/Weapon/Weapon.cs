@@ -111,6 +111,8 @@ public class Weapon : MonoBehaviour
 
     public void Enter()
     {
+        if (Player.Instance.IsInteruptible) return;
+
         AttackStartTime = Time.time;
         
         attackCounterResetTimeNotifier.Disable();
@@ -132,12 +134,14 @@ public class Weapon : MonoBehaviour
     private void OnEnable()
     {
         EventHandler.OnFinish += Exit;
+        EventHandler.OnUseInput += HandleUseInput;
         attackCounterResetTimeNotifier.OnNotify += ResetAttackCounter;
     }
 
     private void OnDisable()
     {
         EventHandler.OnFinish -= Exit;
+        EventHandler.OnUseInput -= HandleUseInput;
         attackCounterResetTimeNotifier.OnNotify -= ResetAttackCounter;
     }
 

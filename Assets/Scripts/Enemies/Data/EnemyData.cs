@@ -3,12 +3,23 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class AttackDetails
+public class EnemyAttack
 {
+    public enum AttackType
+    {
+        Normal,
+        Special
+    }
+
+    [Header("Attack Info")]
     public string attackName;
-    public float  damageAmount = 10f;
+    public EnemyAttackState attackState;
+    public AttackType attackType;
+
+    [Header("Settings")]
     public float  attackRange = 1.5f;
     public float  attackCooldown = 0.5f;
+    public float  damageAmount = 10f;
     public float  knockbackStrength = 5f;
     public Vector2  knockbackAngle = Vector2.zero;
 }
@@ -37,8 +48,9 @@ public class EnemyData : EntityData
     public float chaseSpeed = 5.0f;
 
     [Header("Attacking State")]
+    public float attackRequestCD = 0.5f;
     public float closeRange = 1.0f;
-    public AttackDetails[] attackDetails = new AttackDetails[1];
+    public EnemyAttack[] attackDetails = new EnemyAttack[1];
 
     [Header("Look For Player State")]
     public float maxLookingTime = 3.0f;

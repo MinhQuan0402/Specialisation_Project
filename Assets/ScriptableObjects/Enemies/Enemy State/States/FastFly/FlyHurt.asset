@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: FlyHurt
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
   animHash: Hurt
-  isAttackState: 0
   startActions:
   - {fileID: 11400000, guid: 3ac87b210568ce54ba07cb50af93a9e5, type: 2}
   updateActions: []
@@ -21,6 +20,6 @@ MonoBehaviour:
   - priority: 1
     decisions:
     - {fileID: 11400000, guid: 6273af1c9e25bd24a8ce66a6144fd381, type: 2}
-    trueState: {fileID: 11400000, guid: 200223a735cd85c4b848e1c593c9b1a8, type: 2}
+    trueState: {fileID: 11400000, guid: 8bb4fe2e4c389ff46a57ee792c1b3fc9, type: 2}
     falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
-  isSorted: 1
+  <IsTransibleToAttack>k__BackingField: 0

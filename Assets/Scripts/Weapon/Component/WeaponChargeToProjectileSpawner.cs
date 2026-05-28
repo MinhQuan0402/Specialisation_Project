@@ -5,7 +5,7 @@
     
     private bool hasReadCharge;
     
-    private ChargeProjectileSpawnerStrategy chargeProjectileSpawnerStrategy = new ChargeProjectileSpawnerStrategy();
+    private readonly ChargeProjectileSpawnerStrategy chargeProjectileSpawnerStrategy = new();
 
     protected override void HandleEnter()
     {
@@ -17,7 +17,9 @@
     {
         if (newInput || hasReadCharge)
             return;
-        
+
+        if (currentAttackData == null) return;
+
         chargeProjectileSpawnerStrategy.AngleVariation = currentAttackData.AngleVariation;
         chargeProjectileSpawnerStrategy.ChargeAmount = charge.TakeFinalChargeReading();
         

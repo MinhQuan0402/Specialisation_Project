@@ -24,6 +24,8 @@ public class PathfindingAction : EnemyAction
 
     public override void Act(EnemyController controller)
     {
+        controller.AIPath.canMove = true;
+
         controller.DestinationSetter.target = pathfindingType == PathfindingType.Waypoint ? 
                                               controller.Waypoints[controller.currentWaypoint] :
                                               controller.player;

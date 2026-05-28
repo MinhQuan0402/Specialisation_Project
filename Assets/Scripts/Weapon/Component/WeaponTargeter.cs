@@ -57,6 +57,8 @@ public class WeaponTargeter : WeaponComponent<WeaponTargeterData, AttackTargeter
         Gizmos.color = Color.red;
         foreach (var target in targets)
         {
+            if (target == null) continue;
+
             Gizmos.DrawWireSphere(target.position, 0.25f);
         }
     }

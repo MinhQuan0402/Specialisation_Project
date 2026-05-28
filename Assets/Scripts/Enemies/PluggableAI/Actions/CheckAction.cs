@@ -14,10 +14,11 @@ public class CheckAction : EnemyAction
 
     public override void Act(EnemyController controller)
     {
-        if (controller.numChecks == 0)
+        if (controller.isCheckingDone)
         {
+            controller.numChecks = 0;
             controller.isCheckingDone = false;
-            controller.lastCheckTime = Time.time - checkDuration;
+            controller.lastCheckTime = Time.time;
         }
 
         if (controller.numChecks < maxNumChecks && 

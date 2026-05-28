@@ -19,7 +19,6 @@ public class PlayerInSightDecision : EnemyDecision
                 controller.Data.playerDetectionRange :
                 controller.TryGetAttackRange(),
                 controller.Data.whatAreDetectibles);
-        
         return result;
     }
 }

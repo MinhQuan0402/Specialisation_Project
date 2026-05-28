@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [CreateAssetMenu(fileName = "newPlayerState", menuName = "State/Player State/Attack")]
 public class PlayerAttackState : PlayerAbilityState
@@ -39,10 +40,12 @@ public class PlayerAttackState : PlayerAbilityState
         base.Enter();
         if (weapon.Equals(null)) return;
         weaponGenerator.OnWeaponGenerating += HandleWeaponGenerating;
+        
+        Movement movement = player.Core.GetComponent<Movement>();
+        movement.SetVelocityZero();
 
         checkFlip = true;
         canInterrupt = false;
-
         weapon.Enter();
     }
 
@@ -73,9 +76,10 @@ public class PlayerAttackState : PlayerAbilityState
         if (!canInterrupt)
             return;
 
-        if (xInput != 0 || attackInputs[0] || attackInputs[1])
+        if (xInput != 0 || Player.Instance.IsInteruptible)
         {
             isAbilityDone = true;
+            player.InputHandler.UseAttackInput(inputIndex);
         }
     }
 
@@ -90,7 +94,10 @@ public class PlayerAttackState : PlayerAbilityState
 
     private void HandleEnableInterrupt() => canInterrupt = true;
 
-    private void HandleUseInput() => player.InputHandler.UseAttackInput(inputIndex);
+    private void HandleUseInput()
+    {
+        player.InputHandler.UseAttackInput(inputIndex);
+    }
 
     private void HandleFinish()
     {

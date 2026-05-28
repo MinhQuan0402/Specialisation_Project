@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9a8bb3223b2564ebf5c64e2d847237, type: 3}
+  m_Name: FlyChase
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyState
+  animHash: IdleFly
+  startActions:
+  - {fileID: 11400000, guid: 19cce6892f9039e458fe6ea407578c8d, type: 2}
+  updateActions:
+  - {fileID: 11400000, guid: 47d22a5172969d644886470bc525ed5e, type: 2}
+  transitions:
+  - priority: 1
+    decisions:
+    - {fileID: 11400000, guid: bd961ba35dcecbd44b283b7c2dbb3742, type: 2}
+    trueState: {fileID: 0}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  - priority: 0
+    decisions:
+    - {fileID: 11400000, guid: 97107ed3cb5814c4681a2f023f2717ca, type: 2}
+    trueState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+    falseState: {fileID: 11400000, guid: 26ae9f2d3ed254e4c9650bb3bfcd1023, type: 2}
+  - priority: 0
+    decisions:
+    - {fileID: 11400000, guid: fd5e56d1f6ab2e04db1225571fb635d1, type: 2}
+    trueState: {fileID: 11400000, guid: 03a92240380e5fa46bb28ff2313fc44e, type: 2}
+    falseState: {fileID: 11400000, guid: b3baf261dea64bd48927ee07325ede08, type: 2}
+  <IsTransibleToAttack>k__BackingField: 1
