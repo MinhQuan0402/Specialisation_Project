@@ -66,6 +66,7 @@ public class CollisionSenses : CoreComponent
     [SerializeField] Transform ledgeCheckHorizontal;
     [SerializeField] Transform ledgeCheckVertical;
     [SerializeField] float wallCheckDistance = 1.0f;
+    [SerializeField] float ledgeCheckDistance = 1.0f;
     [SerializeField] LayerMask whatIsWall;
 
     public override void LogicUpdate() { }
@@ -73,8 +74,8 @@ public class CollisionSenses : CoreComponent
     public bool Grounded => Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround); 
     public bool WallFront => Physics2D.Raycast(wallCheck.position, Vector2.right * Movement.FacingDirection, wallCheckDistance, whatIsWall);
     public bool WallBack => Physics2D.Raycast(wallCheck.position, Vector2.right * -Movement.FacingDirection, wallCheckDistance, whatIsWall);
-    public bool LedgeHorizontal => Physics2D.Raycast(ledgeCheckHorizontal.position, Vector2.right * Movement.FacingDirection, wallCheckDistance, whatIsWall);
-    public bool LedgeVertical => Physics2D.Raycast(ledgeCheckVertical.position, Vector2.down, wallCheckDistance, whatIsWall);
+    public bool LedgeHorizontal => Physics2D.Raycast(ledgeCheckHorizontal.position, Vector2.right * Movement.FacingDirection, ledgeCheckDistance, whatIsWall);
+    public bool LedgeVertical => Physics2D.Raycast(ledgeCheckVertical.position, Vector2.down, ledgeCheckDistance, whatIsWall);
 
     private void OnDrawGizmos()
     {
@@ -97,13 +98,13 @@ public class CollisionSenses : CoreComponent
         if(ledgeCheckHorizontal != null)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(ledgeCheckHorizontal.position, (Vector2)ledgeCheckHorizontal.position + facingDirection * wallCheckDistance * Vector2.right);
+            Gizmos.DrawLine(ledgeCheckHorizontal.position, (Vector2)ledgeCheckHorizontal.position + facingDirection * ledgeCheckDistance * Vector2.right);
         }
 
         if(ledgeCheckVertical != null)
         {
             Gizmos.color = Color.white;
-            Gizmos.DrawLine(ledgeCheckVertical.position, (Vector2)ledgeCheckVertical.position + wallCheckDistance * Vector2.down);
+            Gizmos.DrawLine(ledgeCheckVertical.position, (Vector2)ledgeCheckVertical.position + ledgeCheckDistance * Vector2.down);
         }
     }
 }
