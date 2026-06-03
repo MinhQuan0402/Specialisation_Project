@@ -11,7 +11,8 @@ public class PlayerGroundedState : PlayerState
 
     private bool isGroundded;
     private bool isTouchingWall;
-    private bool isTouchingLedge;
+    private bool isTouchingTopLedge;
+    private bool isTouchingBotLedge;
 
     public override void DoChecks()
     {
@@ -19,7 +20,8 @@ public class PlayerGroundedState : PlayerState
 
         isGroundded = CollisionSenses.Grounded;
         isTouchingWall = CollisionSenses.WallFront;
-        isTouchingLedge = CollisionSenses.LedgeHorizontal;
+        isTouchingTopLedge = CollisionSenses.LedgeHorizontalTop;
+        isTouchingBotLedge = CollisionSenses.LedgeHorizontalBot;
     }
 
     public override void Enter()
@@ -28,6 +30,7 @@ public class PlayerGroundedState : PlayerState
 
         player.RB.linearDamping = 10.0f;
         if (stateMachine.GetState<PlayerJumpState>() != null) { stateMachine.GetState<PlayerJumpState>().ResetNumberOfJumpsLeft(); }
+        if (stateMachine.GetState<PlayerDashState>() != null) { stateMachine.GetState<PlayerDashState>().ResetCanDash(); }
     }
 
     public override void LogicUpdate()
@@ -53,7 +56,7 @@ public class PlayerGroundedState : PlayerState
             if (player.IsInAirExist) { player.inAirState.StartCoyoteTime(); }
             stateMachine.ChangeState(player.inAirState);
         }
-        else if(isTouchingWall && grabInput && isTouchingLedge)
+        else if(isTouchingBotLedge && grabInput && isTouchingTopLedge)
         {
             stateMachine.ChangeState(player.wallGrabState);
         }

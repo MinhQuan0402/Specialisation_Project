@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [CreateAssetMenu(fileName = "newPlayerState", menuName = "State/Player State/InAir")]
 public class PlayerInAirState : PlayerState
@@ -6,12 +7,14 @@ public class PlayerInAirState : PlayerState
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isTouchingWallBack;
-    private bool isTouchingLedge;
+    private bool isTouchingTopLedge;
+    private bool isTouchingBotLedge;
     private bool oldIsTouchingWall;
     private bool oldIsTouchingWallBack;
     private int xInput;
     private bool jumpInput;
     private bool grabInput;
+    private bool dashInput;
     private bool jumpInputStop;
     private bool jumpCoyoteTime;
     private bool wallJumpCoyoteTime;
@@ -36,9 +39,14 @@ public class PlayerInAirState : PlayerState
         isGrounded = CollisionSenses.Grounded;
         isTouchingWall = CollisionSenses.WallFront;
         isTouchingWallBack = CollisionSenses.WallBack;
-        isTouchingLedge = CollisionSenses.LedgeHorizontal;
+        isTouchingTopLedge = CollisionSenses.LedgeHorizontalTop;
+        isTouchingBotLedge = CollisionSenses.LedgeHorizontalBot;
 
-        if(isTouchingWall && !isTouchingLedge) { if(player.IsLedgeClimbExist) player.ledgeClimbState.SetDetectedPosition(player.transform.position); }
+        if(isTouchingBotLedge && !isTouchingTopLedge) 
+        { 
+            if(player.IsLedgeClimbExist) 
+                player.ledgeClimbState.SetDetectedPosition(player.transform.position); 
+        }
 
         if(!wallJumpCoyoteTime && !isTouchingWall && !isTouchingWallBack && (oldIsTouchingWall || oldIsTouchingWallBack))
         {
@@ -69,22 +77,29 @@ public class PlayerInAirState : PlayerState
         jumpInput = player.InputHandler.JumpInput;
         jumpInputStop = player.InputHandler.JumpInputStop;
         grabInput = player.InputHandler.GrabInput;
+        dashInput = player.InputHandler.DashInput;
 
         CheckJumpMultiplier();
 
-        if (player.InputHandler.AttackInputs[(int)CombatInputs.primary] && player.  primaryAttackState.CanTransitionToAttackState())
+        if (player.InputHandler.AttackInputs[(int)CombatInputs.primary] 
+            && player.primaryAttackState.CanTransitionToAttackState())
         {
             stateMachine.ChangeState(player.primaryAttackState);
         }
-        else if (player.InputHandler.AttackInputs[(int)CombatInputs.secondary] && player.secondaryAttackState.CanTransitionToAttackState())
+        else if (player.InputHandler.AttackInputs[(int)CombatInputs.secondary] 
+            && player.secondaryAttackState.CanTransitionToAttackState())
         {
             stateMachine.ChangeState(player.secondaryAttackState);
+        }
+        else if (dashInput && player.IsDashExist && player.dashState.CheckIfCanDash())
+        {
+            stateMachine.ChangeState(player.dashState);
         }
         else if (isGrounded && Movement.CurrentVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.landState);
         }
-        else if (isTouchingWall && !isTouchingLedge)
+        else if (isTouchingBotLedge && !isTouchingTopLedge)
         {
             stateMachine.ChangeState(player.ledgeClimbState);
         }
@@ -101,7 +116,7 @@ public class PlayerInAirState : PlayerState
         }
         else if(isTouchingWall)
         {
-            if(grabInput && isTouchingLedge)
+            if(grabInput && isTouchingTopLedge)
             {
                 stateMachine.ChangeState(player.wallGrabState);
             }

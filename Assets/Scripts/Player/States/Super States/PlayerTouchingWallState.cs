@@ -4,7 +4,8 @@ public class PlayerTouchingWallState : PlayerState
 {
     protected bool isGrounded;
     protected bool isTouchingWall;
-    protected bool isTouchingLedge;
+    protected bool isTouchingTopLedge;
+    protected bool isTouchingBotLedge;
     protected bool jumpInput;
     protected int xInput;
     protected int yInput;
@@ -16,9 +17,10 @@ public class PlayerTouchingWallState : PlayerState
 
         isGrounded = CollisionSenses.Grounded;
         isTouchingWall = CollisionSenses.WallFront;
-        isTouchingLedge = CollisionSenses.LedgeHorizontal;
+        isTouchingTopLedge = CollisionSenses.LedgeHorizontalTop;
+        isTouchingBotLedge = CollisionSenses.LedgeHorizontalBot;
 
-        if(isTouchingWall && !isTouchingLedge) player.ledgeClimbState.SetDetectedPosition(player.transform.position);
+        if(isTouchingBotLedge && !isTouchingTopLedge) player.ledgeClimbState.SetDetectedPosition(player.transform.position);
     }
 
     public override void LogicUpdate()
@@ -43,7 +45,7 @@ public class PlayerTouchingWallState : PlayerState
         {
             stateMachine.ChangeState(player.inAirState);
         }
-        else if(isTouchingWall && !isTouchingLedge)
+        else if(isTouchingBotLedge && !isTouchingTopLedge)
         {
             stateMachine.ChangeState(player.ledgeClimbState);
         }

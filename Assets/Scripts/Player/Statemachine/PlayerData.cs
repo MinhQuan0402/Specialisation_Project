@@ -33,4 +33,9 @@ public class PlayerData : EntityData
     public float dashCooldown = 0.5f;
     public float dashTime = 0.2f;
     public float dashVelocity = 30.0f;
+    public float dashHoldTimeScale = 0.5f;
+    public float dashMaxHoldInputTime = 1.0f;
+    public float distBetweenAfterImages = 0.5f;
+    public float dashDrag = 0.5f;
+    public float dashEndYMultiplier = 0.2f;
 }

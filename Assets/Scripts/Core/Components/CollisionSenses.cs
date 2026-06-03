@@ -63,19 +63,23 @@ public class CollisionSenses : CoreComponent
 
     [Header("Wall Check Details")]
     [SerializeField] Transform wallCheck;
+    [SerializeField] float wallCheckDistance = 1.0f;
+    [SerializeField] LayerMask whatIsWall;
+
+    [Header("Ledge Check Details")]
     [SerializeField] Transform ledgeCheckHorizontal;
     [SerializeField] Transform ledgeCheckVertical;
-    [SerializeField] float wallCheckDistance = 1.0f;
     [SerializeField] float ledgeCheckDistance = 1.0f;
-    [SerializeField] LayerMask whatIsWall;
+    [SerializeField] LayerMask whatIsLedge;
 
     public override void LogicUpdate() { }
 
     public bool Grounded => Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround); 
     public bool WallFront => Physics2D.Raycast(wallCheck.position, Vector2.right * Movement.FacingDirection, wallCheckDistance, whatIsWall);
     public bool WallBack => Physics2D.Raycast(wallCheck.position, Vector2.right * -Movement.FacingDirection, wallCheckDistance, whatIsWall);
-    public bool LedgeHorizontal => Physics2D.Raycast(ledgeCheckHorizontal.position, Vector2.right * Movement.FacingDirection, ledgeCheckDistance, whatIsWall);
-    public bool LedgeVertical => Physics2D.Raycast(ledgeCheckVertical.position, Vector2.down, ledgeCheckDistance, whatIsWall);
+    public bool LedgeHorizontalTop => Physics2D.Raycast(ledgeCheckHorizontal.position, Vector2.right * Movement.FacingDirection, ledgeCheckDistance, whatIsLedge);
+    public bool LedgeHorizontalBot => Physics2D.Raycast(wallCheck.position, Vector2.right * Movement.FacingDirection, ledgeCheckDistance, whatIsLedge);
+    public bool LedgeVertical => Physics2D.Raycast(ledgeCheckVertical.position, Vector2.down, ledgeCheckDistance, whatIsLedge);
 
     private void OnDrawGizmos()
     {

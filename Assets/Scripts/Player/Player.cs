@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public Weapon primaryWeapon;
     [HideInInspector] public Weapon secondaryWeapon;
 
+    [field: SerializeField] public Transform DashIndicator { get; private set; }
+
     public bool IsIdleExist => idleState ? true : StateMachine.GetStateWithRef(ref idleState);
     public bool IsMoveExist => moveState ? true : StateMachine.GetStateWithRef(ref moveState);
     public bool IsJumpExist => jumpState ? true : StateMachine.GetStateWithRef(ref jumpState);

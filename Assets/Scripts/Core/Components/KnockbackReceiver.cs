@@ -39,7 +39,7 @@ public class KnockbackReceiver : CoreComponent, IKnockBackable
         {
             isKnockbackActive = false;
             movement.Comp.CanSetVelocity = true;
-        } 
+        }
     }
 
     protected override void Awake()
