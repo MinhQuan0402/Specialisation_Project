@@ -23,9 +23,13 @@ public class PlayerWallGrabState : PlayerTouchingWallState
     {
         base.LogicUpdate();
 
-        if(!isExitingState)
+        bool isTouchingTopWall = Physics2D.Raycast(CollisionSenses.LedgeCheckHorizontal.position,
+                                                    Vector2.right * Movement.FacingDirection,
+                                                    CollisionSenses.WallCheckDistance,
+                                                    CollisionSenses.WhatIsWall);
+        if (!isExitingState)
         {
-            if (yInput > 0f)
+            if (yInput > 0f && isTouchingTopWall)
             {
                 stateMachine.ChangeState(player.wallClimbState);
             }

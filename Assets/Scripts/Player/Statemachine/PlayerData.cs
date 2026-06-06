@@ -38,4 +38,7 @@ public class PlayerData : EntityData
     public float distBetweenAfterImages = 0.5f;
     public float dashDrag = 0.5f;
     public float dashEndYMultiplier = 0.2f;
+
+    [Header("Attack State")]
+    public float attackDrag = 2.0f;
 }

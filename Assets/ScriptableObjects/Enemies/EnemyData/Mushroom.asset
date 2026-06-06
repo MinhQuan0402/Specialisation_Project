@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mushroom
   m_EditorClassIdentifier: 
   maxHealth: 1000
+  enemyType: 0
   isFlying: 0
   animationTransitionTime: 0.1
   minIdleTime: 1
@@ -42,3 +43,4 @@ MonoBehaviour:
   whatIsObstacles:
     serializedVersion: 2
     m_Bits: 128
+  canvaOffset: {x: 0, y: 2}

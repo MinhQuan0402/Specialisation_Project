@@ -39,9 +39,9 @@ public class PlayerTouchingWallState : PlayerState
         }
         else if(isGrounded && !grabInput)
         {
-            stateMachine.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.idleState); 
         }
-        else if(!isTouchingWall || (xInput != Movement.FacingDirection && !grabInput))
+        else if(!isTouchingWall || (xInput != Movement.FacingDirection && !grabInput) || !isTouchingTopLedge)
         {
             stateMachine.ChangeState(player.inAirState);
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Pathfinding;
+using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
@@ -25,6 +26,11 @@ public class EnemyController : MonoBehaviour
     [field: SerializeField] public Transform[] Waypoints {  get; private set; }
     [field: SerializeField] public AIPath AIPath {  get; private set; }
     [field: SerializeField] public AIDestinationSetter DestinationSetter {  get; private set; }
+
+    [Header("UI")]
+    [SerializeField] private GameObject enemyUIPrefab;
+
+    private GameObject enemyUI = null;
 
     [Space(10)]
     [Header("Debug Info")]
@@ -115,6 +121,38 @@ public class EnemyController : MonoBehaviour
         animationEventHandler.OnStopAnimationWindow  += StopAttackWindow;
 
         isCheckingDone = true;
+
+        if(enemyUI == null && enemyUIPrefab != null)
+        {
+            GameObject enemiesUI = GameObject.Find("EnemiesUICollection");
+            if (enemiesUI == null)
+            {
+                enemiesUI = new GameObject("EnemiesUICollection");
+            }
+
+            enemyUI = Instantiate(enemyUIPrefab, enemiesUI.transform);
+            RectTransform enemyUITransform = enemyUI.GetComponent<RectTransform>();
+            enemyUITransform.localPosition = Data.canvaOffset;
+            enemyUI.SetActive(false);
+
+            StatBarUI enemyHealthBar = enemyUI.GetComponentInChildren<StatBarUI>();
+            if(enemyHealthBar != null)
+            {
+                enemyHealthBar.SetInitValue(Stats.Health.MaxValue);
+            }
+
+            Stats.Health.OnValueChanged += (_, currValue, maxValue) =>
+            {
+                if (enemyHealthBar != null)
+                {
+                    enemyUI.SetActive(true);
+                    enemyHealthBar.SetTarget(currValue, maxValue);
+                }
+            };
+
+            TextMeshProUGUI nameText = enemyUI.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+            nameText.text = Data.enemyType.ToString();
+        }
     }
 
     private void OnDestroy()
@@ -126,6 +164,11 @@ public class EnemyController : MonoBehaviour
         animationEventHandler.OnFinish -= AnimationFinishTrigger;
         animationEventHandler.OnStartAnimationWindow -= StartAttackWindow;
         animationEventHandler.OnStopAnimationWindow  -= StopAttackWindow;
+
+        if (enemyUI != null)
+        {
+            Destroy(enemyUI);
+        }
     }
 
     void Update()
@@ -133,6 +176,11 @@ public class EnemyController : MonoBehaviour
         Core.LogicUpdate();
         if (!isDead && currentState != null) 
             currentState.UpdateState(this);
+
+        if (enemyUI != null)
+        {
+            enemyUI.transform.position = transform.position + new Vector3(Data.canvaOffset.x, Data.canvaOffset.y, 0.0f);
+        }
 
         UpdateAttackCD();
     }

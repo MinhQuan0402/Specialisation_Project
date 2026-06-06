@@ -1,3 +1,4 @@
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
@@ -47,6 +48,8 @@ public class PlayerAttackState : PlayerAbilityState
         checkFlip = true;
         canInterrupt = false;
         weapon.Enter();
+
+        player.RB.linearDamping = playerData.attackDrag;
     }
 
     public override void Exit()
@@ -54,6 +57,8 @@ public class PlayerAttackState : PlayerAbilityState
         base.Exit();
         weaponGenerator.OnWeaponGenerating -= HandleWeaponGenerating;
         weapon.Exit();
+
+        player.RB.linearDamping = 0.0f;
     }
 
     private void HandleWeaponGenerating()

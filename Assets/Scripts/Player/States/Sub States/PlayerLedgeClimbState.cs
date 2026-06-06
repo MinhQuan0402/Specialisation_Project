@@ -15,6 +15,8 @@ public class PlayerLedgeClimbState : PlayerState
 
     private int yInput;
 
+    private bool prediction;
+
     public override void Init()
     {
         base.Init();
@@ -33,12 +35,22 @@ public class PlayerLedgeClimbState : PlayerState
         startPos.Set(cornerPos.x - (Movement.FacingDirection * playerData.startOffset.x), cornerPos.y - playerData.startOffset.y);
         stopPos.Set(cornerPos.x + (Movement.FacingDirection * playerData.stopOffset.x), cornerPos.y + playerData.stopOffset.y);
 
-       player.transform.position = startPos;
+        DebugUtils.DrawBox2D(stopPos, new Vector2(0.5f, 0.5f), Color.blue, 5.0f);
+        prediction = Physics2D.BoxCast(stopPos, new Vector2(0.5f, 0.5f), 0, Vector2.zero, 0, CollisionSenses.WhatIsGround);
+        if (prediction)
+        {
+            stateMachine.ChangeState(player.inAirState);
+            return;
+        }
+
+        player.transform.position = startPos;
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        if (prediction) return;
 
         isHanging = false;
 

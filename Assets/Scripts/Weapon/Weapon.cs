@@ -111,8 +111,6 @@ public class Weapon : MonoBehaviour
 
     public void Enter()
     {
-        if (Player.Instance.IsInteruptible) return;
-
         AttackStartTime = Time.time;
         
         attackCounterResetTimeNotifier.Disable();

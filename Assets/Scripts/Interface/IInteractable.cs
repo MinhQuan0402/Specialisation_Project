@@ -1,0 +1,12 @@
+using UnityEngine;
+
+public interface IInteractable
+{
+    string DisplayName { get; }
+    string InteractPrompt { get; }   // e.g. "[E] Talk", "[E] Shop"
+    bool CanInteract { get; }      // e.g. false if shop is sold out
+
+    void OnPlayerEnterRange(Player player);
+    void OnPlayerExitRange();
+    void OnInteract(Player player);
+}

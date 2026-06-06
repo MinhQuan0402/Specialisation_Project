@@ -57,7 +57,7 @@ public class PlayerDashState : PlayerAbilityState
 
             if (isHolding)
             {
-                dashDirectionInput = player.InputHandler.DashDirectionInput;
+                dashDirectionInput = player.InputHandler.RawMovementInput;
                 dashInputStop = player.InputHandler.DashInputStop;
 
                 if (dashDirectionInput != Vector2.zero)

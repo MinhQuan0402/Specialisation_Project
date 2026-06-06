@@ -24,10 +24,21 @@ public class EnemyAttack
     public Vector2  knockbackAngle = Vector2.zero;
 }
 
+public enum EnemyType
+{
+    Vetala, // Mushroom
+
+    Keres, // Wasp/Dragonfly creature
+    Tengu, // Antler-winged creature
+    Alkonost, // Flying mushroom creature
+}
+
 [CreateAssetMenu(fileName = "newEnemyData", menuName = "Data/Enemy Data/Base Data")]
 public class EnemyData : EntityData
 {
+    
     [Header("Configuration")]
+    public EnemyType enemyType;
     public bool isFlying = false;
     public float animationTransitionTime = 0.1f;
 
@@ -58,4 +69,7 @@ public class EnemyData : EntityData
     [Header("Detection Masks")]
     public LayerMask whatAreDetectibles;
     public LayerMask whatIsObstacles;
+
+    [Header("UI")]
+    public Vector2 canvaOffset;
 }

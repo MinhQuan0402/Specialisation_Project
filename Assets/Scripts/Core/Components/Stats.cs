@@ -9,9 +9,8 @@ public class Stats : CoreComponent
     [field: SerializeField] public Stat Poise { get; private set; }
     [field: SerializeField] public Stat Stamina { get; private set; }
 
-    protected override void Awake()
+    private void OnEnable()
     {
-        base.Awake();
         Health.Init();
         Stamina.Init();
 
@@ -20,7 +19,7 @@ public class Stats : CoreComponent
         Stamina.OnValueDecrease += HandleValueDecrease;
     }
 
-    protected void OnDestroy()
+    private void OnDisable()
     {
         Health.OnValueDecrease -= HandleValueDecrease;
         Poise.OnValueDecrease -= HandleValueDecrease;

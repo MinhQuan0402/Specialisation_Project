@@ -56,7 +56,7 @@ public class PlayerGroundedState : PlayerState
             if (player.IsInAirExist) { player.inAirState.StartCoyoteTime(); }
             stateMachine.ChangeState(player.inAirState);
         }
-        else if(isTouchingBotLedge && grabInput && isTouchingTopLedge)
+        else if(isTouchingWall && grabInput && isTouchingTopLedge)
         {
             stateMachine.ChangeState(player.wallGrabState);
         }

@@ -20,6 +20,8 @@ public class WeaponProjectileSpawner : WeaponComponent<WeaponProjectileSpawnerDa
     
     private void HandleAttackAction()
     {
+        if (Player.Instance.IsInteruptible) return;
+
         foreach (var projectileSpawnInfo in currentAttackData.ProjectileSpawnInfo)
         {
             // Spawn projectile based on the current strategy

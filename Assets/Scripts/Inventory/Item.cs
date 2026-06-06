@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
 {
     public ItemInstance item;

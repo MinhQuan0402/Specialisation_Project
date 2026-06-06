@@ -2,31 +2,25 @@ using UnityEngine;
 
 public class SingletonPersistentTemplate<T> : MonoBehaviour where T : Component
 {
-
     private static T _instance;
-    public T Instance
+
+    public static T Instance
     {
         get
         {
-            //if (_instance == null)
-            //{
-            //    GameObject obj = new GameObject();
-            //    obj.name = typeof(T).Name;
-            //    obj.hideFlags = HideFlags.HideAndDontSave;
-            //    _instance = obj.AddComponent<T>();
-            //}
+            if (_instance == null)
+            {
+                GameObject obj = new(typeof(T).Name)
+                {
+                    hideFlags = HideFlags.HideAndDontSave
+                };
+                _instance = obj.AddComponent<T>();
+            }
             return _instance;
         }
     }
-    
-    public virtual void OnDestroy()
-    {
-        if (_instance == this)
-            _instance = null;
 
-    }
-
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         if( _instance == null)
         {

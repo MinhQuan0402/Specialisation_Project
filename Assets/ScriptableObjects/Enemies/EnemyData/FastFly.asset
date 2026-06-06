@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FastFly
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   maxHealth: 1000
+  enemyType: 1
   isFlying: 1
   animationTransitionTime: 0.1
   minIdleTime: 3
@@ -42,3 +43,4 @@ MonoBehaviour:
   whatIsObstacles:
     serializedVersion: 2
     m_Bits: 128
+  canvaOffset: {x: 0, y: 1.5}

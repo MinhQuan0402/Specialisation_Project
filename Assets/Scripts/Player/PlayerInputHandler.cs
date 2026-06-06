@@ -19,6 +19,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool GrabInput { get; private set; }
     public bool DashInput {  get; private set; }
     public bool DashInputStop { get; private set; }
+    public bool InteractionInput { get; private set; }
     public bool[] AttackInputs { get; private set; }
 
     [SerializeField] private float inputHoldTime = 0.2f;
@@ -93,6 +94,21 @@ public class PlayerInputHandler : MonoBehaviour
             GrabInput = false;
         }
     }
+
+    public void OnInteractionInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            InteractionInput = true;
+        }
+
+        if (context.canceled)
+        {
+            InteractionInput = false;
+        }
+    }
+
+    public void UseInteractionInput() => InteractionInput = false;
 
     public void OnDashInput(InputAction.CallbackContext context)
     {

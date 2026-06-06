@@ -6,7 +6,7 @@ using UnityEngine;
 public class Stat
 {
     public event Action OnCurrentValueZero;
-    public event Action<float, float> OnValueChanged;
+    public event Action<float, float, float> OnValueChanged;
     public event Action<Stat> OnValueDecrease;
     
     [field: SerializeField] public bool IsInfinite { get; private set; }
@@ -24,7 +24,7 @@ public class Stat
         {
             float prevValue = currentValue;
             currentValue = Mathf.Clamp(value, 0, MaxValue);
-            OnValueChanged?.Invoke(prevValue, currentValue);
+            OnValueChanged?.Invoke(prevValue, currentValue, MaxValue);
             if (currentValue <= 0) OnCurrentValueZero?.Invoke();
         }
     }
