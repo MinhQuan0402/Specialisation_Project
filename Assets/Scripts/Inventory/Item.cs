@@ -1,19 +1,28 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour, IInteractable
 {
     public ItemInstance item;
+
+    [SerializeField] private Transform spriteTransform;
 
     [SerializeField] private float floatingSpeed = 0.1f;
     [SerializeField] private float floatingHeight = 0.5f;
 
+    [SerializeField] private Vector2 offset;
+
     private Vector2 startPos;
+
+    public string DisplayName => item.itemData.name;
+
+    public virtual string InteractPrompt => "Press E to pickup";
+
+    public bool CanInteract => true;
 
     void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = item.itemData.itemImage;
-        startPos = transform.position;
+        spriteTransform.GetComponent<SpriteRenderer>().sprite = item.itemData.itemImage;
+        startPos = spriteTransform.position;
     }
 
     void Update()
@@ -30,6 +39,22 @@ public class Item : MonoBehaviour
     private void FloatingEffect()
     {
         float newY = startPos.y + Mathf.Sin(Time.time * floatingSpeed) * floatingHeight;
-        transform.position = new Vector3(transform.position.x, newY);
+        spriteTransform.position = new Vector3(spriteTransform.position.x, newY);
+    }
+
+    public virtual void OnPlayerEnterRange(Player player)
+    {
+        UIManager.Instance.SetPickupPanel(startPos + offset, InteractPrompt);
+    }
+
+    public void OnPlayerExitRange()
+    {
+        UIManager.Instance.HidePickupPanel();
+    }
+
+    public virtual void OnInteract(Player player)
+    {
+        player.InventorySystem.TryToAddItem(TakeItem());
+        UIManager.Instance.HidePickupPanel();
     }
 }

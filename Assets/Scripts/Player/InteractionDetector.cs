@@ -8,13 +8,10 @@ public class InteractionDetector : MonoBehaviour
     private IInteractable currInteraction;
     private Player player;
 
-    private void Awake() => player = Player.Instance;
+    private void Awake() => player = GetComponentInParent<Player>();
 
     private void Update()
     {
-        if (GameManager.Instance.CurrentState != GameState.Playing &&
-            GameManager.Instance.CurrentState != GameState.Tutorial) return;
-
         DetectNearestIntertion();
 
         if (currInteraction != null && currInteraction.CanInteract &&
@@ -35,10 +32,10 @@ public class InteractionDetector : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (!hit.TryGetComponent<IInteractable>(out var npc)) continue;
+            if (!hit.TryGetComponent<IInteractable>(out var interactable)) continue;
 
             float dist = Vector2.Distance(transform.position, hit.transform.position);
-            if (dist < nearestDist) { nearest = npc; nearestDist = dist; }
+            if (dist < nearestDist) { nearest = interactable; nearestDist = dist; }
         }
 
         // Changed NPC — notify old and new

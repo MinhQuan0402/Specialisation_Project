@@ -2,32 +2,38 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class InventorySystem : MonoBehaviour
 {
-    public Inventory inventory;
-    [SerializeField] private UIInventoryPage inventoryUI;
+    [SerializeField] private Inventory inventory;
 
-    private bool interacted = false;
-
-    public void OnInteractionInput(InputAction.CallbackContext context)
+    public bool TryToAddItem(ItemInstance item)
     {
-        if(context.started)
-        {
-            interacted = true;
-        }
-        else
-        {
-            interacted = false;
-        }
-    }
+        if (inventory == null) return false;
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.TryGetComponent(out Item item))
+        bool result = inventory.AddItem(item);
+
+        if (!result)
         {
-            if (interacted)
+            switch(item.itemData.objectType)
             {
-                inventory.AddItem(item.TakeItem());
-                interacted = false;
+                case ItemData.ObjectType.Equipment:
+                    //Swape weapon;
+                    break;
             }
+
+            return false;
         }
+
+        switch (item.itemData.objectType)
+        {
+            case ItemData.ObjectType.Equipment:
+                //Swape weapon;
+                break;
+            case ItemData.ObjectType.Consumable:
+                UIManager.Instance.UpdateItemSlot(item.itemData, inventory.GetItemQuatity(item));
+                break;
+        }
+
+        return result;
     }
+
+
 }

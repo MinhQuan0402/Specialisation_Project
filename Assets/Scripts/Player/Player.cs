@@ -61,7 +61,8 @@ public class Player : SingletonTemplate<Player>
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D RB { get; private set; }
     public CapsuleCollider2D Collider { get; private set; }
-    
+    public InventorySystem InventorySystem { get; private set; }
+
     public CoreComp<Stats> Stats { get; private set; }
     public CoreComp<Movement> Movement { get; private set; }
 
@@ -93,8 +94,8 @@ public class Player : SingletonTemplate<Player>
         _ = IsLedgeClimbExist;
         _ = IsDashExist;
         
-        Stats = new CoreComp<Stats>(Core);
-        Movement = new CoreComp<Movement>(Core);
+        Stats ??= new CoreComp<Stats>(Core);
+        Movement ??= new CoreComp<Movement>(Core);
     }
 
     private void Start()
@@ -104,6 +105,7 @@ public class Player : SingletonTemplate<Player>
         RB = GetComponent<Rigidbody2D>();
         SR = GetComponent<SpriteRenderer>();
         Collider = GetComponent<CapsuleCollider2D>();
+        InventorySystem = GetComponentInChildren<InventorySystem>();
 
         foreach (KeyValue<string, State> pairs in StatesDictionary.pairs) { if (pairs.Value) pairs.Value.Init(); }
         StateMachine.InitializeStartingState(StateMachine.GetState<PlayerIdleState>()); //Enter idle state as default
@@ -133,6 +135,9 @@ public class Player : SingletonTemplate<Player>
 
     private void OnEnable()
     {
+        Stats ??= new CoreComp<Stats>(Core);
+        Movement ??= new CoreComp<Movement>(Core);
+
         Stats.Comp.Health.OnValueChanged += UIManager.Instance.Health_OnValueChanged;
         Stats.Comp.Stamina.OnValueChanged += UIManager.Instance.Stamina_OnValueChanged;
 
