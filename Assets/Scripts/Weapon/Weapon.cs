@@ -5,9 +5,14 @@ using Utilities;
 public class Weapon : MonoBehaviour
 {
     public event Action<bool> OnCurrentInputChange;
-    
+
+    public event Action OnEnter;
+    public event Action OnExit;
+    public event Action OnUseInput;
+
     [SerializeField] private float attackCounterResetCooldown = 1f;
-    public WeaponData Data {  get; private set; }
+
+    public WeaponData Data { get; private set; } = null;
     
     public bool IsEquipped { get; set; }
     
@@ -28,9 +33,16 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public event Action OnEnter;
-    public event Action OnExit;
-    public event Action OnUseInput;
+    private int currentAttackCounter = 0;
+    private bool currentInput = false;
+
+    private TimeNotifier attackCounterResetTimeNotifier;
+
+    private bool initDone;
+    private AnimationEventHandler eventHandler;
+
+    public float AttackStartTime { get; private set; }
+    public bool CanEnterAttack { get; private set; } = false;
 
     public Animator Anim { get; private set; }
     public GameObject BaseSpriteGameObject { get; private set; }
@@ -58,33 +70,6 @@ public class Weapon : MonoBehaviour
 
     public Core Core { get; private set; }
 
-    public void SetCore(Core core) => Core = core;
-
-    public void SetData(WeaponData data)
-    {
-        Data = data;
-        if(Data == null)
-            return;
-        ResetAttackCounter();
-    }
-
-    private int currentAttackCounter = 0;
-    private bool currentInput = false;
-
-    private TimeNotifier attackCounterResetTimeNotifier;
-    
-    private bool initDone;
-    private AnimationEventHandler eventHandler;
-    
-    public float AttackStartTime { get; private set; }
-    public bool CanEnterAttack {  get; private set; }
-
-    private void Awake()
-    {
-        GetDependencies();
-        attackCounterResetTimeNotifier = new TimeNotifier();
-    }
-    
     private void GetDependencies()
     {
         if (initDone)
@@ -98,11 +83,6 @@ public class Weapon : MonoBehaviour
         EventHandler = BaseSpriteGameObject.GetComponent<AnimationEventHandler>();
 
         initDone = true;
-    }
-
-    private void Update()
-    {
-        attackCounterResetTimeNotifier.Tick();
     }
 
     private void ResetAttackCounter() => CurrentAttackCounter = 0;
@@ -120,13 +100,31 @@ public class Weapon : MonoBehaviour
 
         OnEnter?.Invoke();
     }
-
+    public void SetCore(Core core) => Core = core;
+    public void SetData(WeaponData data)
+    {
+        Data = data;
+        if (Data == null)
+            return;
+        ResetAttackCounter();
+    }
     public void Exit()
     {
         Anim.SetBool("active", false);
         CurrentAttackCounter++;
         attackCounterResetTimeNotifier.Init(attackCounterResetCooldown);
         OnExit?.Invoke();
+    }
+
+    private void Awake()
+    {
+        GetDependencies();
+        attackCounterResetTimeNotifier = new TimeNotifier();
+    }
+
+    private void Update()
+    {
+        attackCounterResetTimeNotifier.Tick();
     }
 
     private void OnEnable()

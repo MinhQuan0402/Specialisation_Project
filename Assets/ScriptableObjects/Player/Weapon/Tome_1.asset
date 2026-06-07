@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fire Spell
   itemDescription: 
-  itemImage: {fileID: 0}
+  itemImage: {fileID: 1974652921, guid: 7698f902a8e73cb4b88c4738f7fb0ff5, type: 3}
   objectType: 1
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: c5cd7e9b0ba611a43a6a927d1e8d09c9, type: 2}
   <NumberOfAttacks>k__BackingField: 1

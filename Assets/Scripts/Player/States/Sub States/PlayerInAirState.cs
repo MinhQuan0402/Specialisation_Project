@@ -79,19 +79,26 @@ public class PlayerInAirState : PlayerState
         grabInput = player.InputHandler.GrabInput;
         dashInput = player.InputHandler.DashInput;
 
+        bool primaryAttackInput = player.InputHandler.AttackInputs[(int)CombatInputs.primary];
+        bool secondaryAttackInput = player.InputHandler.AttackInputs[(int)CombatInputs.secondary];
+
         CheckJumpMultiplier();
 
-        if (player.InputHandler.AttackInputs[(int)CombatInputs.primary] 
-            && player.primaryAttackState.CanTransitionToAttackState())
+        if (primaryAttackInput && player.IsPrimaryAttackExist &&
+            !Player.Instance.IsInteruptible && player.primaryAttackState.CanPerform &&
+            player.primaryAttackState.CanTransitionToAttackState())
         {
             stateMachine.ChangeState(player.primaryAttackState);
         }
-        else if (player.InputHandler.AttackInputs[(int)CombatInputs.secondary] 
-            && player.secondaryAttackState.CanTransitionToAttackState())
+        else if (secondaryAttackInput && player.IsSecondaryAttackExist &&
+            !Player.Instance.IsInteruptible && player.secondaryAttackState.CanPerform &&
+            player.secondaryAttackState.CanTransitionToAttackState())
         {
             stateMachine.ChangeState(player.secondaryAttackState);
         }
-        else if (dashInput && player.IsDashExist && player.dashState.CheckIfCanDash())
+        else if (dashInput && player.IsDashExist && 
+            player.dashState.CheckIfCanDash() && 
+            player.dashState.CanDash)
         {
             stateMachine.ChangeState(player.dashState);
         }
@@ -99,18 +106,20 @@ public class PlayerInAirState : PlayerState
         {
             stateMachine.ChangeState(player.landState);
         }
-        else if (isTouchingBotLedge && !isTouchingTopLedge)
+        else if (isTouchingBotLedge && !isTouchingTopLedge &&
+            player.IsLedgeClimbExist && player.ledgeClimbState.PositionProjection())
         {
             stateMachine.ChangeState(player.ledgeClimbState);
         }
-        else if (jumpInput && (isTouchingWall || isTouchingWallBack || wallJumpCoyoteTime))
+        else if (jumpInput && (isTouchingWall || isTouchingWallBack || wallJumpCoyoteTime) && 
+            player.wallJumpState.CanPerform)
         {
             StoptWallJumpCoyoteTime();
             isTouchingWall = CollisionSenses.WallFront;
             if (player.IsWallJumpExist) player.wallJumpState.DetermineWallJumpDirection(isTouchingWall);
             stateMachine.ChangeState(player.wallJumpState);
         }
-        else if(jumpInput && player.IsJumpExist && player.jumpState.CanJump())
+        else if(jumpInput && player.IsJumpExist && player.jumpState.CanJump() && player.jumpState.CanPerform)
         {
             stateMachine.ChangeState(player.jumpState);
         }

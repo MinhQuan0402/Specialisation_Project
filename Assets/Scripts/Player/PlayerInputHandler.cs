@@ -8,10 +8,9 @@ public enum CombatInputs
     secondary
 }
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerInputHandler : CoreComponent
 {
     public Vector2 RawMovementInput { get; private set; }
-    public Vector2 DashDirectionInput { get; private set; }
     public int NormInputX { get; private set; } 
     public int NormInputY { get; private set; }
     public bool JumpInput { get; private set; }
@@ -34,7 +33,7 @@ public class PlayerInputHandler : MonoBehaviour
         AttackInputs = new bool[count];
     }
 
-    private void Update()
+    public override void LogicUpdate()
     {
         CheckJumpInputHoldTime();
         CheckDashInputHoldTime();
@@ -123,13 +122,6 @@ public class PlayerInputHandler : MonoBehaviour
             DashInputStop = true;
         }
     }
-
-    public void OnDashDirectionInput(InputAction.CallbackContext context)
-    {
-        var RawDashDirectionInput = context.ReadValue<Vector2>();
-        DashDirectionInput = Vector2Int.RoundToInt(RawDashDirectionInput.normalized);
-    }
-
 
     public void UseDashInput() => DashInput = false;
 

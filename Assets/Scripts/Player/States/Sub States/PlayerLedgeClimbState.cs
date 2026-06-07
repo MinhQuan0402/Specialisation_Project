@@ -29,20 +29,6 @@ public class PlayerLedgeClimbState : PlayerState
         base.Enter();
 
         Movement.SetVelocityZero();
-        player.transform.position = detectedPos;
-        cornerPos = Movement.DetermineCornerPosition();
-
-        startPos.Set(cornerPos.x - (Movement.FacingDirection * playerData.startOffset.x), cornerPos.y - playerData.startOffset.y);
-        stopPos.Set(cornerPos.x + (Movement.FacingDirection * playerData.stopOffset.x), cornerPos.y + playerData.stopOffset.y);
-
-        DebugUtils.DrawBox2D(stopPos, new Vector2(0.5f, 0.5f), Color.blue, 5.0f);
-        prediction = Physics2D.BoxCast(stopPos, new Vector2(0.5f, 0.5f), 0, Vector2.zero, 0, CollisionSenses.WhatIsGround);
-        if (prediction)
-        {
-            stateMachine.ChangeState(player.inAirState);
-            return;
-        }
-
         player.transform.position = startPos;
     }
 
@@ -102,11 +88,22 @@ public class PlayerLedgeClimbState : PlayerState
         player.Anim.SetBool("climbLedge", false);
     }
     public void SetDetectedPosition(Vector2 detectedPos) => this.detectedPos = detectedPos;
-
     public override void AnimationTrigger()
     {
         base.AnimationTrigger();
 
         isHanging = true;
+    }
+
+    public bool PositionProjection()
+    {
+        cornerPos = Movement.DetermineCornerPosition();
+        startPos.Set(cornerPos.x - (Movement.FacingDirection * playerData.startOffset.x), cornerPos.y - playerData.startOffset.y);
+        stopPos.Set(cornerPos.x + (Movement.FacingDirection * playerData.stopOffset.x), cornerPos.y + playerData.stopOffset.y);
+        DebugUtils.DrawBox2D(stopPos, new Vector2(0.5f, 0.5f), Color.blue, 5.0f);
+        prediction = Physics2D.BoxCast(stopPos, new Vector2(0.5f, 0.5f), 0, Vector2.zero, 0, CollisionSenses.WhatIsGround);
+        if (prediction) return false;
+
+        return true;
     }
 }

@@ -14,7 +14,7 @@ public class PlayerAttackState : PlayerAbilityState
 
     private bool checkFlip;
     
-    public void SetWeapon(Weapon weapon, CombatInputs input)
+    public void Init(Weapon weapon, CombatInputs input)
     {
         this.weapon = weapon;
         if(weapon == null ) return;
@@ -95,7 +95,7 @@ public class PlayerAttackState : PlayerAbilityState
         animBoolName = "attack";
     }
 
-    public bool CanTransitionToAttackState() => weapon.CanEnterAttack;
+    public bool CanTransitionToAttackState() => weapon.CanEnterAttack && weapon.Data != null;
 
     private void HandleEnableInterrupt() => canInterrupt = true;
 

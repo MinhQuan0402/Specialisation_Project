@@ -97,7 +97,7 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
 
             case GameState.Tutorial:
                 Time.timeScale = 1f;
-                LoadScene(GameScene.Tutorial);
+                //LoadScene(GameScene.Tutorial);
                 break;
 
             case GameState.Hub:

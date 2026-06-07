@@ -15,8 +15,7 @@ public abstract class WeaponComponent : MonoBehaviour
     {
         weapon = GetComponent<Weapon>();
         eventHandler = weapon.EventHandler;
-        if (eventHandler == null) 
-            eventHandler = weapon.SetAndGetAnimationEventHandler();
+        if (eventHandler == null) eventHandler = weapon.SetAndGetAnimationEventHandler();
     }
 
     protected virtual void Start()

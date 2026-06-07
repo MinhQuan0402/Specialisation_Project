@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class PlayerAbilityState : PlayerState
 {
+    public float amountStaminaRequired = 20.0f;
+
+    public bool CanPerform => player.Stats.Comp.Stamina.CurrentValue >= amountStaminaRequired;
+
     protected bool isAbilityDone;
     protected bool isGrounded;
 
@@ -14,6 +18,7 @@ public class PlayerAbilityState : PlayerState
     {
         base.Enter();
 
+        UseStamina();
         isAbilityDone = false;
     }
 
@@ -49,5 +54,10 @@ public class PlayerAbilityState : PlayerState
         base.DoChecks();
 
         isGrounded = CollisionSenses.Grounded;
+    }
+
+    public virtual void UseStamina()
+    {
+        player.Stats.Comp.Stamina.Decrease(amountStaminaRequired);
     }
 }

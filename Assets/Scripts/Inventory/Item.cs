@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Item : MonoBehaviour, IInteractable
 {
@@ -10,6 +11,8 @@ public class Item : MonoBehaviour, IInteractable
     [SerializeField] private float floatingHeight = 0.5f;
 
     [SerializeField] private Vector2 offset;
+
+    public UnityEvent<ItemInstance, bool> OnInteractEvent;
 
     private Vector2 startPos;
 
@@ -44,7 +47,7 @@ public class Item : MonoBehaviour, IInteractable
 
     public virtual void OnPlayerEnterRange(Player player)
     {
-        UIManager.Instance.SetPickupPanel(startPos + offset, InteractPrompt);
+        UIManager.Instance.EnablePickupPanel(startPos + offset, InteractPrompt);
     }
 
     public void OnPlayerExitRange()
@@ -54,7 +57,8 @@ public class Item : MonoBehaviour, IInteractable
 
     public virtual void OnInteract(Player player)
     {
-        player.InventorySystem.TryToAddItem(TakeItem());
+        bool result = player.InventorySystem.TryToAddItem(TakeItem());
         UIManager.Instance.HidePickupPanel();
+        OnInteractEvent.Invoke(item, result);
     }
 }

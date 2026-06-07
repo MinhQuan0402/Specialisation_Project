@@ -14,11 +14,11 @@ public class WeaponEffect : ItemEffect
         var player = user.GetComponent<Player>();
         if (player.IsPrimaryAttackExist)
         {
-            player.primaryAttackState.SetWeapon(null, CombatInputs.primary);
+            player.primaryAttackState.Init(null, CombatInputs.primary);
         }
         else if (player.IsSecondaryAttackExist)
         {
-            player.secondaryAttackState.SetWeapon(null, CombatInputs.secondary);;
+            player.secondaryAttackState.Init(null, CombatInputs.secondary);;
         }
         var equippedWeapon = weapon.GetComponent<Weapon>();
         if (equippedWeapon != null)
@@ -27,19 +27,19 @@ public class WeaponEffect : ItemEffect
         }
     }
 
-    public override void Use(GameObject user)
+    public override bool Use(GameObject user)
     {
         var player = user.GetComponent<Player>();
         if (player == null)
         {
             Debug.LogError("Player component not found on the user GameObject.");
-            return;
+            return false;
         }
 
         if (weaponPrefab == null)
         {
             Debug.LogError("Weapon prefab is not assigned.");
-            return;
+            return false;
         }
 
         if(weapon == null)
@@ -54,12 +54,13 @@ public class WeaponEffect : ItemEffect
         var equippedWeapon = weapon.GetComponent<Weapon>();
         if (player.IsPrimaryAttackExist)
         {
-            player.primaryAttackState.SetWeapon(equippedWeapon, CombatInputs.primary);
+            player.primaryAttackState.Init(equippedWeapon, CombatInputs.primary);
         }
         else if (player.IsSecondaryAttackExist)
         {
-            player.secondaryAttackState.SetWeapon(equippedWeapon, CombatInputs.secondary);
+            player.secondaryAttackState.Init(equippedWeapon, CombatInputs.secondary);
         }
         equippedWeapon.IsEquipped = true;
+        return true;
     }
 }

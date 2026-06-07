@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,12 +11,20 @@ public class ItemSlotUI
     public Image itemIcon;
     public TMPro.TextMeshProUGUI quatityText;
 
-    public void Set(Sprite icon, int quatity, string nameItem)
+    public void Set(string nameItem, Sprite icon, int quatity = -1)
     {
         itemIcon.color = Color.white;
         name = nameItem;
         if (itemIcon != null) itemIcon.sprite = icon;
         if (quatityText != null) quatityText.text = quatity.ToString();
+    }
+
+    public void Reset()
+    {
+        name = "";
+        itemIcon.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        if (itemIcon != null) itemIcon.sprite = null;
+        if (quatityText != null) quatityText.text = "";
     }
 }
 
@@ -46,7 +54,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     [Header("In-Game Elements")]
     [SerializeField] private GameObject    pickupCanva;
     [SerializeField] private RectTransform pickupWindowRect;
-    [SerializeField] private Text          pickupPrompt;
+    [SerializeField] private Text pickupPrompt;
     [SerializeField] private float panelAnimationSpeed = 1.0f;
     [SerializeField] private float panelAnimDuration   = 1.0f;
 
@@ -54,6 +62,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     [SerializeField] private CanvasGroup fadeOverlay;   // full-screen black fade
 
     private Coroutine pickupPanelAnimation;
+    private readonly Dictionary<RectTransform, Rect> rectSize = new();
 
     private void Start()
     {
@@ -64,12 +73,8 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
             playerStaminahBar.SetTarget(stats.Stamina.MaxValue, stats.Stamina.MaxValue);
         }
 
-        foreach (ItemSlotUI slot in itemSlots)
-        {
-            slot.itemIcon.sprite = null;
-            slot.itemIcon.color = new Color(0, 0, 0, 0);
-            slot.quatityText.text = "";
-        }
+        foreach (ItemSlotUI slot in itemSlots) slot.Reset();
+        foreach (ItemSlotUI slot in weaponSlots) slot.Reset();
     }
 
     public void UpdateItemSlot(ItemData itemData, int quatity)
@@ -82,6 +87,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
             if (slotUI.name == itemData.itemName)
             {
                 slotUI.quatityText.text = quatity.ToString();
+                if (quatity == 0) slotUI.Reset();
                 return;
             }
 
@@ -90,7 +96,16 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         }
 
         emptySlotIndex = numEmptySlot == itemSlots.Length ? 0 : emptySlotIndex;
-        itemSlots[emptySlotIndex].Set(itemData.itemImage, quatity, itemData.itemName);
+        itemSlots[emptySlotIndex].Set(itemData.itemName, itemData.itemImage, quatity);
+    }
+
+    public void UpdateWeaponSlot(ItemData itemData, int index)
+    {
+        Debug.Log(index);
+        if (index >= weaponSlots.Length || index < 0) return;
+        if (itemData == null) return;
+
+        weaponSlots[index].Set(itemData.itemName, itemData.itemImage);
     }
 
     public void SetHealthBar(float value)  => playerHealthBar.SetInitValue(value);
@@ -106,12 +121,14 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         playerStaminahBar.SetTarget(currValue, maxValue);
     }
 
-    public void SetPickupPanel(Vector2 position, string prompt)
+    public void EnablePickupPanel(Vector2 position, string prompt)
     {
         pickupCanva.SetActive(true);
         pickupCanva.transform.position = position;
         pickupPrompt.text = prompt;
-        pickupPanelAnimation = StartCoroutine(PanelAnimation(pickupWindowRect, RectTransform.Axis.Horizontal));
+        pickupPanelAnimation = StartCoroutine(
+            PanelAnimation(pickupWindowRect, 
+            RectTransform.Axis.Horizontal));
     }
 
     public void HidePickupPanel()
@@ -122,7 +139,13 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
 
     IEnumerator PanelAnimation(RectTransform panelTransform, RectTransform.Axis axis)
     {
-        Vector2 originalSize = panelTransform.rect.size;
+        if (!rectSize.TryGetValue(panelTransform, out Rect rect))
+        {
+            rectSize.Add(panelTransform, panelTransform.rect);
+            rect = panelTransform.rect;
+        }
+
+        Vector2 originalSize = rect.size;
         float progress = 0f;
         while (progress < panelAnimDuration)
         {

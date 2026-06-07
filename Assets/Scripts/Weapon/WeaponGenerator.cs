@@ -8,19 +8,31 @@ public class WeaponGenerator : MonoBehaviour
     public event Action OnWeaponGenerating;
 
     [SerializeField] private Weapon weapon;
-    [SerializeField] private WeaponData data;
     [SerializeField] private CombatInputs combatInput;
 
-    private List<WeaponComponent> componentAlreadyOnWeapon = new List<WeaponComponent>();
-    private readonly List<WeaponComponent> componentAddedToWeapon = new List<WeaponComponent>();
-    private List<Type> componentDependencies = new List<Type>();
+    private List<WeaponComponent> componentAlreadyOnWeapon = new();
+    private readonly List<WeaponComponent> componentAddedToWeapon = new();
+    private List<Type> componentDependencies = new();
     
     private Animator anim;
+    private InventorySystem inventorySystem;
     
     private void Start()
     {
+        inventorySystem = weapon.Core.GetCoreComponent<InventorySystem>();
+        inventorySystem.OnWeaponDataChanged += HandleWeaponDataChanged;
+
         anim = GetComponentInChildren<Animator>();
-        GenerateWeapon(data);
+
+        if (inventorySystem.TryGetWeapon((int)combatInput, out var data))
+        {
+            GenerateWeapon(data);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        inventorySystem.OnWeaponDataChanged -= HandleWeaponDataChanged;
     }
 
     public void GenerateWeapon(WeaponData data)

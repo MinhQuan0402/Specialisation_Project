@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 527a48e5e96ca224f88634fd8f82c1ee, type: 3}
-  m_Name: PlayerDash
-  m_EditorClassIdentifier: 
-  amountStaminaRequired: 0
+  m_Script: {fileID: 11500000, guid: c4df47682dca69c4d8398bb8bb6a5dae, type: 3}
+  m_Name: HealEffect
+  m_EditorClassIdentifier: Assembly-CSharp::HealEffect
+  healPercent: 20

@@ -45,22 +45,36 @@ public class PlayerGroundedState : PlayerState
         primaryAttackInput = player.InputHandler.AttackInputs[(int)CombatInputs.primary];
         secondaryAttackInput = player.InputHandler.AttackInputs[(int)CombatInputs.secondary];
 
-        if (primaryAttackInput && player.IsPrimaryAttackExist && !Player.Instance.IsInteruptible)
+        if (primaryAttackInput && player.IsPrimaryAttackExist &&
+            !Player.Instance.IsInteruptible && player.primaryAttackState.CanPerform &&
+            player.primaryAttackState.CanTransitionToAttackState())
+        {
             stateMachine.ChangeState(player.primaryAttackState);
-        else if(secondaryAttackInput && player.IsSecondaryAttackExist && !Player.Instance.IsInteruptible)
+        }
+        else if (secondaryAttackInput && player.IsSecondaryAttackExist &&
+            !Player.Instance.IsInteruptible && player.secondaryAttackState.CanPerform &&
+            player.secondaryAttackState.CanTransitionToAttackState())
+        {
             stateMachine.ChangeState(player.secondaryAttackState);
-        else if(jumpInput && player.IsJumpExist && player.jumpState.CanJump())
+        }
+        else if (jumpInput && player.IsJumpExist && 
+            player.jumpState.CanJump() && 
+            player.jumpState.CanPerform)
+        {
             stateMachine.ChangeState(player.jumpState);
-        else if(!isGroundded)
+        }
+        else if (!isGroundded)
         {
             if (player.IsInAirExist) { player.inAirState.StartCoyoteTime(); }
             stateMachine.ChangeState(player.inAirState);
         }
-        else if(isTouchingWall && grabInput && isTouchingTopLedge)
+        else if (isTouchingWall && grabInput && isTouchingTopLedge)
         {
             stateMachine.ChangeState(player.wallGrabState);
         }
-        else if(dashInput && player.IsDashExist && player.dashState.CheckIfCanDash())
+        else if (dashInput && player.IsDashExist && 
+            player.dashState.CheckIfCanDash() && 
+            player.dashState.CanPerform)
         {
             stateMachine.ChangeState(player.dashState);
         }

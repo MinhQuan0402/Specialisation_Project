@@ -32,7 +32,7 @@ public class PlayerTouchingWallState : PlayerState
         grabInput = player.InputHandler.GrabInput;
         jumpInput = player.InputHandler.JumpInput;
 
-        if(jumpInput)
+        if(jumpInput && player.IsWallJumpExist && player.wallJumpState.CanPerform)
         {
             if (player.IsWallJumpExist) player.wallJumpState.DetermineWallJumpDirection(isTouchingWall);
             stateMachine.ChangeState(player.wallJumpState);
@@ -45,7 +45,8 @@ public class PlayerTouchingWallState : PlayerState
         {
             stateMachine.ChangeState(player.inAirState);
         }
-        else if(isTouchingBotLedge && !isTouchingTopLedge)
+        else if(isTouchingBotLedge && !isTouchingTopLedge &&
+            player.IsLedgeClimbExist && player.ledgeClimbState.PositionProjection())
         {
             stateMachine.ChangeState(player.ledgeClimbState);
         }

@@ -36,14 +36,6 @@ public class PlayerIdleState : PlayerGroundedState
         {
             stateMachine.ChangeState(player.moveState);
         }
-        else if (player.InputHandler.AttackInputs[(int)CombatInputs.primary] && player.IsPrimaryAttackExist)
-        {
-            stateMachine.ChangeState(player.primaryAttackState);
-        }
-        else if (player.InputHandler.AttackInputs[(int)CombatInputs.secondary] && player.IsSecondaryAttackExist)
-        {
-            stateMachine.ChangeState(player.secondaryAttackState);
-        }
     }
 
     public override void PhysicsUpdate()

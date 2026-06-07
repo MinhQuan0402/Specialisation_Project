@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InteractionDetector : MonoBehaviour
+public class InteractionDetector : CoreComponent
 {
     [SerializeField] private float detectionRadius = 2f;
     [SerializeField] private LayerMask interactionLayer;
@@ -8,7 +8,12 @@ public class InteractionDetector : MonoBehaviour
     private IInteractable currInteraction;
     private Player player;
 
-    private void Awake() => player = GetComponentInParent<Player>();
+    protected override void Awake()
+    {
+        base.Awake();
+
+        player = core.Root.GetComponent<Player>();
+    }
 
     private void Update()
     {

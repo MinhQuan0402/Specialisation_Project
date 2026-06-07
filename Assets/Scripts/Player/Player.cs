@@ -112,10 +112,8 @@ public class Player : SingletonTemplate<Player>
 
         primaryWeapon = transform.Find("PrimaryWeapon").GetComponent<Weapon>();
         secondaryWeapon = transform.Find("SecondaryWeapon").GetComponent<Weapon>();
-        if (IsPrimaryAttackExist)
-            primaryAttackState.SetWeapon(primaryWeapon, CombatInputs.primary);
-        if (IsSecondaryAttackExist)
-            secondaryAttackState.SetWeapon(secondaryWeapon, CombatInputs.secondary);
+        if (IsPrimaryAttackExist) primaryAttackState.Init(primaryWeapon, CombatInputs.primary);
+        if (IsSecondaryAttackExist) secondaryAttackState.Init(secondaryWeapon, CombatInputs.secondary);
         
         Stats.Comp.Poise.OnCurrentValueZero += HandlePoiseZero;
 
