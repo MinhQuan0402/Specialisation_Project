@@ -66,6 +66,8 @@ public class Player : SingletonTemplate<Player>
     public CoreComp<Stats> Stats { get; private set; }
     public CoreComp<Movement> Movement { get; private set; }
 
+    public bool IsFreezing { get; private set; } = false;
+
     private Coroutine hurtCoroutine;
     private SpriteRenderer SR;
 
@@ -227,6 +229,8 @@ public class Player : SingletonTemplate<Player>
 
     private void Update()
     {
+        if (IsFreezing) return;
+
         StateMachine.LogicUpdate();
         Core.LogicUpdate();
     }
@@ -251,6 +255,17 @@ public class Player : SingletonTemplate<Player>
         IsInteruptible = false;
 
         StateMachine.ChangeState(idleState);
+    }
+
+    public void Freeze()
+    {
+        IsFreezing = true;
+        StateMachine.ChangeState(idleState);
+    }
+
+    public void UnFreeze()
+    {
+        IsFreezing = false;
     }
 
 #pragma warning disable IDE0051 // Remove unused private members

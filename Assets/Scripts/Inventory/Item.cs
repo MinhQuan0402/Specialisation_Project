@@ -5,32 +5,23 @@ public class Item : MonoBehaviour, IInteractable
 {
     public ItemInstance item;
 
-    [SerializeField] private Transform spriteTransform;
+    [SerializeField] private SpriteRenderer itemIcon;
+    [SerializeField] private Bobber bobber;
 
-    [SerializeField] private float floatingSpeed = 0.1f;
-    [SerializeField] private float floatingHeight = 0.5f;
-
-    [SerializeField] private Vector2 offset;
+    [SerializeField] private Vector2 UIOffset;
 
     public UnityEvent<ItemInstance, bool> OnInteractEvent;
 
-    private Vector2 startPos;
-
     public string DisplayName => item.itemData.name;
 
-    public virtual string InteractPrompt => "Press E to pickup";
+    public virtual string InteractPrompt => "[E] To Pickup";
 
     public bool CanInteract => true;
 
     void Start()
     {
-        spriteTransform.GetComponent<SpriteRenderer>().sprite = item.itemData.itemImage;
-        startPos = spriteTransform.position;
-    }
-
-    void Update()
-    {
-        FloatingEffect();
+        itemIcon.sprite = item.itemData.itemImage;
+        bobber.StartBobbing();
     }
 
     public ItemInstance TakeItem()
@@ -39,26 +30,20 @@ public class Item : MonoBehaviour, IInteractable
         return item;
     }
 
-    private void FloatingEffect()
-    {
-        float newY = startPos.y + Mathf.Sin(Time.time * floatingSpeed) * floatingHeight;
-        spriteTransform.position = new Vector3(spriteTransform.position.x, newY);
-    }
-
     public virtual void OnPlayerEnterRange(Player player)
     {
-        UIManager.Instance.EnablePickupPanel(startPos + offset, InteractPrompt);
+        UIManager.Instance.EnableInteractionPanel(transform.position + (Vector3)UIOffset, InteractPrompt);
     }
 
     public void OnPlayerExitRange()
     {
-        UIManager.Instance.HidePickupPanel();
+        UIManager.Instance.HideInteractionPanel();
     }
 
     public virtual void OnInteract(Player player)
     {
         bool result = player.InventorySystem.TryToAddItem(TakeItem());
-        UIManager.Instance.HidePickupPanel();
+        UIManager.Instance.HideInteractionPanel();
         OnInteractEvent.Invoke(item, result);
     }
 }

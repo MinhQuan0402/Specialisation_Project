@@ -66,7 +66,7 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
             RunTimeElapsed += Time.deltaTime;
     }
 
-    public void ChangeState(GameState newState)
+    private void ChangeState(GameState newState)
     {
         if (CurrentState == newState) return;
         GameState old = CurrentState;

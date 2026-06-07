@@ -372,6 +372,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: IDLE_10
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 30
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 765266f968743a74e81c5462778eb33d
+      internalID: 487494620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -390,6 +412,8 @@ TextureImporter:
     nameFileIdTable:
       IDLE_0: 815424164945274260
       IDLE_1: -270785710348516584
+      IDLE_10: 487494620
+      IDLE_11: 1009869144
       IDLE_2: 8443794771774750484
       IDLE_3: 1777182293076053196
       IDLE_4: 6114163804962241700

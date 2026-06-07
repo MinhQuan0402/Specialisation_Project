@@ -51,17 +51,23 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     [SerializeField] private TMPro.TextMeshProUGUI finalScoreText;
     [SerializeField] private TMPro.TextMeshProUGUI runsPlayedText;
 
-    [Header("In-Game Elements")]
+    [Header("Interaction Elements")]
     [SerializeField] private GameObject    pickupCanva;
     [SerializeField] private RectTransform pickupWindowRect;
     [SerializeField] private Text pickupPrompt;
-    [SerializeField] private float panelAnimationSpeed = 1.0f;
-    [SerializeField] private float panelAnimDuration   = 1.0f;
+    
+    [Header("Dialogue Elements")]
+    [SerializeField] private RectTransform dialoguePromptPanel;
+    [SerializeField] private Image dialogueNPCIcon;
+    [SerializeField] private TMPro.TextMeshProUGUI dialogueNPCName;
+    [SerializeField] private TMPro.TextMeshProUGUI dialoguePromptText;
 
     [Header("Transition")]
     [SerializeField] private CanvasGroup fadeOverlay;   // full-screen black fade
+    [SerializeField] private float panelAnimationSpeed = 1.0f;
+    [SerializeField] private float panelAnimDuration = 1.0f;
 
-    private Coroutine pickupPanelAnimation;
+    private readonly Dictionary<RectTransform, Coroutine> coroutines = new();
     private readonly Dictionary<RectTransform, Rect> rectSize = new();
 
     private void Start()
@@ -121,20 +127,63 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         playerStaminahBar.SetTarget(currValue, maxValue);
     }
 
-    public void EnablePickupPanel(Vector2 position, string prompt)
+    public void EnableInteractionPanel(Vector2 position, string prompt)
     {
         pickupCanva.SetActive(true);
         pickupCanva.transform.position = position;
         pickupPrompt.text = prompt;
-        pickupPanelAnimation = StartCoroutine(
-            PanelAnimation(pickupWindowRect, 
-            RectTransform.Axis.Horizontal));
+
+        if (coroutines.ContainsKey(pickupWindowRect))
+        {
+            coroutines[pickupWindowRect] = StartCoroutine(
+                            PanelAnimation(pickupWindowRect,
+                            RectTransform.Axis.Horizontal));
+            return;
+        }
+
+        coroutines.Add(pickupWindowRect, StartCoroutine(
+                        PanelAnimation(pickupWindowRect,
+                        RectTransform.Axis.Horizontal)));
     }
 
-    public void HidePickupPanel()
+    public void HideInteractionPanel()
     {
         pickupCanva.SetActive(false);
-        StopCoroutine(pickupPanelAnimation);
+        StopCoroutine(coroutines[pickupWindowRect]);
+    }
+
+    public void EnableDialoguePrompt(Sprite icon, string npcName, string prompt)
+    {
+        dialoguePromptPanel.gameObject.SetActive(true);
+        dialogueNPCIcon.sprite = icon;
+        dialogueNPCName.text = npcName;
+        dialoguePromptText.text = prompt;
+
+        if (coroutines.ContainsKey(dialoguePromptPanel))
+        {
+            coroutines[dialoguePromptPanel] = StartCoroutine(
+                            PanelAnimation(dialoguePromptPanel,
+                            RectTransform.Axis.Horizontal));
+            return;
+        }
+
+        coroutines.Add(dialoguePromptPanel, StartCoroutine(
+                        PanelAnimation(dialoguePromptPanel,
+                        RectTransform.Axis.Horizontal)));
+    }
+
+    public void UpdateDialoguePrompt(Sprite icon, string npcName, string prompt)
+    {
+        dialogueNPCIcon.sprite = icon;
+        dialogueNPCName.text = npcName;
+        dialoguePromptText.text = prompt;
+    }
+
+    public TMPro.TextMeshProUGUI DialogueText => dialoguePromptText;
+
+    public void HideDialoguePrompt()
+    {
+        dialoguePromptPanel.gameObject.SetActive(false);
     }
 
     IEnumerator PanelAnimation(RectTransform panelTransform, RectTransform.Axis axis)
