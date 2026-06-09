@@ -62,6 +62,11 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     [SerializeField] private TMPro.TextMeshProUGUI dialogueNPCName;
     [SerializeField] private TMPro.TextMeshProUGUI dialoguePromptText;
 
+    [Header("Death Feedback Elements")]
+    [SerializeField] private RectTransform deathFeedbackPanel;
+    [SerializeField] private TMPro.TextMeshProUGUI dFbkTimer;
+    [SerializeField] private Text hintText;
+
     [Header("Transition")]
     [SerializeField] private CanvasGroup fadeOverlay;   // full-screen black fade
     [SerializeField] private float panelAnimationSpeed = 1.0f;
@@ -184,7 +189,39 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     public void HideDialoguePrompt()
     {
         dialoguePromptPanel.gameObject.SetActive(false);
+        StopCoroutine(coroutines[dialoguePromptPanel]);
     }
+
+    public void EnableFeedbackPrompt(string timer, string prompt)
+    {
+        deathFeedbackPanel.gameObject.SetActive(true);
+        hintText.text = prompt;
+        dFbkTimer.text = timer;
+
+        if (coroutines.ContainsKey(deathFeedbackPanel))
+        {
+            coroutines[deathFeedbackPanel] = StartCoroutine(
+                            PanelAnimation(deathFeedbackPanel,
+                            RectTransform.Axis.Vertical));
+            return;
+        }
+
+        coroutines.Add(deathFeedbackPanel, StartCoroutine(
+                        PanelAnimation(deathFeedbackPanel,
+                        RectTransform.Axis.Vertical)));
+    }
+
+    public Text HintText => hintText;
+
+    public void HideFeedbackPrompt()
+    {
+        StopCoroutine(coroutines[deathFeedbackPanel]);
+        coroutines[deathFeedbackPanel] = StartCoroutine(
+                    PanelAnimationReverse(deathFeedbackPanel, 
+                    RectTransform.Axis.Vertical));
+    }
+
+    public void SetHUDActive(bool enable) => hudPanel.SetActive(enable);
 
     IEnumerator PanelAnimation(RectTransform panelTransform, RectTransform.Axis axis)
     {
@@ -206,6 +243,24 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
             yield return null;
         }
 
+        yield return null;
+    }
+
+    IEnumerator PanelAnimationReverse(RectTransform panelTransform, RectTransform.Axis axis)
+    {
+        Vector2 originalSize = panelTransform.rect.size;
+        float progress = 0f;
+        while (progress < panelAnimDuration)
+        {
+            progress += Time.deltaTime * panelAnimationSpeed;
+            float currentSize = Mathf.Lerp(axis == RectTransform.Axis.Horizontal ?
+                                        originalSize.x : originalSize.y, 0.0f,
+                                        progress / panelAnimDuration);
+            panelTransform.SetSizeWithCurrentAnchors(axis, currentSize);
+            yield return null;
+        }
+
+        panelTransform.gameObject.SetActive(false);
         yield return null;
     }
 }

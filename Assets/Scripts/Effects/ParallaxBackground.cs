@@ -75,6 +75,8 @@ public class ParallaxBackground : MonoBehaviour
             // Apply the parallax offset
             t.position += new Vector3(moveX, moveY, 0f);
 
+            if (layer.parallaxFactorY == 1) t.position = new Vector3(t.position.x, cameraTransform.position.y, t.position.z);
+
             // When the camera travels far enough that the sprite edge would
             // become visible, we jump the layer by one sprite-width so it tiles
             // seamlessly without needing multiple copies in the scene.

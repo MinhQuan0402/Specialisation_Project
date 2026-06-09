@@ -24,8 +24,6 @@ public class PlayerDashState : PlayerAbilityState
     {
         base.Enter();
 
-        PlaceAfterImage();
-
         CanDash = false;
         player.InputHandler.UseDashInput();
 
@@ -36,6 +34,7 @@ public class PlayerDashState : PlayerAbilityState
         startTime = Time.unscaledTime;
 
         player.DashIndicator.gameObject.SetActive(true);
+        player.Anim.SetFloat("xVelocity", dashDirection.x);
     }
 
     public override void Exit()

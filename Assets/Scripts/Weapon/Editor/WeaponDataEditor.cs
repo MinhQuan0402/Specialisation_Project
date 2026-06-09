@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using UnityEditor.Callbacks;
 using System.Linq;
-using Unity.VisualScripting;
 
 [CustomEditor(typeof(WeaponData))]
 public class WeaponDataEditor : Editor

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6f998e88a46a1499c5738f74e5b501, type: 3}
+  m_Name: Dash
+  m_EditorClassIdentifier: Assembly-CSharp::StepData
+  displayName: Dash Section
+  description: 'This is the section where players have to timingly themselves to
+    dash away from the spike. '
+  hasRespawnPoint: 1
+  deathHints:
+  - Try again!
+  - Watch out! SPIKE BELOW!
+  - Precision dash!

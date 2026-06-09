@@ -30,7 +30,7 @@ public abstract class BaseNPC : MonoBehaviour, IInteractable
                 player.Movement.Comp.Flip();
             if (FacePlayerOnInteract && Mathf.Sign(dir.normalized.x) != FacingDirection)
             {
-                transform.Rotate(0.0f, 180.0f, 0.0f);
+                transform.localScale = new Vector3(-FacingDirection, transform.localScale.y, transform.localScale.z);
                 hasFlip = true;
             }
             player.Freeze();

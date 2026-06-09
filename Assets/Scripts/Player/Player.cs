@@ -129,8 +129,6 @@ public class Player : SingletonTemplate<Player>
 
         Stats.Comp.Health.OnValueChanged += UIManager.Instance.Health_OnValueChanged;
         Stats.Comp.Stamina.OnValueChanged += UIManager.Instance.Stamina_OnValueChanged;
-
-        Stats.Comp.Health.OnCurrentValueZero += GameManager.Instance.PlayerDied;
     }
 
     private void OnEnable()

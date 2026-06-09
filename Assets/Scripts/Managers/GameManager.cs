@@ -8,6 +8,7 @@ public enum GameState
     Tutorial,
     Hub,         
     Playing,
+    Cutscene,
     Paused,
     LevelClear,
     BossFight,
@@ -62,11 +63,12 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
 
     private void Update()
     {
-        if (CurrentState == GameState.Playing)
+        if (CurrentState == GameState.Playing || 
+            CurrentScene == GameScene.Tutorial)
             RunTimeElapsed += Time.deltaTime;
     }
 
-    private void ChangeState(GameState newState)
+    public void ChangeState(GameState newState)
     {
         if (CurrentState == newState) return;
         GameState old = CurrentState;
@@ -143,13 +145,13 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
     // ─────────────────────────────────────────────────────────
     // Public actions called by other scripts
     // ─────────────────────────────────────────────────────────
-    public void StartRun()
+    public void StartRun(GameState startingState)
     {
         CurrentLevel = 1;
         RunScore = 0;
         RunTimeElapsed = 0f;
         DeathThisRun = false;
-        ChangeState(GameState.Playing);
+        ChangeState(startingState);
     }
 
     public void CompleteTutorial()
@@ -165,23 +167,9 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
 
     public void PlayerDied()
     {
-        switch (CurrentDeathContext)
-        {
-            case DeathContext.Tutorial:
-                Invoke(nameof(HandleTutorialDeath), 1.0f);
-                break;
-
-            case DeathContext.Level:
-            case DeathContext.Boss:
-                HandlePermadeath();
-                ChangeState(GameState.GameOver);
-                break;
-        }
-    }
-
-    private void HandleTutorialDeath()
-    {
-        TutorialEventBus.TriggerPlayerDiedInTutorial();
+        SceneEventBus.TriggerPlayerDied();
+        if (CurrentScene == GameScene.Level)
+            ChangeState(GameState.GameOver);
     }
 
     public void LevelCleared()
@@ -216,6 +204,8 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
         HandlePermadeath();
         ChangeState(GameState.MainMenu);
     }
+
+    public void AddScore(int scoreToAdd) => RunScore += scoreToAdd;
 
     private void LoadScene(GameScene scene)
     {

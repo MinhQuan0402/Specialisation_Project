@@ -28,7 +28,7 @@ public class CommonAttackDataDrawer : PropertyDrawer
 
         if (prop.isExpanded)
         {
-            r.y += EditorGUIUtility.singleLineHeight + 2;
+            r.y += line + space;
 
             SerializedProperty useDamage = prop.FindPropertyRelative("UseDamage");
             SerializedProperty damage = prop.FindPropertyRelative("damageAmount");

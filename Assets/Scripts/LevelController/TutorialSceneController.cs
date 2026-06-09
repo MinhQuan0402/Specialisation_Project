@@ -1,212 +1,110 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-public enum TutorialStep
+public class TutorialSceneController : BaseSceneController
 {
-    Movement, 
-    Dash,
-    Spike,
-    Combat
-}
+    [SerializeField, ReadOnlyInspector] private int deathCount = 0;
 
-public static class TutorialEventBus
-{
-    public static event Action OnPlayerDiedInTutorial;
-
-    public static void TriggerPlayerDiedInTutorial() => OnPlayerDiedInTutorial?.Invoke();
-}
-
-[System.Serializable]
-public class RespawnPointData
-{
-    public string name;
-    public TutorialStep step;
-    public TutorialStepTrigger respawnPoint;
-
-    [TextArea(1, 2)]
-    public string stepLabel; // editor-only label so you know which is which
-}
-
-#if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(RespawnPointData))]
-public class RespawnPointDataDrawer : PropertyDrawer
-{
-    readonly float line = EditorGUIUtility.singleLineHeight;
-    const float space = 2f;
-
-    public override void OnGUI(
-        Rect pos,
-        SerializedProperty prop,
-        GUIContent label)
+    protected override void BuildRespawnMap()
     {
-        Rect r = pos;
-        r.height = line;
-
-        EditorGUI.BeginProperty(pos, label, prop);
-
-        prop.isExpanded = EditorGUI.Foldout(
-            r,
-            prop.isExpanded,
-            label,
-            true
-        );
-
-
-        if (prop.isExpanded)
-        {
-            r.y += EditorGUIUtility.singleLineHeight + 2;
-
-            SerializedProperty step = prop.FindPropertyRelative("step");
-            SerializedProperty name = prop.FindPropertyRelative("name");
-            SerializedProperty respawnPoint = prop.FindPropertyRelative("respawnPoint");
-            SerializedProperty stepLabel = prop.FindPropertyRelative("stepLabel");
-
-            name.stringValue = step.enumDisplayNames[step.enumValueIndex];
-
-            EditorGUI.PropertyField(r, step);
-            r.y += EditorGUI.GetPropertyHeight(step) + 2;
-
-            EditorGUI.PropertyField(r, respawnPoint);
-            r.y += EditorGUI.GetPropertyHeight(respawnPoint) + 2;
-
-            EditorGUI.PropertyField(r, stepLabel);
-            r.y += EditorGUI.GetPropertyHeight(stepLabel) + 2;
-        }
+        // Populate the base class RespawnMap from our serialized list
+        foreach (var entry in sceneSteps)
+            if (entry.step != null)
+                RespawnMap[entry.step] = entry;
     }
 
-    public override float GetPropertyHeight(
-        SerializedProperty prop,
-        GUIContent label)
+    protected override void OnEnable()
     {
-        if (!prop.isExpanded)
-            return line;
-
-        float height = (line + space) * 2;
-        height += (line + space) * 2;
-        height += (line + space) * 2;
-        return height;
-    }
-}
-#endif
-
-public class TutorialSceneController : SingletonTemplate<TutorialSceneController>
-{
-    [Header("Respawn Points")]
-    [Tooltip("assign in Inspector, order matches TutorialStep enum")]
-    [SerializeField] private List<RespawnPointData> respawnPoints;
-
-    //[SerializeField] private Transform       miniBossRespawnPoint;
-
-    [Header("UI Feedback")]
-    [SerializeField] private GameObject      deathFeedbackPanel; // "Try again!" overlay
-    [SerializeField] private TMPro.TextMeshProUGUI attemptsText;
-    
-    [field: SerializeField, ReadOnlyInspector] public TutorialStep CurrentStep { get; private set; } = TutorialStep.Movement;
-
-    private Player player;
-    private int    deathCount = 0;
-
-    private readonly Dictionary<TutorialStep, RespawnPointData> respawnMap = new();
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        // Build the lookup dictionary from the serialized list
-        foreach (var entry in respawnPoints)
-        {
-            respawnMap[entry.step] = entry;
-        }
+        base.OnEnable();
+        //TutorialEventBus.OnMiniBossDefeated += HandleMiniBossDefeated;
     }
 
-    private void Start()
+    protected override void OnDisable()
     {
-        player = Player.Instance;
-
-        GameManager.Instance.SetDeathContext(DeathContext.Tutorial);
-
-        TutorialEventBus.OnPlayerDiedInTutorial += HandleTutorialDeath;
-
-        AdvanceToStep(TutorialStep.Movement);
-    }
-
-    private void OnDestroy()
-    {
-        TutorialEventBus.OnPlayerDiedInTutorial -= HandleTutorialDeath;
+        base.OnDisable();
+        //TutorialEventBus.OnMiniBossDefeated -= HandleMiniBossDefeated;
         GameManager.Instance.SetDeathContext(DeathContext.Level);
     }
 
-    // ── Step progression ──────────────────────────────────────
-    public void AdvanceToStep(TutorialStep newStep)
+    // ── Required overrides ────────────────────────────────────
+    protected override void OnSceneReady()
     {
-        CurrentStep = newStep;
-        deathCount = 0; // reset death count per step
+        GameManager.Instance.SetDeathContext(DeathContext.Tutorial);
+
+        // Start at the first registered step
+        if (sceneSteps.Count > 0)
+            AdvanceToStep(sceneSteps[0].step);
     }
 
-    // ── Death handling ────────────────────────────────────────
-    private void HandleTutorialDeath()
+    protected override void HandlePlayerDied()
     {
         deathCount++;
         StartCoroutine(RespawnSequence());
     }
 
+    protected override void OnStepChanged(StepData step)
+    {
+        deathCount = 0; // reset death count on each new step
+    }
+
+    // ── Zone override — any step zone advances the tutorial ───
+    protected override void HandleZoneEntered(StepData step, GameObject who)
+    {
+        if (!IsStepRegistered(step)) return;
+        AdvanceToStep(step);
+    }
+
+    // ── Private tutorial logic ────────────────────────────────
     private IEnumerator RespawnSequence()
     {
-        // 1. Show death feedback
-        //ShowDeathFeedback();
+        float runTime = GameManager.Instance.RunTimeElapsed;
+        int mins = (int)runTime / 60;
+        int secs = (int)runTime % 60;
+        string timerText = $"{mins:D2}:{secs:D2}";
 
-        // 2. Brief pause for feel
-        yield return new WaitForSecondsRealtime(1.2f);
+        UIManager.Instance.EnableFeedbackPrompt(timerText, "");
 
-        // 3. Respawn player
-        RespawnAtCurrentStep();
-        //RespawnMiniBoss();
+        yield return StartCoroutine(TypeLine(GetHint()));
 
-        // 4. Hide feedback
-        //HideDeathFeedback();
+        RespawnAtStep(CurrentStep);
+
+        /*if (CurrentStep == miniBossStep)
+            miniBoss.ResetBoss();*/
+
+        GameManager.Instance.StartRun(GameState.Tutorial);
+        UIManager.Instance.HideFeedbackPrompt();
     }
 
-    private void RespawnAtCurrentStep()
+    private IEnumerator TypeLine(string text)
     {
-        if (!respawnMap.TryGetValue(CurrentStep, out var data)) return;
-        player.Respawn(data.respawnPoint.SpawnPoint);
-    }
-
-    /*private void RespawnMiniBoss()
-    {
-        //miniBoss.transform.position = miniBossRespawnPoint.position;
-        //miniBoss.ResetBoss(); // resets HP, AI state, pattern
-    }*/
-
-    private void ShowDeathFeedback()
-    {
-        deathFeedbackPanel.SetActive(true);
-
-        string msg = deathCount switch
+        var bodyText = UIManager.Instance.HintText;
+        bodyText.text = "";
+        foreach (char c in text)
         {
-            1 => "Watch the attack pattern...",
-            2 => "Try dodging when it charges!",
-            _ => "You can do this!"
-        };
+            bodyText.text += c;
+            yield return new WaitForSecondsRealtime(0.03f);
+        }
 
-        attemptsText.text = msg;
+        yield return new WaitForSecondsRealtime(1.5f);
     }
 
-    private void HideDeathFeedback()
+    private string GetHint()
     {
-        deathFeedbackPanel.SetActive(false);
+        if (CurrentStep == null) return "Try again!";
+
+        // Pull hints from the StepData asset itself
+        if (CurrentStep.deathHints != null && CurrentStep.deathHints.Length > 0)
+        {
+            int index = Mathf.Clamp(deathCount - 1, 0,
+                CurrentStep.deathHints.Length - 1);
+            return CurrentStep.deathHints[index];
+        }
+
+        return "Try again!";
     }
 
-    // ── Mini boss cleared ─────────────────────────────────────
-    /*private void HandleMiniBossDefeated()
-    {
-        //GameManager.Instance.CompleteTutorial(); // → Hub
-    }*/
+    private void HandleMiniBossDefeated()
+        => GameManager.Instance.CompleteTutorial();
 }

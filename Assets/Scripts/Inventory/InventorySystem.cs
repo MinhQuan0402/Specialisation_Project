@@ -51,7 +51,23 @@ public class InventorySystem : CoreComponent
         return true;
     }
 
-    public void TryToUsePrimarySlot(InputAction.CallbackContext context)
+    public bool TryToAddWeapon(WeaponData weaponData)
+    {
+        if (inventory == null) return false;
+
+        int weaponIndex = inventory.TryGetEmptyIndex();
+        if (!inventory.TrySetWeapon(weaponData, weaponIndex, out WeaponData oldWeapon))
+        {
+            //Swap weapon request
+            return true;
+        }
+
+        OnWeaponDataChanged?.Invoke(weaponIndex, weaponData);
+        UIManager.Instance.UpdateWeaponSlot(weaponData, weaponIndex);
+        return true;
+    }
+
+    public void TryToUsePrimaryItemSlot(InputAction.CallbackContext context)
     {
         if (context.started)
         {
@@ -65,7 +81,7 @@ public class InventorySystem : CoreComponent
         }
     }
 
-    public void TryToUseSecondarySlot(InputAction.CallbackContext context)
+    public void TryToUseSecondaryItemSlot(InputAction.CallbackContext context)
     {
         if (context.started)
         {
