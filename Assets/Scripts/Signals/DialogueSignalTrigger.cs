@@ -27,8 +27,7 @@ public class DialogueSignalTrigger : MonoBehaviour
             if (entry.signal == signal)
             {
                 var director = GetComponent<PlayableDirector>();
-                director.timeUpdateMode = DirectorUpdateMode.Manual;
-                director.Evaluate();
+                director.playableGraph.GetRootPlayable(0).SetSpeed(0);
                 DialogueManager.Instance.StartSequence(entry.dialogueSequence, 
                                                       onDone: Resume, 
                                                       () => Invoke(nameof(AdvanceDialogue), 1.0f));
@@ -45,13 +44,6 @@ public class DialogueSignalTrigger : MonoBehaviour
     private void Resume()
     {
         var director = GetComponent<PlayableDirector>();
-        // Switch back to GameTime so the playhead moves automatically again
-        director.timeUpdateMode = DirectorUpdateMode.GameTime;
-
-        // Force the director to evaluate immediately to prevent a 1-frame jitter
-        director.Evaluate();
-
-        // Resume playback
-        director.Play();
+        director.playableGraph.GetRootPlayable(0).SetSpeed(1);
     }
 }

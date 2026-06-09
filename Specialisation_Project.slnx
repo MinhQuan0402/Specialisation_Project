@@ -20,11 +20,11 @@
   <Project Path="Unity.RenderPipelines.Core.Editor.csproj" />
   <Project Path="Unity.VisualStudio.Editor.csproj" />
   <Project Path="Unity.Timeline.Editor.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.InferenceEngine.csproj" />
   <Project Path="Unity.AI.Mesh.csproj" />
   <Project Path="Unity.2D.SpriteShape.Editor.csproj" />
   <Project Path="UnityEngine.UI.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Searcher.Editor.csproj" />
   <Project Path="Unity.2D.Aseprite.Editor.csproj" />
   <Project Path="Unity.2D.SpriteShape.Runtime.csproj" />

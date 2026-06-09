@@ -79,9 +79,12 @@ public class SceneNPC : BaseNPC
         if (!string.IsNullOrEmpty(setFlagOnInteract))
             GameFlagRegistry.Set(setFlagOnInteract);
 
+        Player.Instance.UnFreeze();
+
         // Fire event — scene controllers and other systems can react
         NPCEventBus.TriggerNPCInteracted(NPCData);
         if (hasFlip) transform.localScale = new Vector3(FacingDirection, transform.localScale.y, transform.localScale.z);
+        hasFlip = false;
         UIManager.Instance.HideInteractionPanel();
     }
 
