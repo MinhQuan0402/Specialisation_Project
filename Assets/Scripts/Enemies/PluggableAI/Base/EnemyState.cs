@@ -50,7 +50,7 @@ public class EnemyState : ScriptableObject
             bool result = t.GetAllDecisions(controller);
             controller.TransitionToState(result ? t.trueState : t.falseState);
             // TransitionToState will set the current state to the new state, so if we are no longer in this state, break out of the loop
-            if (controller.currentState != this) break;
+            if (controller.CurrentState != this) break;
         }
     }
 

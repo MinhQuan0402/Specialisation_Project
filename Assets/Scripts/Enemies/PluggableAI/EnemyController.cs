@@ -11,9 +11,10 @@ public class EnemyController : MonoBehaviour
 {
     [Header("Config")]
     [field: SerializeField] public EnemyData Data { get; private set; }
-    public EnemyState currentState;
-    public EnemyState remainState;   // no-op state — keeps enemy in current state
+    [SerializeField] private EnemyState startingState;
+    [SerializeField] private EnemyState remainState;   // no-op state — keeps enemy in current state
     [ReadOnlyInspector] public EnemyAttackState currentAttackState;
+    [field: SerializeField, ReadOnlyInspector] public EnemyState CurrentState { get; private set; }
 
     [Header("State Refs (for TakeDamage routing)")]
     public EnemyState hurtState;
@@ -32,8 +33,7 @@ public class EnemyController : MonoBehaviour
 
     private GameObject enemyUI = null;
 
-    [Space(10)]
-    [Header("Debug Info")]
+    [Space(10), Header("Debug Info")]
     [ReadOnlyInspector] public Transform player;
     [ReadOnlyInspector] public Vector2 spawnPoint;
     [ReadOnlyInspector] public Vector2 lastSeenPlayerPoint;
@@ -153,6 +153,13 @@ public class EnemyController : MonoBehaviour
             TextMeshProUGUI nameText = enemyUI.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
             nameText.text = Data.enemyType.ToString();
         }
+
+        TransitionToState(startingState);
+        AstarPath astarPath = FindAnyObjectByType<AstarPath>();
+        if (astarPath != null && Data.isFlying)
+        {
+            astarPath.Scan(astarPath.graphs[0]);
+        }
     }
 
     private void OnDestroy()
@@ -174,8 +181,8 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         Core.LogicUpdate();
-        if (!isDead && currentState != null) 
-            currentState.UpdateState(this);
+        if (!isDead && CurrentState != null) 
+            CurrentState.UpdateState(this);
 
         if (enemyUI != null)
         {
@@ -201,10 +208,10 @@ public class EnemyController : MonoBehaviour
 
     public void TransitionToState(EnemyState next)
     {
-        if (next == null || next == remainState || next == currentState) return;
-        currentState = next;
+        if (next == null || next == remainState || next == CurrentState) return;
+        CurrentState = next;
         stateEnterTime = Time.time;
-        currentState.EnterState(this);
+        CurrentState.EnterState(this);
         isAnimationFinished = false;
     }
 
@@ -236,8 +243,8 @@ public class EnemyController : MonoBehaviour
 
     private void HandleHurtState(GameObject source)
     {
-        if (currentState == null || isDead) return;
-        if (currentState.IsAttackState && 
+        if (CurrentState == null || isDead) return;
+        if (CurrentState.IsAttackState && 
             !isAnimationFinished) return;
         lastSeenPlayerPoint = player.position;
         TransitionToState(hurtState);
@@ -245,7 +252,7 @@ public class EnemyController : MonoBehaviour
 
     private void StartAttackWindow(AnimationWindows windows)
     {
-        if (currentState.IsAttackState)
+        if (CurrentState.IsAttackState)
         {
             if (windows == AnimationWindows.Attack)
             {
@@ -257,7 +264,7 @@ public class EnemyController : MonoBehaviour
 
     private void StopAttackWindow(AnimationWindows windows)
     {
-        if (currentState.IsAttackState)
+        if (CurrentState.IsAttackState)
         {
             if (windows == AnimationWindows.Attack)
             {

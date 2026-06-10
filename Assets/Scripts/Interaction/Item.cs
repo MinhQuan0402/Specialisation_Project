@@ -6,7 +6,6 @@ public class Item : MonoBehaviour, IInteractable
     public ItemInstance item;
 
     [SerializeField] private SpriteRenderer itemIcon;
-    [SerializeField] private Bobber bobber;
 
     [SerializeField] private Vector2 UIOffset;
 
@@ -20,8 +19,8 @@ public class Item : MonoBehaviour, IInteractable
 
     void Start()
     {
-        itemIcon.sprite = item.itemData.itemImage;
-        bobber.StartBobbing();
+        if (itemIcon != null && item.itemData != null)
+            itemIcon.sprite = item.itemData.itemImage;
     }
 
     public ItemInstance TakeItem()
@@ -30,7 +29,7 @@ public class Item : MonoBehaviour, IInteractable
         return item;
     }
 
-    public virtual void OnPlayerEnterRange(Player player)
+    public virtual void OnPlayerEnterRange()
     {
         UIManager.Instance.EnableInteractionPanel(transform.position + (Vector3)UIOffset, InteractPrompt);
     }
@@ -40,10 +39,12 @@ public class Item : MonoBehaviour, IInteractable
         UIManager.Instance.HideInteractionPanel();
     }
 
-    public virtual void OnInteract(Player player)
+    public virtual void OnInteract()
     {
-        bool result = player.InventorySystem.TryToAddItem(TakeItem());
+        bool result = Player.Instance.InventorySystem.TryToAddItem(TakeItem());
         UIManager.Instance.HideInteractionPanel();
         OnInteractEvent.Invoke(item, result);
     }
+
+    public virtual void OnInteractionComplete() { }
 }

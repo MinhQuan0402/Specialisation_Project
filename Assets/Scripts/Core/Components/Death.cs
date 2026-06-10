@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Death : CoreComponent
 {
@@ -17,6 +18,9 @@ public class Death : CoreComponent
     public bool isAnimationFinished = false;
 
     [SerializeField] private GameObject[] deathParticles;
+
+    [SerializeField] private UnityEvent OnDeath;
+
     private ParticleManager ParticleManager => particleManager ? particleManager : core.GetCoreComponent(ref particleManager);
     private Stats Stats => stats ? stats : core.GetCoreComponent(ref stats);
 
@@ -44,6 +48,8 @@ public class Death : CoreComponent
         {
             Destroy(core.transform.parent.gameObject);
         }
+
+        OnDeath.Invoke();
     }
 
     public void SetParticles(GameObject[] deathParticles)

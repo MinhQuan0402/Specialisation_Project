@@ -30,6 +30,7 @@ namespace UnityHierarchyFolders.Editor
             new Color(0.50f, 0.79f, 0.98f), // Blue
             new Color(0.63f, 0.90f, 0.68f), // Green
             new Color(0.96f, 0.62f, 0.62f), // Red
+            new Color(1.00f, 0.65f, 0.00f), // Orange
         };
         public static int IconCount => IconColors.Length;
 

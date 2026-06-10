@@ -6,13 +6,10 @@ public class InteractionDetector : CoreComponent
     [SerializeField] private LayerMask interactionLayer;
 
     private IInteractable currInteraction;
-    private Player player;
 
     protected override void Awake()
     {
         base.Awake();
-
-        player = core.Root.GetComponent<Player>();
     }
 
     private void Update()
@@ -20,10 +17,10 @@ public class InteractionDetector : CoreComponent
         DetectNearestIntertion();
 
         if (currInteraction != null && currInteraction.CanInteract &&
-            player.InputHandler.InteractionInput)
+            Player.Instance.InputHandler.InteractionInput)
         {
-            player.InputHandler.UseInteractionInput();
-            currInteraction.OnInteract(player);
+            Player.Instance.InputHandler.UseInteractionInput();
+            currInteraction.OnInteract();
         }
     }
 
@@ -48,7 +45,7 @@ public class InteractionDetector : CoreComponent
         {
             currInteraction?.OnPlayerExitRange();
             currInteraction = nearest;
-            currInteraction?.OnPlayerEnterRange(player);
+            currInteraction?.OnPlayerEnterRange();
         }
     }
 

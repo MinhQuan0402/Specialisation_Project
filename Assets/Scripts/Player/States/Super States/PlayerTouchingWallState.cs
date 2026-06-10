@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTouchingWallState : PlayerState
@@ -20,8 +21,21 @@ public class PlayerTouchingWallState : PlayerState
         isTouchingTopLedge = CollisionSenses.LedgeHorizontalTop;
         isTouchingBotLedge = CollisionSenses.LedgeHorizontalBot;
 
-        if(isTouchingBotLedge && !isTouchingTopLedge) player.ledgeClimbState.SetDetectedPosition(player.transform.position);
+        RaycastHit2D hit = Physics2D.Raycast(CollisionSenses.WallCheck.position,
+                                            Vector2.right * Movement.FacingDirection, 
+                                            CollisionSenses.WallCheckDistance, 
+                                            CollisionSenses.WhatIsWall);
+        player.transform.SetParent(hit.transform);
+
+        if (isTouchingBotLedge && !isTouchingTopLedge) player.ledgeClimbState.SetDetectedPosition(player.transform.position);
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+        player.transform.SetParent(null);
+    }
+
 
     public override void LogicUpdate()
     {

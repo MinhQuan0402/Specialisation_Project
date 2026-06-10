@@ -21,23 +21,26 @@ public class StepPointDataDrawer : PropertyDrawer
         EditorGUI.PropertyField(r, stepData);
         r.y += EditorGUI.GetPropertyHeight(stepData) + 2;
 
-        GUIContent uIContent = new GUIContent("Components");
-        property.isExpanded = EditorGUI.Foldout(
-            r,
-            property.isExpanded,
-            uIContent,
-            true
-        );
+        
 
-        if (property.isExpanded &&
-            stepData.objectReferenceValue != null && 
+        if (stepData.objectReferenceValue != null && 
             ((StepData)stepData.objectReferenceValue).hasRespawnPoint)
         {
+            GUIContent uIContent = new GUIContent("Components");
+            property.isExpanded = EditorGUI.Foldout(
+                r,
+                property.isExpanded,
+                uIContent,
+                true
+            );
             r.y += line + space;
 
-            SerializedProperty respawnPoint = property.FindPropertyRelative("respawnPoint");
-            EditorGUI.PropertyField(r, respawnPoint);
-            r.y += EditorGUI.GetPropertyHeight(respawnPoint) + 2;
+            if (property.isExpanded )
+            {
+                SerializedProperty respawnPoint = property.FindPropertyRelative("respawnPoint");
+                EditorGUI.PropertyField(r, respawnPoint);
+                r.y += EditorGUI.GetPropertyHeight(respawnPoint) + 2;
+            }
         }
 
         EditorGUI.EndProperty();
@@ -45,14 +48,16 @@ public class StepPointDataDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        float height = (line + space) * 2;
+        float height = line + space;
 
         SerializedProperty stepData = property.FindPropertyRelative("step");
-        if (property.isExpanded &&
-            stepData.objectReferenceValue != null && 
+        if (stepData.objectReferenceValue != null && 
             ((StepData)stepData.objectReferenceValue).hasRespawnPoint)
         {
             height += line + space;
+
+            if (property.isExpanded)
+                height += line + space;
         }
 
         return height;
@@ -107,9 +112,9 @@ public abstract class BaseSceneController : SingletonTemplate<BaseSceneControlle
     protected virtual void Start() => OnSceneReady();
 
     // ── Step management ───────────────────────────────────────
-    protected void AdvanceToStep(StepData step)
+    public void AdvanceToStep(StepData step)
     {
-        if (step == null || !ContainStep(step))
+        if (step == null || !IsStepRegistered(step))
         {
             Debug.LogWarning($"Step {step?.displayName} not registered in {gameObject.name}");
             return;

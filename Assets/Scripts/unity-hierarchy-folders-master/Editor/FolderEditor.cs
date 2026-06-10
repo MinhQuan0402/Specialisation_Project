@@ -10,10 +10,10 @@ namespace UnityHierarchyFolders.Editor
     public class FolderEditor : UnityEditor.Editor
     {
         private bool _expanded = false;
-
+        private Color newColor = Color.white;
 
         static readonly string[] s_DefaultIconColorNames =
-            new[] { "Default", "Yellow", "Blue", "Green", "Red" };
+            new[] { "Default", "Yellow", "Blue", "Green", "Red", "Orange" };
 
         public override bool RequiresConstantRepaint() => true;
         public override void OnInspectorGUI()

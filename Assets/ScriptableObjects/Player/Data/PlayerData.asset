@@ -19,7 +19,7 @@ MonoBehaviour:
   maxCoyoteTime: 0.2
   variableJumpHeightMultiplier: 0.5
   wallSlideVelocity: 2
-  wallClimbVelocity: 2
+  wallClimbVelocity: 3
   wallJumpVelocity: 20
   wallJumpTime: 0.4
   wallJumpJumpAngle: {x: 1, y: 2}

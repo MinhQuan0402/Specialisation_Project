@@ -18,12 +18,12 @@ public class Structure : MonoBehaviour, IInteractable
         if (bobber != null) bobber.StartBobbing();
     }
 
-    public void OnInteract(Player player)
+    public void OnInteract()
     {
         UIManager.Instance.HideInteractionPanel();
     }
 
-    public void OnPlayerEnterRange(Player player)
+    public void OnPlayerEnterRange()
     {
         UIManager.Instance.EnableInteractionPanel(transform.position + (Vector3)UIOffset, InteractPrompt);
     }
@@ -32,4 +32,6 @@ public class Structure : MonoBehaviour, IInteractable
     {
         UIManager.Instance.HideInteractionPanel();
     }
+
+    public void OnInteractionComplete() { }
 }

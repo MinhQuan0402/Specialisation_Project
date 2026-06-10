@@ -16,6 +16,11 @@ public class Bobber : MonoBehaviour
     private Vector3 initialPosition;
     private Vector3 currentPosition;
 
+    private void Start()
+    {
+        StartBobbing();
+    }
+
     public void StartBobbing()
     {
         isBobbing = true;

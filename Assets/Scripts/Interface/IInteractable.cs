@@ -6,7 +6,8 @@ public interface IInteractable
     string InteractPrompt { get; }   // e.g. "[E] Talk", "[E] Shop"
     bool CanInteract { get; }      // e.g. false if shop is sold out
 
-    void OnPlayerEnterRange(Player player);
+    void OnPlayerEnterRange();
     void OnPlayerExitRange();
-    void OnInteract(Player player);
+    void OnInteract();
+    void OnInteractionComplete();
 }

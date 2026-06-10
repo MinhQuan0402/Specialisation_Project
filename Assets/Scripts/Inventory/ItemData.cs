@@ -6,7 +6,8 @@ public class ItemData : ScriptableObject
     public enum ObjectType
     {
         Consumable,
-        Equipment
+        Equipment,
+        Soul,
     }
 
     [Header("Item Properties")]

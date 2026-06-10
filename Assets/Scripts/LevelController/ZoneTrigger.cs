@@ -37,7 +37,6 @@ public class ZoneTrigger: MonoBehaviour
         ZoneEventBus.TriggerZoneEntered(step, other.gameObject);
         onZoneEntered?.Invoke();
         if (cutsceneController != null) CutsceneManager.Instance.Play(cutsceneController);
-        if (oneShot) gameObject.SetActive(false);
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -46,6 +45,7 @@ public class ZoneTrigger: MonoBehaviour
         if (!other.CompareTag(requiredTag)) return;
         ZoneEventBus.TriggerZoneExited(step, other.gameObject);
         onZoneExited?.Invoke();
+        if (oneShot) gameObject.SetActive(false);
     }
 
     public void ResetTrigger()
