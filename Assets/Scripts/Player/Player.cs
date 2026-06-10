@@ -55,7 +55,21 @@ public class Player : SingletonTemplate<Player>
     #endregion
 
     #region Components
-    public Core Core {  get; private set; }
+    public Core Core 
+    {  
+        get
+        {
+            if (core == null)
+                core = GetComponentInChildren<Core>();
+            return core;
+        }
+        private set
+        {
+            core = value;
+        }
+    }
+    private Core core;
+
     public StateMachine StateMachine {  get; private set; }
     public Animator Anim { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
@@ -79,7 +93,7 @@ public class Player : SingletonTemplate<Player>
     {
         base.Awake();
 
-        Core = GetComponentInChildren<Core>();
+        Core ??= GetComponentInChildren<Core>();
 
         StateMachine = new StateMachine();
         StateMachine.InitializeStates(ref StatesDictionary);

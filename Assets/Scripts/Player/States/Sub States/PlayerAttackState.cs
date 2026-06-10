@@ -1,6 +1,4 @@
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [CreateAssetMenu(fileName = "newPlayerState", menuName = "State/Player State/Attack")]
 public class PlayerAttackState : PlayerAbilityState

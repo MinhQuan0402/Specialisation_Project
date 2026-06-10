@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Shield
   itemDescription: 'It''s made of some kind of metal alloy. '
   itemImage: {fileID: -2069393280, guid: 7698f902a8e73cb4b88c4738f7fb0ff5, type: 3}
-  objectType: 0
+  objectType: 1
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: 56a82fbcdf0471e4c8ccf1999740b2c9, type: 2}
   <NumberOfAttacks>k__BackingField: 1
   <ComponentData>k__BackingField:

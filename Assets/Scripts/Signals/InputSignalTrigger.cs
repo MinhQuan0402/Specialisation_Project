@@ -11,6 +11,8 @@ public class InputEntry
 
 public class InputSignalTrigger: MonoBehaviour
 {
+    private bool inputPressed = false;
+
     public void OnNotify(SignalAsset signal)
     {
         StartCoroutine(WaitingForInput());
@@ -20,7 +22,9 @@ public class InputSignalTrigger: MonoBehaviour
     {
         var director = GetComponent<PlayableDirector>();
         director.playableGraph.GetRootPlayable(0).SetSpeed(0);
-        yield return new WaitUntil( () => (Player.Instance.InputHandler.InteractionInput == true));
+        Player.Instance.InputHandler.OnInteract += () => inputPressed = true;
+        yield return new WaitUntil( () => inputPressed == true);
         director.playableGraph.GetRootPlayable(0).SetSpeed(1);
+        inputPressed = false;
     }
 }

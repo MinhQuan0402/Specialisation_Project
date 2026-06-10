@@ -27,6 +27,8 @@ public class PlayerInputHandler : CoreComponent
     private float dashInputStartTime;
     private float[] attackInputStartTime;
 
+    public Action OnInteract;
+
     private void Start()
     {
         int count = Enum.GetValues(typeof(CombatInputs)).Length;
@@ -99,11 +101,13 @@ public class PlayerInputHandler : CoreComponent
         if (context.started)
         {
             InteractionInput = true;
+            OnInteract?.Invoke();
         }
 
         if (context.canceled)
         {
             InteractionInput = false;
+            OnInteract = null;
         }
     }
 

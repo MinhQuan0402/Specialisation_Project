@@ -19,7 +19,7 @@ public class WeaponGenerator : MonoBehaviour
     
     private void Start()
     {
-        inventorySystem = weapon.Core.GetCoreComponent<InventorySystem>();
+        inventorySystem = FindAnyObjectByType<InventorySystem>();
         inventorySystem.OnWeaponDataChanged += HandleWeaponDataChanged;
 
         anim = GetComponentInChildren<Animator>();
