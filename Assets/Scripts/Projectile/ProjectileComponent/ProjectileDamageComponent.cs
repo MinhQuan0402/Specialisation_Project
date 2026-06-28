@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using static Combat.Damage.CombatDamageUtilities;
+using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
 using Combat.Damage;
@@ -15,6 +16,8 @@ public class ProjectileDamageComponent : ProjectileComponent
     private ProjectileHitboxComponent hitBox;
 
     private float amount;
+    private float critChance;
+    private float critMultiplier;
     
     private float lastDamageTime;
 
@@ -30,13 +33,17 @@ public class ProjectileDamageComponent : ProjectileComponent
         
         if(Time.time < lastDamageTime + Cooldown) return;
 
+
         foreach (var hit in hits)
         {
-            if(!LayerMaskUtilities.IsLayerInMask(hit, LayerMask)) continue;
-            
-            if(!hit.collider.TryGetComponent(out DamageReceiver damageable)) continue;
-            
-            damageable.Damage(new DamageData(amount, projectile.gameObject));
+            if (!LayerMaskUtilities.IsLayerInMask(hit, LayerMask)) continue;
+
+            float finalDamage = amount;
+            if (Random.value <= critChance) finalDamage *= critMultiplier;
+
+            if (!TryDamage(hit.collider.gameObject, 
+                           new DamageData(finalDamage, projectile.gameObject), 
+                           out IDamageable damageable)) continue;
             
             OnDamage?.Invoke(damageable);
             OnRaycastHit?.Invoke(hit);
@@ -56,7 +63,9 @@ public class ProjectileDamageComponent : ProjectileComponent
         if (dataPackage is not ProjectileDamageDataPackage package)
             return;
 
-        amount = package.Amount;
+        amount         = package.Amount;
+        critChance     = package.CritChance;
+        critMultiplier = package.CritMultiplier;
     }
 
     protected override void Awake()

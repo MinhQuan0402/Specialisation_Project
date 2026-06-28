@@ -7,7 +7,7 @@ public class ItemData : ScriptableObject
     {
         Consumable,
         Equipment,
-        Soul,
+        Key,
     }
 
     [Header("Item Properties")]

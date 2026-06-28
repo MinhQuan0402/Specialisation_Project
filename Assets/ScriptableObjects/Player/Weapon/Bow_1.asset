@@ -12,10 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e656c75c38b7bf34caefa28f25b5a2df, type: 3}
   m_Name: Bow_1
   m_EditorClassIdentifier: 
-  itemName: Wooden Bow
-  itemDescription: 
+  itemName: Moonreaper
+  itemDescription: "The limbs of this bow were carved from the ribs of the creature
+    that hunted by moonlight for three centuries. Its string is woven from sinew
+    that still contracts with the phases of the moon \u2014 loosest at new moon,
+    tightest at full. Arrows fired from it arc in a crescent path, curving toward
+    warmth. They have never once missed a beating heart."
   itemImage: {fileID: 1819778140, guid: 7698f902a8e73cb4b88c4738f7fb0ff5, type: 3}
   objectType: 1
+  <WeaponType>k__BackingField: 1
+  <WeaponStamina>k__BackingField: 15
+  <AttackSpeed>k__BackingField: 0.75
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: 6b2a75c0b3590e449a486a5255e38277, type: 2}
   <NumberOfAttacks>k__BackingField: 1
   <ComponentData>k__BackingField:
@@ -26,6 +33,10 @@ MonoBehaviour:
   - rid: 1495228207625928795
   - rid: 1495228194250555490
   - rid: 1495228194250555497
+  <PassiveName>k__BackingField: Piercing shot
+  <PassiveDesc>k__BackingField: "<color=#FFD700>Hold attack</color> to draw fully.
+    <color=#FF5555>Released arrow</color> <color=#FFA500>pierces through all enemies</color>
+    in its path and deals <color=#42EADDFF><b>\xD71.8 damage</b></color> to each."
   references:
     version: 2
     RefIds:
@@ -75,7 +86,9 @@ MonoBehaviour:
             <Direction>k__BackingField: {x: 1, y: 0}
             <ProjectilePrefab>k__BackingField: {fileID: 7448242632456397419, guid: acfc55dcc1260674d8e37901b4c99287, type: 3}
             <DamageData>k__BackingField:
-              <Amount>k__BackingField: 20
+              <Amount>k__BackingField: 28
+              <CritChance>k__BackingField: 0.22
+              <CritMultiplier>k__BackingField: 2
             <KnockBackData>k__BackingField:
               <Angle>k__BackingField: {x: 1, y: 0.5}
               <Strength>k__BackingField: 5

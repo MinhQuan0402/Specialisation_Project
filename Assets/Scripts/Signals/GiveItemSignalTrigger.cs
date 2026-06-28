@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -9,14 +10,27 @@ using UnityEngine.Timeline;
 public class GiveItemEntry
 {
     public SignalAsset signal;
-    public WeaponData weaponToGive;
+    public DiscardedItemSpawner itemDiscardSpawner;
+    public ItemInstance itemToGive;
     public int scoreToGive;
 }
-
 
 public class GiveItemSignalTrigger : MonoBehaviour
 {
     [SerializeField] private List<GiveItemEntry> entries;
+
+    public void GiveItem (DiscardedItemSpawner DiscardedItemSpawner)
+    {
+        var entry = entries.Where(e => e.itemDiscardSpawner == DiscardedItemSpawner).First();
+        if (entry != null)
+        {
+            if (entry.itemToGive != null)
+                entry.itemDiscardSpawner.HandleItemDiscarded(entry.itemToGive);
+
+            if (entry.scoreToGive > 0)
+                GameManager.Instance.AddScore(entry.scoreToGive);
+        }
+    }
 
     public void OnNotify(SignalAsset signal)
     {
@@ -28,8 +42,8 @@ public class GiveItemSignalTrigger : MonoBehaviour
             var player = Player.Instance;
             if (player == null) return;
 
-            if (entry.weaponToGive != null)
-                player.InventorySystem.TryToAddWeapon(entry.weaponToGive);
+            if (entry.itemToGive != null)
+                entry.itemDiscardSpawner.HandleItemDiscarded(entry.itemToGive);
 
             if (entry.scoreToGive > 0)
                 GameManager.Instance.AddScore(entry.scoreToGive);

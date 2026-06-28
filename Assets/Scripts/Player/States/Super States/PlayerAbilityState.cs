@@ -58,6 +58,7 @@ public class PlayerAbilityState : PlayerState
 
     public virtual void UseStamina()
     {
+        if (amountStaminaRequired == 0) return;
         player.Stats.Comp.Stamina.Decrease(amountStaminaRequired);
     }
 }

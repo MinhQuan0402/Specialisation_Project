@@ -11,11 +11,14 @@ public class PlayerAttackState : PlayerAbilityState
     private bool canInterrupt;
 
     private bool checkFlip;
+
+    private float cooldown = 0.0f;
     
     public void Init(Weapon weapon, CombatInputs input)
     {
         this.weapon = weapon;
-        if(weapon == null ) return;
+        cooldown = 0.0f;
+        if (weapon == null ) return;
 
         weaponGenerator = weapon.GetComponent<WeaponGenerator>();
         inputIndex = (int)input;
@@ -53,14 +56,27 @@ public class PlayerAttackState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
+        cooldown = 1 / weapon.Data.AttackSpeed;
+        Player.Instance.OnUpdatePlayer += UpdateCooldown;
         weaponGenerator.OnWeaponGenerating -= HandleWeaponGenerating;
         weapon.Exit();
 
         player.RB.linearDamping = 0.0f;
     }
 
+    public void UpdateCooldown()
+    {
+        cooldown -= Time.deltaTime;
+        if (cooldown <= 0.0f)
+        {
+            cooldown = 0.0f;
+            Player.Instance.OnUpdatePlayer -= UpdateCooldown;
+        }
+    }
+
     private void HandleWeaponGenerating()
     {
+        cooldown = 0;
         stateMachine.ChangeState(player.StateMachine.GetState<PlayerIdleState>());
     }
 
@@ -93,7 +109,7 @@ public class PlayerAttackState : PlayerAbilityState
         animBoolName = "attack";
     }
 
-    public bool CanTransitionToAttackState() => weapon.CanEnterAttack && weapon.Data != null;
+    public bool CanAttack() => weapon.CanEnterAttack && weapon.Data != null && cooldown <= 0.0f;
 
     private void HandleEnableInterrupt() => canInterrupt = true;
 
@@ -106,5 +122,11 @@ public class PlayerAttackState : PlayerAbilityState
     {
         AnimationFinishTrigger();
         isAbilityDone = true;
+    }
+
+    public override void UseStamina()
+    {
+        if (weapon.Data.WeaponStamina == 0) return;
+        player.Stats.Comp.Stamina.Decrease(weapon.Data.WeaponStamina);
     }
 }

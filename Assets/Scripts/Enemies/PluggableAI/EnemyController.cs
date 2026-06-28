@@ -155,13 +155,7 @@ public class EnemyController : MonoBehaviour
         }
 
         TransitionToState(startingState);
-        AstarPath astarPath = FindAnyObjectByType<AstarPath>();
-        if (astarPath != null && Data.isFlying)
-        {
-            astarPath.Scan(astarPath.graphs[0]);
-        }
     }
-
     private void OnDestroy()
     {
         Stats stats = Core.GetComponent<Stats>();

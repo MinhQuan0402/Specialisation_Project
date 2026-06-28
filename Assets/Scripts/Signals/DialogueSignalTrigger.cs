@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Playables;
-using UnityEngine.Rendering;
 using UnityEngine.Timeline;
 
 [System.Serializable]
@@ -20,30 +17,23 @@ public class DialogueSignalTrigger : MonoBehaviour
 
     public void OnNotify(SignalAsset signal)
     {
-        Debug.Log("Player");
         foreach (var entry in entries)
         {
             if (entry.signal == null) continue;
             if (entry.signal == signal)
             {
-                var director = GetComponent<PlayableDirector>();
-                director.playableGraph.GetRootPlayable(0).SetSpeed(0);
+                CutsceneManager.Instance.AdvanceSequence();
                 DialogueManager.Instance.StartSequence(entry.dialogueSequence, 
-                                                      onDone: Resume, 
-                                                      () => Invoke(nameof(AdvanceDialogue), 1.0f));
+                                                      onDone: HandleOnDone);
+                UIManager.Instance.InputActions.Player.Interact.started += DialogueManager.Instance.HandleDialogueControl;
                 return;
             }
         }
     }
 
-    private void AdvanceDialogue()
+    private void HandleOnDone()
     {
-        DialogueManager.Instance.Advance();
-    }
-
-    private void Resume()
-    {
-        var director = GetComponent<PlayableDirector>();
-        director.playableGraph.GetRootPlayable(0).SetSpeed(1);
+        UIManager.Instance.InputActions.Player.Interact.started -= DialogueManager.Instance.HandleDialogueControl;
+        CutsceneManager.Instance.AdvanceSequence();
     }
 }

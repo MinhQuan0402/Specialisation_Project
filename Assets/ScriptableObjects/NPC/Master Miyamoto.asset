@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e78c68181e2cd6443afc2d0e7dd4eb85, type: 3}
+  m_Script: {fileID: 11500000, guid: f953f2ea7c7ad434eb6c70f157eb8734, type: 3}
   m_Name: Master Miyamoto
   m_EditorClassIdentifier: Assembly-CSharp::NPCData
-  NPCName: Master Miyamoto
-  NPCIcon: {fileID: 487494620, guid: e451acce03ca1bc4f9bbfd9f0b1a381e, type: 3}
+  CharacterName: Master Miyomato
+  CharacterIcon: {fileID: 487494620, guid: e451acce03ca1bc4f9bbfd9f0b1a381e, type: 3}
   behaviour: 1

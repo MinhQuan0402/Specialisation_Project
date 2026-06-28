@@ -26,6 +26,7 @@ public class PlayerData : EntityData
     public Vector2 wallJumpJumpAngle = new(1, 2);
 
     [Header("Ledge Climb State")]
+    public float ledgeGrabStamina = 1f;
     public Vector2 startOffset;
     public Vector2 stopOffset;
 

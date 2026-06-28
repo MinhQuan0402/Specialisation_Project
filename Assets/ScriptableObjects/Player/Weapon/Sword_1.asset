@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e656c75c38b7bf34caefa28f25b5a2df, type: 3}
   m_Name: Sword_1
   m_EditorClassIdentifier: 
-  itemName: Demon Sword
-  itemDescription: 
+  itemName: Heartseeker
+  itemDescription: The founding blade of the Root Warden cult, used in every initiation
+    rite for two hundred years. It was last seen buried in the chest of the cult's
+    final high priest, who pulled it out himself, said something no witness could
+    later agree upon, and walked out into the corrupted forest without stopping.
   itemImage: {fileID: 1662719763, guid: 7698f902a8e73cb4b88c4738f7fb0ff5, type: 3}
   objectType: 1
+  <WeaponType>k__BackingField: 0
+  <WeaponStamina>k__BackingField: 20
+  <AttackSpeed>k__BackingField: 1.4
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: 1e09cde54ac4ba449a5aa7c62dcbb139, type: 2}
   <NumberOfAttacks>k__BackingField: 3
   <ComponentData>k__BackingField:
@@ -24,13 +30,18 @@ MonoBehaviour:
   - rid: 1495228093066379548
   - rid: 1495228093066379549
   - rid: 1495228093066379587
+  <PassiveName>k__BackingField: Guard break
+  <PassiveDesc>k__BackingField: "<color=#FFD700>Hold attack</color> to charge. <color=#FF5555>Release</color>
+    deals <color=#42EADDFF><b>\xD72.2 damage</b></color> and <color=#FFA500>staggers</color>
+    <color=#42CBEA>shielded enemies</color>, opening them to a full <color=#FFD700>combo
+    window</color>."
   references:
     version: 2
     RefIds:
     - rid: 1495228093066379546
       type: {class: WeaponActionHitboxData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponActionHitboxData
+        <Name>k__BackingField: ActionHitboxData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1
@@ -63,19 +74,25 @@ MonoBehaviour:
     - rid: 1495228093066379547
       type: {class: WeaponDamageData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponDamageData
+        <Name>k__BackingField: DamageData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1
-          <Damage>k__BackingField: 15
+          <Damage>k__BackingField: 35
+          <CritChance>k__BackingField: 0.12
+          <CritMultiplier>k__BackingField: 1.8
         - <Name>k__BackingField: Attack 2
-          <Damage>k__BackingField: 20
+          <Damage>k__BackingField: 40
+          <CritChance>k__BackingField: 0.12
+          <CritMultiplier>k__BackingField: 1.8
         - <Name>k__BackingField: Attack 3
-          <Damage>k__BackingField: 30
+          <Damage>k__BackingField: 45
+          <CritChance>k__BackingField: 0.12
+          <CritMultiplier>k__BackingField: 1.8
     - rid: 1495228093066379548
       type: {class: WeaponMovementData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponMovementData
+        <Name>k__BackingField: MovementData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: 
@@ -90,7 +107,7 @@ MonoBehaviour:
     - rid: 1495228093066379549
       type: {class: WeaponSpriteData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponSpriteData
+        <Name>k__BackingField: SpriteData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1
@@ -123,7 +140,7 @@ MonoBehaviour:
     - rid: 1495228093066379587
       type: {class: WeaponKnockbackData, ns: , asm: Assembly-CSharp}
       data:
-        <Name>k__BackingField: WeaponKnockbackData
+        <Name>k__BackingField: KnockbackData
         repeatData: 0
         attackData:
         - <Name>k__BackingField: Attack 1

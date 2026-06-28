@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d957a44a0b48409f372f1df1de568, type: 3}
+  m_Name: Tutorial_Intro
+  m_EditorClassIdentifier: Assembly-CSharp::TimelineSequence
+  <Sequence>k__BackingField:
+  - <Clip>k__BackingField: {fileID: 11400000, guid: 284a14757a0720e4595e5a8ab216d509, type: 2}
+    <WrapMode>k__BackingField: 2
+    <CanSkip>k__BackingField: 1
+  - <Clip>k__BackingField: {fileID: 11400000, guid: 4986bb05d42d167478e184691e7ff2ef, type: 2}
+    <WrapMode>k__BackingField: 1
+    <CanSkip>k__BackingField: 0
+  - <Clip>k__BackingField: {fileID: 11400000, guid: a92375bcd703771419f6e9e04b9ce90b, type: 2}
+    <WrapMode>k__BackingField: 2
+    <CanSkip>k__BackingField: 1

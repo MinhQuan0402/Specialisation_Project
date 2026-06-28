@@ -12,10 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e656c75c38b7bf34caefa28f25b5a2df, type: 3}
   m_Name: Tome_1
   m_EditorClassIdentifier: 
-  itemName: Fire Spell
-  itemDescription: 
+  itemName: Grimoire of embers
+  itemDescription: "Written in heat-reactive ink legible only while the pages are
+    burning. Every spell was transcribed by a dying monk who worked faster as his
+    candle shortened \u2014 the urgency never left the words. The final page is blank.
+    It grows warm when held near flame, as though waiting to be finished by the right
+    hand."
   itemImage: {fileID: 1974652921, guid: 7698f902a8e73cb4b88c4738f7fb0ff5, type: 3}
   objectType: 1
+  <WeaponType>k__BackingField: 1
+  <WeaponStamina>k__BackingField: 35
+  <AttackSpeed>k__BackingField: 0.65
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: c5cd7e9b0ba611a43a6a927d1e8d09c9, type: 2}
   <NumberOfAttacks>k__BackingField: 1
   <ComponentData>k__BackingField:
@@ -27,6 +34,13 @@ MonoBehaviour:
   - rid: 1495228370371739818
   - rid: 1495228370371739821
   - rid: 1495228370371739822
+  <PassiveName>k__BackingField: Arcane overflow
+  <PassiveDesc>k__BackingField: <color=#FFD700>Hold</color> the attack button to
+    <color=#FFA500>channel the tome</color>. Each second of channelling conjures
+    <color=#42EADDFF><b>one additional projectile</b></color>, up to a maximum of
+    <color=#42EADDFF><b>three</b></color>. <color=#FF5555>Release</color> to fire
+    all accumulated projectiles simultaneously. <color=#FFD700>Tap</color> for a
+    <color=#55FF55>single shot</color> with <color=#55FF55>no charge cost</color>.
   references:
     version: 2
     RefIds:
@@ -83,7 +97,9 @@ MonoBehaviour:
             <Direction>k__BackingField: {x: 1, y: 0}
             <ProjectilePrefab>k__BackingField: {fileID: 7448242632456397419, guid: f2deddb2fc52653439d709b325c22a18, type: 3}
             <DamageData>k__BackingField:
-              <Amount>k__BackingField: 50
+              <Amount>k__BackingField: 52
+              <CritChance>k__BackingField: 0.08
+              <CritMultiplier>k__BackingField: 1.5
             <KnockBackData>k__BackingField:
               <Angle>k__BackingField: {x: 0, y: 0}
               <Strength>k__BackingField: 0

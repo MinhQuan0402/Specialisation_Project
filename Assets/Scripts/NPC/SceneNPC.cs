@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
+using System;
 
 public class SceneNPC : BaseNPC
 {
@@ -10,13 +12,8 @@ public class SceneNPC : BaseNPC
     [Header("Condition")]
     [SerializeField, Tooltip("[Optional] leave empty = always interactable")] private MonoBehaviour conditionComponent;
 
-    [Header("Item to give")]
-    [SerializeField] private WeaponData giftWeapon;
-    [SerializeField] private int giftScore;
-
     private INPCCondition condition;
     private int dialogueIndex = 0;  // which sequence is active
-    
 
     protected virtual void Awake()
     {
@@ -35,15 +32,14 @@ public class SceneNPC : BaseNPC
 
     public override void OnInteract()
     {
+        if (inInteraction) return;
+
         base.OnInteract();
 
         switch (NPCData.behaviour)
         {
             case NPCBehaviour.Dialogue:
                 HandleDialogue();
-                break;
-            case NPCBehaviour.GiveItem:
-                HandleGiveItem();
                 break;
         }
     }
@@ -60,6 +56,7 @@ public class SceneNPC : BaseNPC
         switch (NPCData.behaviour)
         {
             case NPCBehaviour.Dialogue:
+                UIManager.Instance.InputActions.Player.Interact.started -= DialogueManager.Instance.HandleDialogueControl;
                 break;
             case NPCBehaviour.GiveItem:
                 break;
@@ -74,13 +71,12 @@ public class SceneNPC : BaseNPC
         var seq = dialogueSequences[
             Mathf.Clamp(dialogueIndex, 0, dialogueSequences.Count - 1)];
 
-        if (!DialogueManager.Instance.IsOpen)
-            DialogueManager.Instance.StartSequence(seq, OnInteractionComplete);
-        else DialogueManager.Instance.Advance();
+        DialogueManager.Instance.StartSequence(seq, OnInteractionComplete);
+        UIManager.Instance.InputActions.Player.Interact.started += DialogueManager.Instance.HandleDialogueControl;
     }
 
     // ── Give Item ────────────────────────────────────────────
-    private void HandleGiveItem()
+    /*private void HandleGiveItem(ItemInstance)
     {
         if (giftWeapon != null)
             Player.Instance.InventorySystem.TryToAddWeapon(giftWeapon);
@@ -88,7 +84,7 @@ public class SceneNPC : BaseNPC
         if (giftScore > 0) GameManager.Instance.AddScore(giftScore);
 
         NPCEventBus.TriggerNPCInteracted(NPCData);
-    }
+    }*/
 
     // ── Public API ────────────────────────────────────────────
     public void SetDialogueIndex(int index)

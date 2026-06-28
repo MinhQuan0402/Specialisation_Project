@@ -8,7 +8,7 @@ public class ZoneTrigger: MonoBehaviour
 {
     [Header("Identity")]
     [SerializeField] private StepData step;
-    [SerializeField] private PlayableDirector cutsceneController;
+    [SerializeField] private TimelineSequence timelineSequence;
     [SerializeField] private bool triggerOnEnter = true;
     [SerializeField] private bool triggerOnExit = false;
     [SerializeField] private bool oneShot = true;
@@ -36,7 +36,7 @@ public class ZoneTrigger: MonoBehaviour
         triggered = true;
         ZoneEventBus.TriggerZoneEntered(step, other.gameObject);
         onZoneEntered?.Invoke();
-        if (cutsceneController != null) CutsceneManager.Instance.Play(cutsceneController);
+        if (timelineSequence != null) CutsceneManager.Instance.Play(timelineSequence);
     }
 
     private void OnTriggerExit2D(Collider2D other)

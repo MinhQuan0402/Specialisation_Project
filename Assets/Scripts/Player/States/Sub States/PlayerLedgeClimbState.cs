@@ -1,3 +1,4 @@
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newPlayerState", menuName = "State/Player State/Ledge Climb")]
@@ -61,6 +62,7 @@ public class PlayerLedgeClimbState : PlayerState
         {
             Movement.SetVelocityZero();
             yInput = player.InputHandler.NormInputY;
+            player.Stats.Comp.Stamina.Decrease(playerData.ledgeGrabStamina * Time.deltaTime);
 
             player.transform.position = startPos;  
 
@@ -69,8 +71,8 @@ public class PlayerLedgeClimbState : PlayerState
                 isClimbing = true;
                 player.Anim.SetBool("climbLedge", true);
             }
-            else if ((yInput == -1 && isHanging && !isClimbing) || 
-                      player.IsInteruptible)
+            else if ((yInput == -1 && isHanging && !isClimbing) || player.IsInteruptible ||
+                      player.Stats.Comp.Stamina.CurrentValue < playerData.ledgeGrabStamina)
             {
                 stateMachine.ChangeState(player.inAirState);
             }

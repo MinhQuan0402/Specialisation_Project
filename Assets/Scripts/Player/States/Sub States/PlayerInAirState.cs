@@ -86,13 +86,13 @@ public class PlayerInAirState : PlayerState
 
         if (primaryAttackInput && player.IsPrimaryAttackExist &&
             !Player.Instance.IsInteruptible && player.primaryAttackState.CanPerform &&
-            player.primaryAttackState.CanTransitionToAttackState())
+            player.primaryAttackState.CanAttack())
         {
             stateMachine.ChangeState(player.primaryAttackState);
         }
         else if (secondaryAttackInput && player.IsSecondaryAttackExist &&
             !Player.Instance.IsInteruptible && player.secondaryAttackState.CanPerform &&
-            player.secondaryAttackState.CanTransitionToAttackState())
+            player.secondaryAttackState.CanAttack())
         {
             stateMachine.ChangeState(player.secondaryAttackState);
         }

@@ -16,11 +16,9 @@ public class DamageReceiver : CoreComponent, IDamageable
     
     public void Damage(DamageData data)
     {
-        print($"Damage Amount Before Modifiers: {data.Amount}");
-
         data = Modifiers.ApplyAllModifiers(data);
 
-        print($"Damage Amount After Modifiers: {data.Amount}");
+        print($"Damage Amount: {data.Amount}");
 
         if(data.Amount <= 0)
             return;

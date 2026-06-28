@@ -29,7 +29,7 @@ public class RandomMovement : MonoBehaviour
         Vector2 offset = new Vector2(x, y) * radius;
 
         // Smoothly move toward target offset
-        Vector2 targetPos = origin + offset;
+        Vector2 targetPos = new Vector2(transform.parent.position.x, transform.parent.position.y) + offset;
 
         transform.position = Vector2.Lerp(
             transform.position,

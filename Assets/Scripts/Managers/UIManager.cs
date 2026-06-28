@@ -28,6 +28,18 @@ public class ItemSlotUI
     }
 }
 
+public class TextUIInput
+{
+    public string text;
+    public Color textColor;
+
+    public TextUIInput(string text, Color textColor)
+    {
+        this.text = text;
+        this.textColor = textColor;
+    }
+}
+
 public class UIManager : SingletonPersistentTemplate<UIManager>
 {
     [Header("Panels")]
@@ -39,6 +51,8 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     [SerializeField] private StatBarUI playerStaminahBar;
     [SerializeField] private ItemSlotUI[] weaponSlots = new ItemSlotUI[2];
     [SerializeField] private ItemSlotUI[] itemSlots   = new ItemSlotUI[2];
+    [SerializeField] private RectTransform         keysPanel;
+    [SerializeField] private TMPro.TextMeshProUGUI keysInfo; 
 
     [Header("Level Clear Elements")]
     [SerializeField] private TMPro.TextMeshProUGUI levelClearScoreText;
@@ -52,28 +66,56 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     [SerializeField] private TMPro.TextMeshProUGUI runsPlayedText;
 
     [Header("Interaction Elements")]
-    [SerializeField] private GameObject    pickupCanva;
+    [SerializeField] private GameObject pickupCanva;
     [SerializeField] private RectTransform pickupWindowRect;
     [SerializeField] private Text pickupPrompt;
-    
+
     [Header("Dialogue Elements")]
     [SerializeField] private RectTransform dialoguePromptPanel;
     [SerializeField] private Image dialogueNPCIcon;
     [SerializeField] private TMPro.TextMeshProUGUI dialogueNPCName;
     [SerializeField] private TMPro.TextMeshProUGUI dialoguePromptText;
+    [SerializeField] private TMPro.TextMeshProUGUI dialogueInstructionText;
 
     [Header("Death Feedback Elements")]
     [SerializeField] private RectTransform deathFeedbackPanel;
     [SerializeField] private TMPro.TextMeshProUGUI dFbkTimer;
     [SerializeField] private Text hintText;
 
+    [Header("Weapon Swap Elements")]
+    [SerializeField] private WeaponStatBarUI weaponStatBarUIPrefab;
+    [SerializeField] private WeaponStatBarUI specialStatBarUIPrefab;
+
     [Header("Transition")]
-    [SerializeField] private CanvasGroup fadeOverlay;   // full-screen black fade
+    [SerializeField] private CinematicBars cinematicBars;
     [SerializeField] private float panelAnimationSpeed = 1.0f;
     [SerializeField] private float panelAnimDuration = 1.0f;
+    [SerializeField] private float pulseSpeed = 2.0f;
+    [SerializeField] private AnimationCurve pulseSizeCurve;
 
     private readonly Dictionary<RectTransform, Coroutine> coroutines = new();
     private readonly Dictionary<RectTransform, Rect> rectSize = new();
+
+    public InputSystem_Actions InputActions { get; private set; }
+
+    private readonly Dictionary<TMPro.TextMeshProUGUI, Coroutine> textPulseAnimation = new();
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        InputActions = new InputSystem_Actions();
+    }
+
+    private void OnEnable()
+    {
+        InputActions?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        InputActions?.Disable();
+    }
 
     private void Start()
     {
@@ -112,11 +154,17 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
 
     public void UpdateWeaponSlot(ItemData itemData, int index)
     {
-        Debug.Log(index);
         if (index >= weaponSlots.Length || index < 0) return;
         if (itemData == null) return;
 
         weaponSlots[index].Set(itemData.itemName, itemData.itemImage);
+    }
+
+    public void UpdateKeysUI(int totalKeys)
+    {
+        if (!keysPanel.gameObject.activeSelf) keysPanel.gameObject.SetActive(true);
+        keysInfo.text = "x" + totalKeys.ToString();
+        coroutines[keysPanel] = StartCoroutine(PulseSize(keysPanel));
     }
 
     public void SetHealthBar(float value)  => playerHealthBar.SetInitValue(value);
@@ -149,6 +197,11 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         coroutines.Add(pickupWindowRect, StartCoroutine(
                         PanelAnimation(pickupWindowRect,
                         RectTransform.Axis.Horizontal)));
+    }
+
+    public void UpdateInteractionPanelPos(Vector2 position)
+    {
+        pickupCanva.transform.position = position;
     }
 
     public void HideInteractionPanel()
@@ -184,12 +237,27 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         dialoguePromptText.text = prompt;
     }
 
+    public void EnableSkipDialogueInstruction()
+    {
+        dialogueInstructionText.text = "Press E to skip";
+        textPulseAnimation[dialogueInstructionText] = StartCoroutine(PulseText(dialogueInstructionText));
+    }
+
+    public void EnableContinueDialogueInstruction()
+    {
+        dialogueInstructionText.text = "Press E to continue";
+        textPulseAnimation[dialogueInstructionText] = StartCoroutine(PulseText(dialogueInstructionText));
+    }
+
     public TMPro.TextMeshProUGUI DialogueText => dialoguePromptText;
 
     public void HideDialoguePrompt()
     {
+        dialogueInstructionText.text = "";
+        dialogueInstructionText.color = new Color(0, 0, 0, 0);
         dialoguePromptPanel.gameObject.SetActive(false);
         StopCoroutine(coroutines[dialoguePromptPanel]);
+        StopCoroutine(textPulseAnimation[dialogueInstructionText]);
     }
 
     public void EnableFeedbackPrompt(string timer, string prompt)
@@ -221,6 +289,27 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
                     RectTransform.Axis.Vertical));
     }
 
+    public void CreateWeaponStatUI(RectTransform statsContent, 
+                                   TextUIInput label, 
+                                   TextUIInput desc, bool normalStat = true)
+    {
+        WeaponStatBarUI weaponStat = normalStat ? Instantiate(weaponStatBarUIPrefab, statsContent) : 
+                                                  Instantiate(specialStatBarUIPrefab, statsContent);
+        weaponStat.SetUIText(label, desc);
+    }
+
+    public void ActivateCinematicBar(float time)
+    {
+        if (cinematicBars == null) return;
+        cinematicBars.Show(time);
+    }
+
+    public void DeactivateCinematicBar(float time)
+    {
+        if (cinematicBars == null) return;
+        cinematicBars.Hide(time);
+    }
+
     public void SetHUDActive(bool enable) => hudPanel.SetActive(enable);
 
     IEnumerator PanelAnimation(RectTransform panelTransform, RectTransform.Axis axis)
@@ -235,7 +324,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         float progress = 0f;
         while (progress < panelAnimDuration)
         {
-            progress += Time.deltaTime * panelAnimationSpeed;
+            progress += Time.unscaledDeltaTime * panelAnimationSpeed;
             float currentSize = Mathf.Lerp(0.0f, axis == RectTransform.Axis.Horizontal ? 
                                 originalSize.x : originalSize.y, 
                                 progress / panelAnimDuration);
@@ -252,7 +341,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         float progress = 0f;
         while (progress < panelAnimDuration)
         {
-            progress += Time.deltaTime * panelAnimationSpeed;
+            progress += Time.unscaledDeltaTime * panelAnimationSpeed;
             float currentSize = Mathf.Lerp(axis == RectTransform.Axis.Horizontal ?
                                         originalSize.x : originalSize.y, 0.0f,
                                         progress / panelAnimDuration);
@@ -261,6 +350,47 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         }
 
         panelTransform.gameObject.SetActive(false);
+        yield return null;
+    }
+
+    IEnumerator PanelFadeAnimation(CanvasGroup canvasGroup, bool reverse = false)
+    {
+        float progress = 0.0f;
+        while (progress < panelAnimDuration)
+        {
+            progress += Time.unscaledDeltaTime * panelAnimationSpeed;
+            float currentAlpha = reverse ? Mathf.Lerp(1.0f, 0.0f, progress / panelAnimDuration) :
+                                           Mathf.Lerp(0.0f, 1.0f, progress / panelAnimDuration);
+            canvasGroup.alpha = currentAlpha;
+            yield return null;
+        }
+
+        yield return null;
+    }
+
+    IEnumerator PulseText(TMPro.TextMeshProUGUI text)
+    {
+        Color textColor = text.color;
+        while(true)
+        {
+            float pulse = Mathf.Sin(Time.time * pulseSpeed);
+            textColor.a = pulse;
+            text.color  = textColor;
+            yield return null;
+        }
+    }
+
+    IEnumerator PulseSize(RectTransform panelTransform)
+    {
+        float startTime = Time.time;
+        float currSize = 0;
+        while(currSize < 1)
+        {
+            currSize = Mathf.Lerp(0.0f, 1.0f, pulseSizeCurve.Evaluate((Time.time - startTime) * panelAnimationSpeed));
+            panelTransform.localScale = new Vector3(currSize, currSize, 1.0f);
+            yield return null;
+        }
+
         yield return null;
     }
 }

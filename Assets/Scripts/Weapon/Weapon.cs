@@ -92,7 +92,6 @@ public class Weapon : MonoBehaviour
     public void Enter()
     {
         AttackStartTime = Time.time;
-        
         attackCounterResetTimeNotifier.Disable();
         
         Anim.SetBool("active", true);

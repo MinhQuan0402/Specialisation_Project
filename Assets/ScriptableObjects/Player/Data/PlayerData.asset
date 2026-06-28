@@ -23,6 +23,7 @@ MonoBehaviour:
   wallJumpVelocity: 20
   wallJumpTime: 0.4
   wallJumpJumpAngle: {x: 1, y: 2}
+  ledgeGrabStamina: 2
   startOffset: {x: -0.2, y: 1.1}
   stopOffset: {x: 1, y: 0.75}
   dashCooldown: 0.5

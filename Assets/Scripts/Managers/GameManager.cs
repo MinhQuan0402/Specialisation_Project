@@ -43,6 +43,8 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
     public event Action<GameState, GameState> OnStateChanged;
     public event Action<GameScene> OnSceneChanged;
 
+    [field: SerializeField] public AltarGate AltarGate { get; private set; }
+
     // ── Run data (resets on permadeath) ─────────────────────
     [field: SerializeField, ReadOnlyInspector] public int CurrentLevel { get; private set; } = 1;
     [field: SerializeField, ReadOnlyInspector]  public int RunScore { get; private set; } = 0;
@@ -59,6 +61,23 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
     private void Start()
     {
         //ChangeState(TutorialComplete ? GameState.MainMenu : GameState.Tutorial);
+    }
+
+    void OnEnable()
+    {
+        // Subscribe to the sceneLoaded event
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        // Always unsubscribe to prevent memory leaks
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        AltarGate = FindAnyObjectByType<AltarGate>();
     }
 
     private void Update()
@@ -109,11 +128,13 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
 
             case GameState.Playing:
                 Time.timeScale = 1f;
+                Player.Instance.Unpaused();
                 //LoadScene(GameScene.Level);
                 break;
 
             case GameState.Paused:
                 Time.timeScale = 0f;
+                Player.Instance.Paused();
                 break;
 
             case GameState.BossFight:

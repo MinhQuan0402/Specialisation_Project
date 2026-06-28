@@ -39,7 +39,6 @@ public class Core : MonoBehaviour
         component = GetComponentInChildren<T>();
         if(component) return component;
 
-        Debug.LogWarning($"{typeof(T)} not found on {transform.parent.name}");
         return null;
     }
 

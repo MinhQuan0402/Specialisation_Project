@@ -2,16 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [System.Serializable]
 public class DialogueLine
 {
-    public NPCData NPCData;
+    public CharacterData NPCData;
 
     [TextArea(2, 5)]
     public string text;
     public AudioClip voiceClip;
+    public UnityEvent OnLineFinshed;
 }
 
 [System.Serializable]
@@ -32,6 +35,9 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
     private Action onComplete;
     private Action onLinePrinted;
 
+    private bool isLinePrinted;
+    private bool isSkip = false;
+
     public void StartSequence(DialogueSequence sequence, Action onDone = null, Action onLineFinished = null)
     {
         currentLines = sequence.lines;
@@ -51,10 +57,31 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
             ShowCurrentLine();
     }
 
+    public void Skip()
+    {
+        if (!IsOpen)
+        {
+            Debug.LogWarning("Nothing to skip");
+            return;
+        }
+
+        isSkip = true;
+    }
+
+    public void HandleDialogueControl(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (isLinePrinted) Instance.Advance();
+            else Instance.Skip();
+        }
+    }
+
     private void ShowCurrentLine()
     {
         var line = currentLines[currentIndex];
         StopAllCoroutines();
+        isLinePrinted = false;
         StartCoroutine(TypeLine(line));
     }
 
@@ -70,16 +97,24 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
 
     private IEnumerator TypeLine(DialogueLine line)
     {
-        UIManager.Instance.EnableDialoguePrompt(line.NPCData.NPCIcon, line.NPCData.NPCName, "");
+        UIManager.Instance.EnableSkipDialogueInstruction();
+        UIManager.Instance.EnableDialoguePrompt(line.NPCData.CharacterIcon, line.NPCData.CharacterName, "");
         var bodyText = UIManager.Instance.DialogueText;
         bodyText.text = "\"";
+
+        float currentDur = perCharDuration;
         foreach (char c in line.text)
         {
             bodyText.text += c;
-            yield return new WaitForSecondsRealtime(perCharDuration);
+            if (isSkip) currentDur = 0;
+            yield return new WaitForSecondsRealtime(currentDur);
         }
 
+        isSkip = false;
+        isLinePrinted = true;
         bodyText.text += "\"";
         onLinePrinted?.Invoke();
+        line.OnLineFinshed?.Invoke();
+        UIManager.Instance.EnableContinueDialogueInstruction();
     }
 }

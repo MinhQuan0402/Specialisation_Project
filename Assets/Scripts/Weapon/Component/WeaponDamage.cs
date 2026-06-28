@@ -8,7 +8,9 @@ public class WeaponDamage : WeaponComponent<WeaponDamageData, AttackDamage>
     
     private void HandleDetectedCollider2D(Collider2D[] colliders)
     {
-        TryDamage(colliders, new DamageData(currentAttackData.Damage, Core.Root), out _);
+        float finalDamage = currentAttackData.Damage;
+        if (Random.value <= currentAttackData.CritChance) finalDamage *= currentAttackData.CritMultiplier;
+        TryDamage(colliders, new DamageData(finalDamage, Core.Root), out _);
     }
 
     protected override void Start()

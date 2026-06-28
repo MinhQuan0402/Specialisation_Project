@@ -160,7 +160,7 @@ public abstract class BaseSceneController : SingletonTemplate<BaseSceneControlle
 
     protected void SetPlayerInput(bool enabled)
     {
-        if (enabled) Player.Instance.Freeze(); else Player.Instance.UnFreeze();
+        if (enabled) Player.Instance.Paused(); else Player.Instance.Unpaused();
     }
 
     protected bool ContainStep(StepData step)

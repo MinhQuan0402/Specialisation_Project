@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
+
+[RequireComponent(typeof(PlayerInput))]
 public class Player : SingletonTemplate<Player>
 {
     #region State Variable
@@ -52,6 +56,10 @@ public class Player : SingletonTemplate<Player>
     [field: SerializeField, ReadOnlyInspector] public bool IsInteruptible { get; private set; } = false;
     private Coroutine disableInteruption;
 
+    public Action OnUpdatePlayer;
+
+    private PlayerInput playerInput;
+
     #endregion
 
     #region Components
@@ -76,6 +84,7 @@ public class Player : SingletonTemplate<Player>
     public Rigidbody2D RB { get; private set; }
     public CapsuleCollider2D Collider { get; private set; }
     public InventorySystem InventorySystem { get; private set; }
+    public InteractableDetector InteractableDetector { get; private set; }
 
     public CoreComp<Stats> Stats { get; private set; }
     public CoreComp<Movement> Movement { get; private set; }
@@ -117,11 +126,13 @@ public class Player : SingletonTemplate<Player>
     private void Start()
     {
         Anim = GetComponent<Animator>();
-        InputHandler = GetComponentInChildren<PlayerInputHandler>();
         RB = GetComponent<Rigidbody2D>();
         SR = GetComponent<SpriteRenderer>();
+        playerInput = GetComponent<PlayerInput>();
         Collider = GetComponent<CapsuleCollider2D>();
-        InventorySystem = GetComponentInChildren<InventorySystem>();
+        InputHandler = Core.GetCoreComponent<PlayerInputHandler>();
+        InventorySystem = Core.GetCoreComponent<InventorySystem>();
+        InteractableDetector = Core.GetCoreComponent<InteractableDetector>();
 
         foreach (KeyValue<string, State> pairs in StatesDictionary.pairs) { if (pairs.Value) pairs.Value.Init(); }
         StateMachine.InitializeStartingState(StateMachine.GetState<PlayerIdleState>()); //Enter idle state as default
@@ -143,6 +154,8 @@ public class Player : SingletonTemplate<Player>
 
         Stats.Comp.Health.OnValueChanged += UIManager.Instance.Health_OnValueChanged;
         Stats.Comp.Stamina.OnValueChanged += UIManager.Instance.Stamina_OnValueChanged;
+
+        InputHandler.OnInteractInputChanged += InteractableDetector.TryInteract;
     }
 
     private void OnEnable()
@@ -241,10 +254,9 @@ public class Player : SingletonTemplate<Player>
 
     private void Update()
     {
-        if (IsFreezing) return;
-
         StateMachine.LogicUpdate();
         Core.LogicUpdate();
+        OnUpdatePlayer?.Invoke();
     }
 
     private void FixedUpdate()
@@ -269,15 +281,44 @@ public class Player : SingletonTemplate<Player>
         StateMachine.ChangeState(idleState);
     }
 
-    public void Freeze()
+    public void Paused(float delayInSec = 0)
     {
-        IsFreezing = true;
-        StateMachine.ChangeState(idleState);
+        if (delayInSec <= 0.0f)
+        {
+            IsFreezing = true;
+            playerInput.enabled = false;
+            return;
+        }
+
+        StartCoroutine(DelayFreeze(delayInSec, true));
     }
 
-    public void UnFreeze()
+    public void Unpaused(float delayInSec = 0)
     {
-        IsFreezing = false;
+        if (delayInSec < 0.0f)
+        {
+            IsFreezing = false;
+            playerInput.enabled = true;
+            return;
+        }
+
+        StartCoroutine(DelayFreeze(delayInSec, false));
+    }
+
+    IEnumerator DelayFreeze(float delayDuration, bool isPause)
+    {
+        yield return new WaitForSeconds(delayDuration);
+
+        if (isPause)
+        {
+            IsFreezing = true;
+            playerInput.enabled = false;
+        }
+        else
+        {
+            IsFreezing = false;
+            playerInput.enabled = true;
+        }
     }
 
 #pragma warning disable IDE0051 // Remove unused private members

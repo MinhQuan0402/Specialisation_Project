@@ -5,10 +5,14 @@ public class Inventory : ScriptableObject
 {
     public int maxStackPerItem = 20;
 
-    private readonly WeaponData[] weapons = new WeaponData[2];
-    private readonly List<ItemInstance> itemSlots = new();
+    private readonly WeaponData[]                  weapons   = new WeaponData[2];
+    private readonly List<ItemInstance>            itemSlots = new();
+    private readonly Dictionary<ItemInstance, int> items     = new();
+    private readonly List<ItemData>                keys      = new();
 
-    public readonly Dictionary<ItemInstance, int> items = new ();
+    public void AddKey(ItemData key) => keys.Add(key);
+    public void RemoveAllKeys() => keys.Clear();
+    public int GetTotalKeys() => keys.Count;
 
     public bool TryAddItem(ItemInstance item)
     {
@@ -147,5 +151,6 @@ public class Inventory : ScriptableObject
         for (int i = 0; i < weapons.Length; ++i) weapons[i] = null;
         items.Clear();
         itemSlots.Clear();
+        keys.Clear();
     }
 }

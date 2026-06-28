@@ -20,6 +20,8 @@ public abstract class ComponentData
     
     public virtual void SetAttackDataNames() { }
     public virtual void InitializeAttackData(int numberOfAttack) { }
+
+    public virtual void PopulateStatUI(RectTransform parentContent) { }
 }
 
 [Serializable]

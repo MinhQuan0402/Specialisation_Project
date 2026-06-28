@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Structure : MonoBehaviour, IInteractable
@@ -7,31 +8,47 @@ public class Structure : MonoBehaviour, IInteractable
     [SerializeField] private Vector2 UIOffset = Vector2.zero;
     [SerializeField] private Bobber bobber;
 
+    protected event Action OnInteractionCompleted;
+
     public string DisplayName => displayName;
 
     public string InteractPrompt => interactPrompt;
 
     public bool CanInteract => true;
 
+    public bool InInteraction { get; protected set; } = false;
+
     void Start()
     {
         if (bobber != null) bobber.StartBobbing();
     }
 
-    public void OnInteract()
+    public virtual void OnInteract()
     {
+        InInteraction = true;
         UIManager.Instance.HideInteractionPanel();
+
+        OnInteractionCompleted += OnInteractionComplete;
     }
 
-    public void OnPlayerEnterRange()
+    public virtual void OnPlayerEnterRange()
     {
         UIManager.Instance.EnableInteractionPanel(transform.position + (Vector3)UIOffset, InteractPrompt);
     }
 
-    public void OnPlayerExitRange()
+    public virtual void OnPlayerExitRange()
     {
         UIManager.Instance.HideInteractionPanel();
     }
 
-    public void OnInteractionComplete() { }
+    public virtual void OnInteractionComplete() 
+    {
+        OnInteractionCompleted -= OnInteractionComplete;
+        InInteraction = false;
+        UIManager.Instance.EnableInteractionPanel(transform.position + (Vector3)UIOffset, InteractPrompt);
+    }
+
+    public Vector3 GetPosition() => transform.position;
+
+    protected void TriggerCompletedEvent() => OnInteractionCompleted?.Invoke();
 }

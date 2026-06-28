@@ -10,6 +10,8 @@ public enum CombatInputs
 
 public class PlayerInputHandler : CoreComponent
 {
+    public event Action<bool> OnInteractInputChanged;
+
     public Vector2 RawMovementInput { get; private set; }
     public int NormInputX { get; private set; } 
     public int NormInputY { get; private set; }
@@ -18,7 +20,6 @@ public class PlayerInputHandler : CoreComponent
     public bool GrabInput { get; private set; }
     public bool DashInput {  get; private set; }
     public bool DashInputStop { get; private set; }
-    public bool InteractionInput { get; private set; }
     public bool[] AttackInputs { get; private set; }
 
     [SerializeField] private float inputHoldTime = 0.2f;
@@ -100,18 +101,15 @@ public class PlayerInputHandler : CoreComponent
     {
         if (context.started)
         {
-            InteractionInput = true;
-            OnInteract?.Invoke();
+            OnInteractInputChanged?.Invoke(true);
+            return;
         }
 
         if (context.canceled)
         {
-            InteractionInput = false;
-            OnInteract = null;
+            OnInteractInputChanged?.Invoke(false);
         }
     }
-
-    public void UseInteractionInput() => InteractionInput = false;
 
     public void OnDashInput(InputAction.CallbackContext context)
     {
