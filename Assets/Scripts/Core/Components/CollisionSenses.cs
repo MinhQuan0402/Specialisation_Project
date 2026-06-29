@@ -74,6 +74,28 @@ public class CollisionSenses : CoreComponent
 
     public override void LogicUpdate() { }
 
+    public Vector2 GroundNormal
+    {
+        get
+        {
+            Vector2 groundNormal = Vector2.up;
+            RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, whatIsGround);
+            if (hit.collider != null) groundNormal = hit.normal;
+            return groundNormal;
+        }
+    }
+
+    public Vector2 WallNormal
+    {
+        get
+        {
+            Vector2 wallNormal = new (-Movement.FacingDirection, 0.0f);
+            RaycastHit2D hit = Physics2D.Raycast(wallCheck.position, Vector2.right * Movement.FacingDirection, wallCheckDistance, whatIsWall);
+            if (hit.collider != null) wallNormal = hit.normal;
+            return wallNormal;
+        }
+    }
+
     public bool Grounded => Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround); 
     public bool WallFront => Physics2D.Raycast(wallCheck.position, Vector2.right * Movement.FacingDirection, wallCheckDistance, whatIsWall);
     public bool WallBack => Physics2D.Raycast(wallCheck.position, Vector2.right * -Movement.FacingDirection, wallCheckDistance, whatIsWall);

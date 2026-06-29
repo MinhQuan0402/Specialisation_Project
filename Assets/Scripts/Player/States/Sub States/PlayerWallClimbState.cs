@@ -41,6 +41,12 @@ public class PlayerWallClimbState : PlayerTouchingWallState
         base.PhysicsUpdate();
 
         if(!isExitingState && isTouchingTopWall)
-            Movement.SetVelocityY(playerData.wallClimbVelocity);
+        {
+            Vector2 wallNormal = CollisionSenses.WallNormal;
+            Vector2 wallSurface = new(wallNormal.y, -wallNormal.x);
+            wallSurface.y = Mathf.Abs(wallSurface.y);
+            Vector2 moveDirection = wallSurface.normalized;
+            Movement.SetVelocity(playerData.wallClimbVelocity, moveDirection);
+        }
     }
 }

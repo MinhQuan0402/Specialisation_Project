@@ -40,6 +40,9 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.PhysicsUpdate();
 
-        Movement.SetVelocityX(playerData.movementVelocity * xInput);
+        Vector2 groundNormal = CollisionSenses.GroundNormal;
+        Vector2 surfaceDirection = new (groundNormal.y, -groundNormal.x);
+        Vector2 moveDirection = surfaceDirection.normalized * xInput;
+        Movement.SetVelocity(playerData.movementVelocity, moveDirection);
     }
 }
