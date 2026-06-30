@@ -4,12 +4,23 @@ using UnityEngine;
 public class PlayerWallGrabState : PlayerTouchingWallState
 {
     Vector2 newPosition;
+    float originalGravityScale = 1.0f;
 
     public override void Enter()
     {
         base.Enter();
 
-        newPosition = Movement.RB.position;
+        Movement.RB.simulated = false;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+        Movement.RB.simulated = true;
+        Vector3 playerRotation = player.transform.rotation.eulerAngles;
+        playerRotation.z = 0.0f;
+        player.transform.rotation = Quaternion.Euler(playerRotation);
     }
 
     public override void Init()
@@ -38,19 +49,5 @@ public class PlayerWallGrabState : PlayerTouchingWallState
                 stateMachine.ChangeState(player.wallSlideState);
             }
         }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-
-        if (!isExitingState) HoldPosition();
-    }
-
-    private void HoldPosition()
-    {
-        Movement.SetVelocityX(0f);
-        Movement.SetVelocityY(0f);
-        Movement.RB.position = newPosition;
     }
 }
