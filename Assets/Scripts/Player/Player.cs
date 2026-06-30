@@ -149,6 +149,8 @@ public class Player : SingletonTemplate<Player>
             dmgReceiver.OnTakingDamage += HandleTakingDamage;        
         }
 
+        Stats.Comp.Health.Init(playerData.maxHealth);
+        Stats.Comp.Stamina.Init(playerData.maxStatmina);
         UIManager.Instance.SetHealthBar(Stats.Comp.Health.MaxValue);
         UIManager.Instance.SetStaminaBar(Stats.Comp.Stamina.MaxValue);
 
@@ -269,7 +271,8 @@ public class Player : SingletonTemplate<Player>
     {
         gameObject.SetActive(true);
         transform.position = spawnPoint;
-        Stats.Comp.Health.SetCurrentValue(Stats.Comp.Health.MaxValue);
+        Stats.Comp.Health.Init(Stats.Comp.Health.MaxValue);
+        Stats.Comp.Stamina.Init(Stats.Comp.Health.MaxValue);
         RB.linearVelocity = Vector2.zero;
         if (Movement.Comp.FacingDirection != 1)
         {

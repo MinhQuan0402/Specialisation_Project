@@ -18,10 +18,11 @@ public class StatBarUI : MonoBehaviour
 
     private float targetFill;
 
-    public void SetInitValue(float value)
+    public void SetInitValue(float initValue, float maxValue)
     {
-        fillSlider.value = value;
-        targetFill = value;
+        fillSlider.maxValue = maxValue;
+        fillSlider.value = initValue;
+        targetFill = initValue;
     }
 
     public void SetTarget(float current, float max)

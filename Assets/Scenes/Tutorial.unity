@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3194081
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1830,9 +1830,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 796724835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 814.5, y: -112.5}
   m_SizeDelta: {x: 1486, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &132179297
@@ -2522,6 +2522,7 @@ Transform:
   - {fileID: 838520111}
   - {fileID: 1952908601}
   - {fileID: 1072692072}
+  - {fileID: 832993210}
   m_Father: {fileID: 1262412224}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &151355178
@@ -44911,7 +44912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &796724835
 RectTransform:
   m_ObjectHideFlags: 0
@@ -45678,6 +45679,110 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828823372}
   m_CullTransparentMesh: 1
+--- !u!1 &832993209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 832993210}
+  - component: {fileID: 832993212}
+  - component: {fileID: 832993211}
+  m_Layer: 0
+  m_Name: BossArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &832993210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832993209}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 74.66, y: -6.69, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 149691067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &832993211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832993209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bc0fee1dcf21e4e9fb486d18a27bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStepTrigger
+  step: {fileID: 11400000, guid: 3029be45cf1a6d04fb0ef55e80a75737, type: 2}
+  timelineSequence: {fileID: 0}
+  triggerOnEnter: 1
+  triggerOnExit: 0
+  oneShot: 1
+  requiredTag: Player
+  bossController: {fileID: 1169239028}
+  onZoneEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  onZoneExited:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!61 &832993212
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832993209}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 4.757164, y: 3.5027332}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 27.259705, y: 10.5870285}
+  m_EdgeRadius: 0
 --- !u!1 &836016945
 GameObject:
   m_ObjectHideFlags: 0
@@ -45839,6 +45944,7 @@ MonoBehaviour:
   triggerOnExit: 0
   oneShot: 1
   requiredTag: Player
+  bossController: {fileID: 0}
   onZoneEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -59433,6 +59539,7 @@ MonoBehaviour:
   triggerOnExit: 0
   oneShot: 1
   requiredTag: Player
+  bossController: {fileID: 0}
   onZoneEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -61978,6 +62085,7 @@ MonoBehaviour:
   triggerOnExit: 0
   oneShot: 1
   requiredTag: Player
+  bossController: {fileID: 0}
   onZoneEntered:
     m_PersistentCalls:
       m_Calls:
@@ -63214,6 +63322,7 @@ MonoBehaviour:
   <AIPath>k__BackingField: {fileID: 1169239033}
   <DestinationSetter>k__BackingField: {fileID: 1169239032}
   enemyUIPrefab: {fileID: 7938605700975334830, guid: 6f1b31d86ed47ac4f907f2f464110ca5, type: 3}
+  IsBoss: 1
   player: {fileID: 0}
   spawnPoint: {x: 0, y: 0}
   lastSeenPlayerPoint: {x: 0, y: 0}
@@ -64639,6 +64748,7 @@ MonoBehaviour:
   <UpgradePoints>k__BackingField: 0
   <TotalRunsPlayed>k__BackingField: 0
   <TutorialComplete>k__BackingField: 0
+  bossController: {fileID: 0}
 --- !u!1 &1312216743
 GameObject:
   m_ObjectHideFlags: 0
@@ -65772,7 +65882,7 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1169239026}
+      - m_Target: {fileID: 832993209}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -68329,6 +68439,7 @@ MonoBehaviour:
   triggerOnExit: 0
   oneShot: 1
   requiredTag: Player
+  bossController: {fileID: 0}
   onZoneEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -71277,6 +71388,7 @@ MonoBehaviour:
   <AIPath>k__BackingField: {fileID: 0}
   <DestinationSetter>k__BackingField: {fileID: 0}
   enemyUIPrefab: {fileID: 7938605700975334830, guid: 6f1b31d86ed47ac4f907f2f464110ca5, type: 3}
+  IsBoss: 0
   player: {fileID: 0}
   spawnPoint: {x: 0, y: 0}
   lastSeenPlayerPoint: {x: 0, y: 0}
@@ -71831,6 +71943,11 @@ MonoBehaviour:
   noDeathBonusRow: {fileID: 0}
   finalScoreText: {fileID: 0}
   runsPlayedText: {fileID: 0}
+  bossHealthCanva: {fileID: 796724834}
+  bossHealthRect: {fileID: 9174291301629112517}
+  bossStatHeatlh: {fileID: 9174291301629112518}
+  bossName: {fileID: 132179297}
+  playerProfilePanel: {fileID: 3194080}
   pickupCanva: {fileID: 1650058372}
   pickupWindowRect: {fileID: 1803349068402547779}
   pickupPrompt: {fileID: 1803349068537606154}
@@ -73144,6 +73261,7 @@ MonoBehaviour:
   triggerOnExit: 0
   oneShot: 1
   requiredTag: Player
+  bossController: {fileID: 0}
   onZoneEntered:
     m_PersistentCalls:
       m_Calls:
@@ -80347,6 +80465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9174291301629112517}
   - component: {fileID: 327313038371024604}
+  - component: {fileID: 9174291301629112518}
   m_Layer: 5
   m_Name: BossHealth
   m_TagString: Untagged
@@ -80368,8 +80487,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8638549062113038104}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.568, y: 0}
+  m_AnchorMax: {x: 0.568, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 60, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -80438,7 +80557,7 @@ RectTransform:
   m_Father: {fileID: 6750482731943284080}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.568, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -80596,11 +80715,26 @@ RectTransform:
   - {fileID: 8638549062113038104}
   m_Father: {fileID: 796724835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 814.5, y: -162.5}
   m_SizeDelta: {x: 1500, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &9174291301629112518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8275173881280774422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07067130a10a158499f6bc69c28eb272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatBarUI
+  barType: 0
+  fillSlider: {fileID: 327313038371024604}
+  smoothSpeed: 5
 --- !u!114 &9195338377960282648
 MonoBehaviour:
   m_ObjectHideFlags: 0

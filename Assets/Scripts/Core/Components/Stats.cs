@@ -6,13 +6,18 @@ using UnityEngine.Events;
 public class Stats : CoreComponent 
 {
     [field: SerializeField] public Stat Health { get; private set; }
-    [field: SerializeField] public Stat Poise { get; private set; }
     [field: SerializeField] public Stat Stamina { get; private set; }
+    [field: SerializeField] public Stat Poise { get; private set; }
+
+    [SerializeField] private bool autoInit = false;
 
     private void OnEnable()
     {
-        Health.Init();
-        Stamina.Init();
+        if (autoInit)
+        {
+            Health.Init();
+            Stamina.Init();
+        }
 
         Health.OnValueDecrease += HandleValueDecrease;
         Poise.OnValueDecrease += HandleValueDecrease;

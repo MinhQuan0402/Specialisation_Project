@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073634b98f7f66c40935b9b836931c39, type: 3}
   m_Name: Mushroom
   m_EditorClassIdentifier: 
-  maxHealth: 1000
+  maxHealth: 200
   enemyType: 0
   isFlying: 0
   animationTransitionTime: 0.1

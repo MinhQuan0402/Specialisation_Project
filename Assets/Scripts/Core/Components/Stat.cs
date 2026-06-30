@@ -28,10 +28,10 @@ public class Stat
             if (currentValue <= 0) OnCurrentValueZero?.Invoke();
         }
     }
-    private float currentValue = 0;
+   [SerializeField, ReadOnlyInspector] private float currentValue = 0;
     
     public void Init() => CurrentValue = MaxValue;
-    public void SetCurrentValue(float value) => CurrentValue = value;
+    public void Init(float value) => CurrentValue = MaxValue = value;
 
     public void Increase(float amount) => CurrentValue += amount;
     public void Decrease(float amount)

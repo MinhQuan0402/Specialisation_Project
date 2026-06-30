@@ -3,9 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newPlayerState", menuName = "State/Player State/Wall Grab")]
 public class PlayerWallGrabState : PlayerTouchingWallState
 {
-    Vector2 newPosition;
-    float originalGravityScale = 1.0f;
-
     public override void Enter()
     {
         base.Enter();

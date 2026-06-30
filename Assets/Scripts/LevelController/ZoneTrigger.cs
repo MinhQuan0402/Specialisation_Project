@@ -13,6 +13,7 @@ public class ZoneTrigger: MonoBehaviour
     [SerializeField] private bool triggerOnExit = false;
     [SerializeField] private bool oneShot = true;
     [SerializeField] private string requiredTag = "Player";
+    [SerializeField] private EnemyController bossController;
 
     [SerializeField] private UnityEvent onZoneEntered;
     [SerializeField] private UnityEvent onZoneExited;
@@ -37,6 +38,7 @@ public class ZoneTrigger: MonoBehaviour
         ZoneEventBus.TriggerZoneEntered(step, other.gameObject);
         onZoneEntered?.Invoke();
         if (timelineSequence != null) CutsceneManager.Instance.Play(timelineSequence);
+        if (bossController   != null) GameManager.Instance.StartBossState(bossController);
     }
 
     private void OnTriggerExit2D(Collider2D other)

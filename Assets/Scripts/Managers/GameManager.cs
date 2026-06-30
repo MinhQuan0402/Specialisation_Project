@@ -58,6 +58,8 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
 
     private const int MaxLevels = 3; // levels before boss
 
+    public EnemyController bossController = null;
+
     private void Start()
     {
         //ChangeState(TutorialComplete ? GameState.MainMenu : GameState.Tutorial);
@@ -78,6 +80,7 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         AltarGate = FindAnyObjectByType<AltarGate>();
+        bossController = null;
     }
 
     private void Update()
@@ -139,6 +142,10 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
 
             case GameState.BossFight:
                 Time.timeScale = 1f;
+                bossController.gameObject.SetActive(true);
+                UIManager.Instance.ActivateBossUI(bossController.Data);
+                bossController.Core.GetCoreComponent<Stats>().Health.OnValueChanged     += UIManager.Instance.UpdateBossHealth;
+                bossController.Core.GetCoreComponent<Stats>().Health.OnCurrentValueZero += UIManager.Instance.DeactiveBossUI;
                 //LoadScene(GameScene.Boss);
                 break;
 
@@ -173,6 +180,14 @@ public class GameManager : SingletonPersistentTemplate<GameManager>
         RunTimeElapsed = 0f;
         DeathThisRun = false;
         ChangeState(startingState);
+    }
+
+    public void StartBossState(EnemyController bossController)
+    {
+        if (this.bossController != null) return;
+
+        this.bossController = bossController;
+        ChangeState(GameState.BossFight);
     }
 
     public void CompleteTutorial()

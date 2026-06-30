@@ -31,7 +31,8 @@ public class EnemyController : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject enemyUIPrefab;
 
-    private GameObject enemyUI = null;
+    public GameObject EnemyUI { get; private set; } = null;
+    public bool IsBoss = false;
 
     [Space(10), Header("Debug Info")]
     [ReadOnlyInspector] public Transform player;
@@ -112,7 +113,7 @@ public class EnemyController : MonoBehaviour
         player = Player.Instance.transform;
 
         Stats stats = Core.GetComponent<Stats>();
-        stats.Health.SetCurrentValue(Data.maxHealth);
+        stats.Health.Init(Data.maxHealth);
         stats.Health.OnCurrentValueZero += HandleDeathState;
 
         Core.GetComponent<DamageReceiver>().OnTakingDamage += HandleHurtState;
@@ -122,7 +123,7 @@ public class EnemyController : MonoBehaviour
 
         isCheckingDone = true;
 
-        if(enemyUI == null && enemyUIPrefab != null)
+        if(EnemyUI == null && enemyUIPrefab != null && !IsBoss)
         {
             GameObject enemiesUI = GameObject.Find("EnemiesUICollection");
             if (enemiesUI == null)
@@ -130,27 +131,27 @@ public class EnemyController : MonoBehaviour
                 enemiesUI = new GameObject("EnemiesUICollection");
             }
 
-            enemyUI = Instantiate(enemyUIPrefab, enemiesUI.transform);
-            RectTransform enemyUITransform = enemyUI.GetComponent<RectTransform>();
+            EnemyUI = Instantiate(enemyUIPrefab, enemiesUI.transform);
+            RectTransform enemyUITransform = EnemyUI.GetComponent<RectTransform>();
             enemyUITransform.localPosition = Data.canvaOffset;
-            enemyUI.SetActive(false);
+            EnemyUI.SetActive(false);
 
-            StatBarUI enemyHealthBar = enemyUI.GetComponentInChildren<StatBarUI>();
+            StatBarUI enemyHealthBar = EnemyUI.GetComponentInChildren<StatBarUI>();
             if(enemyHealthBar != null)
             {
-                enemyHealthBar.SetInitValue(Stats.Health.MaxValue);
+                enemyHealthBar.SetInitValue(Stats.Health.MaxValue, Stats.Health.MaxValue);
             }
 
             Stats.Health.OnValueChanged += (_, currValue, maxValue) =>
             {
                 if (enemyHealthBar != null)
                 {
-                    enemyUI.SetActive(true);
+                    EnemyUI.SetActive(true);
                     enemyHealthBar.SetTarget(currValue, maxValue);
                 }
             };
 
-            TextMeshProUGUI nameText = enemyUI.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nameText = EnemyUI.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
             nameText.text = Data.enemyType.ToString();
         }
 
@@ -166,9 +167,9 @@ public class EnemyController : MonoBehaviour
         animationEventHandler.OnStartAnimationWindow -= StartAttackWindow;
         animationEventHandler.OnStopAnimationWindow  -= StopAttackWindow;
 
-        if (enemyUI != null)
+        if (EnemyUI != null)
         {
-            Destroy(enemyUI);
+            Destroy(EnemyUI);
         }
     }
 
@@ -178,9 +179,9 @@ public class EnemyController : MonoBehaviour
         if (!isDead && CurrentState != null) 
             CurrentState.UpdateState(this);
 
-        if (enemyUI != null)
+        if (EnemyUI != null)
         {
-            enemyUI.transform.position = transform.position + new Vector3(Data.canvaOffset.x, Data.canvaOffset.y, 0.0f);
+            EnemyUI.transform.position = transform.position + new Vector3(Data.canvaOffset.x, Data.canvaOffset.y, 0.0f);
         }
 
         UpdateAttackCD();

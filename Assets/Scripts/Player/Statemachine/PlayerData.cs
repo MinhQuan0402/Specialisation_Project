@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newPlayerData", menuName = "Data/Player Data/Base Data")]
 public class PlayerData : EntityData
 {
+    public float maxStatmina = 100.0f;
+
     [Header("Move State")]
     public float movementVelocity = 10.0f;
 

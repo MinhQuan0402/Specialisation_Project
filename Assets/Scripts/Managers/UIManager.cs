@@ -65,6 +65,15 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     [SerializeField] private TMPro.TextMeshProUGUI finalScoreText;
     [SerializeField] private TMPro.TextMeshProUGUI runsPlayedText;
 
+    [Header("Boss Elements")]
+    [SerializeField] private GameObject bossHealthCanva;
+    [SerializeField] private RectTransform bossHealthRect;
+    [SerializeField] private StatBarUI bossStatHeatlh;
+    [SerializeField] private TMPro.TextMeshProUGUI bossName;
+
+    [Header("Player Profile Elements")]
+    [SerializeField] private GameObject playerProfilePanel;
+
     [Header("Interaction Elements")]
     [SerializeField] private GameObject pickupCanva;
     [SerializeField] private RectTransform pickupWindowRect;
@@ -167,8 +176,8 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         coroutines[keysPanel] = StartCoroutine(PulseSize(keysPanel));
     }
 
-    public void SetHealthBar(float value)  => playerHealthBar.SetInitValue(value);
-    public void SetStaminaBar(float value) => playerStaminahBar.SetInitValue(value);
+    public void SetHealthBar(float value)  => playerHealthBar.SetInitValue(value, value);
+    public void SetStaminaBar(float value) => playerStaminahBar.SetInitValue(value, value);
 
     public void Health_OnValueChanged(float _, float currValue, float maxValue)
     {
@@ -308,6 +317,40 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
     {
         if (cinematicBars == null) return;
         cinematicBars.Hide(time);
+    }
+
+    public void ActivateBossUI(EnemyData bossData)
+    {
+        if (bossData == null) return;
+
+        playerProfilePanel.SetActive(false);
+        bossHealthCanva.SetActive(true);
+        bossName.text = bossData.enemyType.ToString();
+        bossStatHeatlh.SetInitValue(bossData.maxHealth, bossData.maxHealth);
+
+        if (coroutines.ContainsKey(bossHealthRect))
+        {
+            coroutines[bossHealthRect] = StartCoroutine(
+                            PanelAnimation(bossHealthRect,
+                            RectTransform.Axis.Horizontal));
+            return;
+        }
+
+        coroutines.Add(bossHealthRect, StartCoroutine(
+                        PanelAnimation(bossHealthRect,
+                        RectTransform.Axis.Horizontal)));
+    }
+
+    public void UpdateBossHealth(float _, float currentHealth, float maxHealth)
+    {
+        bossStatHeatlh.SetTarget(currentHealth, maxHealth);
+    }
+
+    public void DeactiveBossUI()
+    {
+        playerProfilePanel.SetActive(true);
+        bossHealthCanva.SetActive(false);
+        StopCoroutine(coroutines[bossHealthRect]);
     }
 
     public void SetHUDActive(bool enable) => hudPanel.SetActive(enable);
