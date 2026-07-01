@@ -50,13 +50,9 @@ public class SceneNPC : BaseNPC
 
         hasInteracted = true;
 
-        if (dialogueIndex < dialogueSequences.Count - 1)
-            dialogueIndex++;
-
         switch (NPCData.behaviour)
         {
             case NPCBehaviour.Dialogue:
-                UIManager.Instance.InputActions.Player.Interact.started -= DialogueManager.Instance.HandleDialogueControl;
                 break;
             case NPCBehaviour.GiveItem:
                 break;
@@ -72,23 +68,12 @@ public class SceneNPC : BaseNPC
             Mathf.Clamp(dialogueIndex, 0, dialogueSequences.Count - 1)];
 
         DialogueManager.Instance.StartSequence(seq, OnInteractionComplete);
-        UIManager.Instance.InputActions.Player.Interact.started += DialogueManager.Instance.HandleDialogueControl;
     }
-
-    // ── Give Item ────────────────────────────────────────────
-    /*private void HandleGiveItem(ItemInstance)
-    {
-        if (giftWeapon != null)
-            Player.Instance.InventorySystem.TryToAddWeapon(giftWeapon);
-
-        if (giftScore > 0) GameManager.Instance.AddScore(giftScore);
-
-        NPCEventBus.TriggerNPCInteracted(NPCData);
-    }*/
 
     // ── Public API ────────────────────────────────────────────
     public void SetDialogueIndex(int index)
     {
+        hasInteracted |= (index >= 0);
         dialogueIndex = Mathf.Clamp(index, 0, dialogueSequences.Count - 1);
     }
 

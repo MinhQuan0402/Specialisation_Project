@@ -28,7 +28,7 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
 {
     [SerializeField] private float perCharDuration = 0.03f;
 
-    public bool IsOpen { get; private set; } = false;
+    public bool IsCompleted { get; private set; } = false;
 
     private List<DialogueLine> currentLines;
     private int currentIndex;
@@ -40,12 +40,14 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
 
     public void StartSequence(DialogueSequence sequence, Action onDone = null, Action onLineFinished = null)
     {
+        IsCompleted = false;
         currentLines = sequence.lines;
         currentIndex = 0;
         onComplete = onDone;
         onLinePrinted = onLineFinished;
-        IsOpen = true;
         ShowCurrentLine();
+
+        UIManager.Instance.InputActions.UI.DialogueControl.started += HandleDialogueControl;
     }
 
     public void Advance()
@@ -59,22 +61,13 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
 
     public void Skip()
     {
-        if (!IsOpen)
+        if (IsCompleted)
         {
             Debug.LogWarning("Nothing to skip");
             return;
         }
 
         isSkip = true;
-    }
-
-    public void HandleDialogueControl(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            if (isLinePrinted) Instance.Advance();
-            else Instance.Skip();
-        }
     }
 
     private void ShowCurrentLine()
@@ -87,12 +80,15 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
 
     public void EndDialogue()
     {
-        IsOpen = false;
+        IsCompleted = true;
         UIManager.Instance.HideDialoguePrompt();
         StopAllCoroutines();
         onComplete?.Invoke();
+
         onComplete = null;
         onLinePrinted = null;
+
+        UIManager.Instance.InputActions.UI.DialogueControl.started -= HandleDialogueControl;
     }
 
     private IEnumerator TypeLine(DialogueLine line)
@@ -116,5 +112,14 @@ public class DialogueManager : SingletonPersistentTemplate<DialogueManager>
         onLinePrinted?.Invoke();
         line.OnLineFinshed?.Invoke();
         UIManager.Instance.EnableContinueDialogueInstruction();
+    }
+
+    private void HandleDialogueControl(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (isLinePrinted) Instance.Advance();
+            else Instance.Skip();
+        }
     }
 }

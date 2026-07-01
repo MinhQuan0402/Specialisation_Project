@@ -230,7 +230,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         {
             coroutines[dialoguePromptPanel] = StartCoroutine(
                             PanelAnimation(dialoguePromptPanel,
-                            RectTransform.Axis.Horizontal));
+                            RectTransform.Axis.Horizontal, 500.0f));
             return;
         }
 
@@ -355,7 +355,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
 
     public void SetHUDActive(bool enable) => hudPanel.SetActive(enable);
 
-    IEnumerator PanelAnimation(RectTransform panelTransform, RectTransform.Axis axis)
+    IEnumerator PanelAnimation(RectTransform panelTransform, RectTransform.Axis axis, float startSize = 0.0f)
     {
         if (!rectSize.TryGetValue(panelTransform, out Rect rect))
         {
@@ -368,7 +368,7 @@ public class UIManager : SingletonPersistentTemplate<UIManager>
         while (progress < panelAnimDuration)
         {
             progress += Time.unscaledDeltaTime * panelAnimationSpeed;
-            float currentSize = Mathf.Lerp(0.0f, axis == RectTransform.Axis.Horizontal ? 
+            float currentSize = Mathf.Lerp(startSize, axis == RectTransform.Axis.Horizontal ? 
                                 originalSize.x : originalSize.y, 
                                 progress / panelAnimDuration);
             panelTransform.SetSizeWithCurrentAnchors(axis, currentSize);

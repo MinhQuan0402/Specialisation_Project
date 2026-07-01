@@ -66,6 +66,25 @@ MonoBehaviour:
   endLocation:
     exposedName: 3011e892c7e285c4e8955f827eac42d0
     defaultValue: {fileID: 0}
+--- !u!114 &-7903570727604523964
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 663c5ceff28edf74e9b3170da3f53031, type: 3}
+  m_Name: Camera Shake Signal
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShakeSignal
+  m_Time: 2.4999999999999973
+  cameraShakePackage:
+    shakePreset: {fileID: 0}
+    duration: 0.3
+    amplitude: 20
+    frequency: 5
+    delay: 0
 --- !u!114 &-7457282172126237066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,7 +176,25 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_MixOutCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -381,7 +418,8 @@ MonoBehaviour:
   m_Children: []
   m_Clips: []
   m_Markers:
-    m_Objects: []
+    m_Objects:
+    - {fileID: -7903570727604523964}
 --- !u!114 &-1594894677167132637
 MonoBehaviour:
   m_ObjectHideFlags: 1

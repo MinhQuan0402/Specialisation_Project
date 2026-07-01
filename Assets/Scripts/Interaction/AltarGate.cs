@@ -88,10 +88,6 @@ public class AltarGate : Structure
             OnAltarCompleted?.Invoke();
         }
 
-        UIManager.Instance.InputActions.Player.Interact.started += DialogueManager.Instance.HandleDialogueControl;
-        yield return new WaitUntil(() => !DialogueManager.Instance.IsOpen);
-        UIManager.Instance.InputActions.Player.Interact.started -= DialogueManager.Instance.HandleDialogueControl;
-
-        yield return null;
+        yield return new WaitUntil(() => !DialogueManager.Instance.IsCompleted);
     }
 }

@@ -25,7 +25,6 @@ public class DialogueSignalTrigger : MonoBehaviour
                 CutsceneManager.Instance.AdvanceSequence();
                 DialogueManager.Instance.StartSequence(entry.dialogueSequence, 
                                                       onDone: HandleOnDone);
-                UIManager.Instance.InputActions.Player.Interact.started += DialogueManager.Instance.HandleDialogueControl;
                 return;
             }
         }
@@ -33,7 +32,6 @@ public class DialogueSignalTrigger : MonoBehaviour
 
     private void HandleOnDone()
     {
-        UIManager.Instance.InputActions.Player.Interact.started -= DialogueManager.Instance.HandleDialogueControl;
         CutsceneManager.Instance.AdvanceSequence();
     }
 }
