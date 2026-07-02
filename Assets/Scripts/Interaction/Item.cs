@@ -54,6 +54,8 @@ public class Item : MonoBehaviour, IInteractable
         Vector2 directionToPlayer = Player.Instance.transform.position - transform.position;
         Rigidbody2D.AddForce(directionToPlayer * magnetForce);
 
+        Rigidbody2D.rotation = Quaternion.LookRotation(-Player.Instance.transform.forward).eulerAngles.z;
+
         Collider2D playerCollider = Physics2D.OverlapCircle(transform.position, itemRadius, playerMask);
         if (playerCollider != null) Destroy(gameObject);
     }

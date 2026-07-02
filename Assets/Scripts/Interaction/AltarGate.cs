@@ -88,6 +88,6 @@ public class AltarGate : Structure
             OnAltarCompleted?.Invoke();
         }
 
-        yield return new WaitUntil(() => !DialogueManager.Instance.IsCompleted);
+        yield return new WaitUntil(() => DialogueManager.Instance.IsCompleted);
     }
 }

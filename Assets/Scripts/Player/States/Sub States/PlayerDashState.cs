@@ -41,6 +41,15 @@ public class PlayerDashState : PlayerAbilityState
     {
         base.Exit();
 
+        if (isHolding)
+        {
+            player.RB.linearDamping = 0f;
+            isHolding = false;
+            Time.timeScale = 1f;
+            player.DashIndicator.gameObject.SetActive(false);
+            lastDashTime = Time.time;
+        }
+
         if (Movement.CurrentVelocity.y > 0f)  
             Movement.SetVelocityY(Movement.CurrentVelocity.y * playerData.dashEndYMultiplier);
     }
